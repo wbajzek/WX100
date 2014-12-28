@@ -122,7 +122,7 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
     const int numChannels = outputBuffer.getNumChannels();
     Frequency freq = MidiMessage::getMidiNoteInHertz(getCurrentlyPlayingNote());
     bool keyIsDown = isKeyDown();
-    while (--numSamples >= 0)
+    while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)
     {
         for (int i = 0; i < numChannels; ++i)
             outputBuffer.addSample(i, startSample, getSample(freq) * 0.25);
