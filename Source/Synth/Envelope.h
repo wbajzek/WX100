@@ -124,7 +124,7 @@ public:
         return envLevel;
     }
     
-    bool isActive()
+    bool isActive() const
     {
         return envelopeState;
     }

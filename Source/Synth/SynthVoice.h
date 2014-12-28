@@ -71,7 +71,7 @@ public:
                 currentSample = oscillator.tick() * currentAmplitude;
     }
         
-    bool isActive()
+    bool isActive() const
     {
         return envelope.isActive();
     }

@@ -51,11 +51,7 @@ public:
 
     void setFm(Amplitude amount)
     {
-        if (amount < 0.0)
-            amount = 0.0;
-
         fm = amount;
-//        increment = (long)(frqTI * (frequency + (frequency * exp(fm)))) << 16;
     }
     
     Amplitude tick()
