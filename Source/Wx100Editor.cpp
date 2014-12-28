@@ -125,6 +125,7 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Sus", 320, 0, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Rel", 380, 0, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Fdbk", 440, 0, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Algo", 20, 260, 50, 25, Justification::centred, 1);
 }
 
 void Wx100AudioProcessorEditor::resized()
@@ -139,7 +140,7 @@ void Wx100AudioProcessorEditor::resized()
         release[i].setBounds (380, 20 + (60 * i), 20, 20);
     }
     feedback.setBounds(440, 200, 20, 20);
-    algorithm.setBounds(20, 260, 50, 20);
+    algorithm.setBounds(20, 275, 50, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
