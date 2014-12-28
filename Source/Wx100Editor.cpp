@@ -86,6 +86,21 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     feedback.addListener(this);
     addAndMakeVisible(feedback);
 
+    algorithm.addItem("1",1);
+    algorithm.addItem("2",2);
+    algorithm.addItem("3",3);
+    algorithm.addItem("4",4);
+    algorithm.addItem("5",5);
+    algorithm.addItem("6",6);
+    algorithm.addItem("7",7);
+    algorithm.addItem("8",8);
+    algorithm.setWantsKeyboardFocus(false);
+    algorithm.setItemEnabled(0, false);
+    algorithm.setEditableText(false);
+    algorithm.setScrollWheelEnabled(false);
+    algorithm.addListener(this);
+    addAndMakeVisible(algorithm);
+    
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -124,6 +139,7 @@ void Wx100AudioProcessorEditor::resized()
         release[i].setBounds (380, 20 + (60 * i), 20, 20);
     }
     feedback.setBounds(440, 200, 20, 20);
+    algorithm.setBounds(20, 260, 50, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -146,6 +162,12 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
     }
     if (slider == &feedback)
         processor.getFloatParam(FEEDBACK_4)->updateProcessorAndHostFromUi(slider->getValue());
+}
+
+void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
+{
+    if (comboBox == &algorithm)
+        processor.getIntParam(ALGORITHM)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
 }
 
 void Wx100AudioProcessorEditor::timerCallback()
@@ -184,5 +206,9 @@ void Wx100AudioProcessorEditor::timerCallback()
     FloatParam *param=processor.getFloatParam(FEEDBACK_4);
     if (&feedback && param->updateUiRequested()){
         feedback.setValue (param->uiGet(), dontSendNotification);
+    }
+    IntParam *intParam=processor.getIntParam(ALGORITHM);
+    if (&algorithm && intParam->updateUiRequested()){
+        algorithm.setSelectedId (intParam->uiGet(), dontSendNotification);
     }
 }

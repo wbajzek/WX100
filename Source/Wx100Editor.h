@@ -18,7 +18,8 @@
 //==============================================================================
 /**
 */
-class Wx100AudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, public Timer
+class Wx100AudioProcessorEditor  : public AudioProcessorEditor,
+    private Slider::Listener, private ComboBox::Listener, public Timer
 {
 public:
     Wx100AudioProcessorEditor (Wx100AudioProcessor&);
@@ -28,6 +29,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void sliderValueChanged (Slider* slider) override;
+    void comboBoxChanged (ComboBox* comboBox) override;
     void timerCallback();
 
 private:
@@ -43,6 +45,7 @@ private:
     Slider sustain[numOperators];
     Slider release[numOperators];
     Slider feedback;
+    ComboBox algorithm;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessorEditor)
 };

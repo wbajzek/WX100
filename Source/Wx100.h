@@ -45,6 +45,7 @@ enum params
     RELEASE_3,
     RELEASE_4,
     FEEDBACK_4,
+    ALGORITHM,
     NUMBER_OF_PARAMETERS
 };
 

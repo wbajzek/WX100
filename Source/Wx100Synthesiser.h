@@ -42,10 +42,10 @@ protected:
 };
 
 
-class Wx100SynthVoice : public SynthesiserVoice
+class Wx100SynthVoice : public SynthesiserVoice, public ActionListener
 {
 public:
-    Wx100SynthVoice(float* parameters /*, int* lfoShape, int* scale, int* scaleRoot*/);
+    Wx100SynthVoice(float* parameters, int* algorithm /*, int* lfoShape, int* scale, int* scaleRoot*/);
     ~Wx100SynthVoice();
     bool canPlaySound (SynthesiserSound* sound);
     void startNote (const int midiNoteNumber, const float velocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition);
@@ -58,7 +58,7 @@ public:
     void setCurrentPlaybackSampleRate (double newRate);
     bool isPlayingChannel (int midiChannel) const;
     bool isVoiceActive() const;
-
+    void actionListenerCallback (const String &message);
     
 private:
     
@@ -67,7 +67,7 @@ private:
     int note = 0;
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
-    int algorithm = 3;
+    int *localAlgorithm;
     
 //    Frequency calculateFrequency(int currentPitchWheelPosition);
 //    void tick();

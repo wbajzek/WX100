@@ -51,9 +51,10 @@ SynthesiserVoice* Wx100Synthesiser::findVoiceToSteal (SynthesiserSound* soundToP
 }
 
 
-Wx100SynthVoice::Wx100SynthVoice(float *parameters)
+Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm)
 {
     localParameters = parameters;
+    localAlgorithm = algorithm;
     for (int i = 0; i < numOperators; ++i)
     {
         operators[i].setWaveTable(SINE_WAVE_TABLE);
@@ -135,81 +136,118 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
 Amplitude Wx100SynthVoice::getSample(Frequency freq)
 {
     Amplitude sample = 0.0;
-    switch (algorithm)
+    for (int i = 0; i < numOperators; ++i)
+    {
+        operators[i].setFrequency((freq * localParameters[COARSE_1 + i]) +
+                                  (freq * localParameters[TUNING_1 + i]));
+    }
+    // last operator always feeds back
+    operators[3].setFm(operators[3].currentSample * localParameters[FEEDBACK_4]);
+    switch (*localAlgorithm)
     {
         case 1:
             if (operators[0].isActive())
             {
-                operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
-                for (int i = 3; i > 0; --i)
-                {
-                    float coarse = localParameters[COARSE_1 + i];
-                    float fine = localParameters[TUNING_1 + i];
-                    Frequency operatorFrequency = (freq * coarse) + (freq * fine);
-                    operators[i].setFrequency(operatorFrequency);
-                    if (i == 3)
-                        operators[i].setFm(operators[i].currentSample *
-                                           operators[i].currentAmplitude *
-                                           localParameters[AMP_1 + i] *
-                                           localParameters[FEEDBACK_4]);
-                    operators[i - 1].setFm(
-                                           operators[i].currentSample *
-                                           operators[i].currentAmplitude *
-                                           localParameters[AMP_1 + i]);
-                }
+                operators[2].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                operators[1].setFm(operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3]);
+                operators[0].setFm((operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2]));
+                
                 sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
             }
             else
                 clearCurrentNote();
             break;
         case 2:
+            if (operators[0].isActive())
+            {
+                operators[2].setFm(0.0);
+                operators[1].setFm(operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3] +
+                                   (operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]));
+                operators[0].setFm((operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2]));
+                
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
+            }
+            else
+                clearCurrentNote();
+            break;
         case 3:
             if (operators[0].isActive())
             {
-                operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
-                Amplitude modulator = 0.0;
-                for (int i = 3; i > 0; --i)
-                {
-                    float coarse = localParameters[COARSE_1 + i];
-                    float fine = localParameters[TUNING_1 + i];
-                    Frequency operatorFrequency = (freq * coarse) + (freq * fine);
-                    operators[i].setFrequency(operatorFrequency);
-                    if (i < 3)
-                    {
-                        modulator = operators[i].currentSample * operators[i].currentAmplitude * localParameters[AMP_1 + i];
-                        operators[i - 1].setFm(modulator);                        
-                    }
-                }
-                modulator += operators[3].currentSample *
-                             operators[3].currentAmplitude *
-                             localParameters[AMP_4] *
-                             localParameters[FEEDBACK_4];
-                operators[0].setFm(modulator);
+                operators[2].setFm(0.0);
+                operators[1].setFm(operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3]);
+                operators[0].setFm((operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2]) +
+                                   (operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]));
+                
                 sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
             }
             else
                 clearCurrentNote();
             break;
         case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
             if (operators[0].isActive())
             {
-                Amplitude modulator = 0.0;
-                operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
-                for (int i = 1; i < numOperators; ++i)
-                {
-                    float coarse = localParameters[COARSE_1 + i];
-                    float fine = localParameters[TUNING_1 + i];
-                    Frequency operatorFrequency = (freq * coarse) + (freq * fine);
-                    operators[i].setFrequency(operatorFrequency);
-                    modulator += operators[i].currentSample * operators[i].currentAmplitude * localParameters[AMP_1 + i];
-                }
-                operators[0].setFm(modulator);
-                
+                operators[2].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                operators[1].setFm(0.0);
+                operators[0].setFm((operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2]) +
+                                   (operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3]));
+
                 sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
+            }
+            else
+                clearCurrentNote();
+            break;
+        case 5:
+            if (operators[0].isActive() || operators[2].isActive())
+            {
+                operators[2].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                operators[1].setFm(0.0);
+                operators[0].setFm(operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2]);
+
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1] +
+                        operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3];
+            }
+            else
+                clearCurrentNote();
+            break;
+        case 6:
+            if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
+            {
+                operators[2].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                operators[1].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                operators[0].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1] +
+                    operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2] +
+                    operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3];
+            }
+            else
+                clearCurrentNote();
+            break;
+        case 7:
+            if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
+            {
+                operators[2].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4]);
+                operators[1].setFm(0.0);
+                operators[0].setFm(0.0);
+                
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1] +
+                    operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2] +
+                    operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3];
+            }
+            else
+                clearCurrentNote();
+            break;
+        case 8:
+            if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
+            {
+                operators[1].setFm(0.0);
+                operators[1].setFm(0.0);
+                operators[0].setFm(0.0);
+                
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1] +
+                operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_2] +
+                operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_3] +
+                operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_4];
             }
             else
                 clearCurrentNote();
@@ -230,4 +268,8 @@ bool Wx100SynthVoice::isPlayingChannel (int midiChannel) const
 bool Wx100SynthVoice::isVoiceActive() const
 {
     return operators[0].isActive() && isKeyDown();
+}
+
+void Wx100SynthVoice::actionListenerCallback (const String &message)
+{
 }
