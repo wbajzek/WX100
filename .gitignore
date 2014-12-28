@@ -1,0 +1,6 @@
+JuceLibraryCode
+Builds/MacOSX/build
+Builds/MacOSX/WX100.xcodeproj/xcuserdata/
+Builds/MacOSX/WX100.xcodeproj/project.xcworkspace/xcuserdata/
+Utils/scl
+.DS_Store

@@ -1,0 +1,114 @@
+/*
+  ==============================================================================
+
+    Oscillator.h
+    Created: 11 Dec 2014 8:49:09am
+    Author:  William Bajzek
+
+  ==============================================================================
+*/
+
+#ifndef OSCILLATOR_H_INCLUDED
+#define OSCILLATOR_H_INCLUDED
+
+class Oscillator
+{
+public:
+    
+    Oscillator()
+    {
+    }
+
+    ~Oscillator()
+    {
+    }
+    
+    void setPhase(float phase)
+    {
+        index = waveTableLength * phase;
+    }
+    
+    void setFrequency(Frequency newFrequency)
+    {
+        frequency = newFrequency;
+        increment = (long)(frqTI * frequency) << 16;
+    }
+    
+    Frequency getFrequency() {
+        return frequency;
+    }
+    
+    void setSampleRate(float newSampleRate)
+    {
+        sampleRate = newSampleRate;
+        frqTI = waveTableLength/sampleRate;
+    }
+    
+    void setWaveTable(int newWaveTableShape)
+    {
+        waveTableShape = newWaveTableShape;
+    }
+
+    void setFm(Amplitude amount)
+    {
+        if (amount < 0.0)
+            amount = 0.0;
+
+        fm = amount;
+//        increment = (long)(frqTI * (frequency + (frequency * exp(fm)))) << 16;
+    }
+    
+    Amplitude tick()
+    {
+        jassert(sampleRate > 0);
+        jassert(frqTI > 0);
+
+        int scaledIndex = ((index+0x8000) >> 16) ;
+        scaledIndex = (int)(scaledIndex + (scaledIndex * fm)) % waveTableLength;
+        
+        jassert(scaledIndex < waveTableLength);
+        switch (waveTableShape)
+        {
+            case SINE_WAVE_TABLE:
+                value = sineWaveTable[scaledIndex];
+                break;
+            case TRIANGLE_WAVE_TABLE:
+                value = triangleWaveTable[scaledIndex];
+                break;
+            case SAW_WAVE_TABLE:
+                value = sawWaveTable[scaledIndex];
+                break;
+            case RAMP_WAVE_TABLE:
+                value = rampWaveTable[scaledIndex];
+                break;
+            case WHITE_NOISE_WAVE_TABLE:
+                value = whiteNoiseWaveTable[scaledIndex];
+                break;
+            default:
+                break;
+        }
+        jassert(value <= 1.0);
+        index = index + increment & ((waveTableLength << 16) - 1);
+        return value;
+    }
+    
+    Amplitude output()
+    {
+        return value;
+    }
+    
+private:
+    Frequency sampleRate = 0.0;
+    double frqTI = 0.0;
+    Frequency frequency = 0.0;
+    long increment = 0.0;
+    unsigned long index = 0;
+    int waveTableShape = 0;
+    Amplitude value = 0.0;
+    Amplitude fm = 0.0;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Oscillator)
+};
+
+
+#endif  // OSCILLATOR_H_INCLUDED
