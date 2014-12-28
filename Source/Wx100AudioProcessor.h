@@ -66,6 +66,8 @@ private:
     Wx100Synthesiser synth;
     MidiKeyboardState keyboardState;
     float parameters[NUMBER_OF_PARAMETERS] = { 0.0 };
+    int algorithm;
+    Amplitude feedback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessor)
 };

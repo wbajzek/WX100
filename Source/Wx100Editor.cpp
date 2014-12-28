@@ -18,7 +18,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (450, 350);
+    setSize (500, 350);
     for (int i = 0; i < numOperators; ++i)
     {
         amp[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -47,7 +47,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         attack[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         attack[i].setSize(50, 50);
-        attack[i].setRange(0.0, 1.0, 0.001);
+        attack[i].setRange(0.001, 10.0, 0.001);
         attack[i].setScrollWheelEnabled(false);
         attack[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         attack[i].addListener(this);
@@ -55,7 +55,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         decay[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         decay[i].setSize(50, 50);
-        decay[i].setRange(0.0, 10.0, 0.001);
+        decay[i].setRange(0.001, 10.0, 0.001);
         decay[i].setScrollWheelEnabled(false);
         decay[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         decay[i].addListener(this);
@@ -71,13 +71,21 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         release[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         release[i].setSize(50, 50);
-        release[i].setRange(0.0, 1.0, 0.001);
+        release[i].setRange(0.001, 10.0, 0.001);
         release[i].setScrollWheelEnabled(false);
         release[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         release[i].addListener(this);
         addAndMakeVisible(release[i]);
     }
     
+    feedback.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    feedback.setSize(50, 50);
+    feedback.setRange(0.0, 1.0, 0.001);
+    feedback.setScrollWheelEnabled(false);
+    feedback.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    feedback.addListener(this);
+    addAndMakeVisible(feedback);
+
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -101,6 +109,7 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Dcy", 260, 0, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Sus", 320, 0, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Rel", 380, 0, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Fdbk", 440, 0, 50, 25, Justification::centred, 1);
 }
 
 void Wx100AudioProcessorEditor::resized()
@@ -114,6 +123,7 @@ void Wx100AudioProcessorEditor::resized()
         sustain[i].setBounds (320, 20 + (60 * i), 20, 20);
         release[i].setBounds (380, 20 + (60 * i), 20, 20);
     }
+    feedback.setBounds(440, 200, 20, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -134,6 +144,8 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
         if (slider == &release[i])
             processor.getFloatParam(RELEASE_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
     }
+    if (slider == &feedback)
+        processor.getFloatParam(FEEDBACK_4)->updateProcessorAndHostFromUi(slider->getValue());
 }
 
 void Wx100AudioProcessorEditor::timerCallback()
@@ -168,5 +180,9 @@ void Wx100AudioProcessorEditor::timerCallback()
         if (&release[i] && param->updateUiRequested()){
             release[i].setValue (param->uiGet(), dontSendNotification);
         }
+    }
+    FloatParam *param=processor.getFloatParam(FEEDBACK_4);
+    if (&feedback && param->updateUiRequested()){
+        feedback.setValue (param->uiGet(), dontSendNotification);
     }
 }

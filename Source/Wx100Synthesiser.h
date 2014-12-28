@@ -47,25 +47,18 @@ class Wx100SynthVoice : public SynthesiserVoice
 public:
     Wx100SynthVoice(float* parameters /*, int* lfoShape, int* scale, int* scaleRoot*/);
     ~Wx100SynthVoice();
-
     bool canPlaySound (SynthesiserSound* sound);
-    
     void startNote (const int midiNoteNumber, const float velocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition);
-    
     void stopNote (float velocity, const bool allowTailOff);
-    
     void pitchWheelMoved (const int newValue);
-    
     void controllerMoved (const int /*controllerNumber*/, const int /*newValue*/);
-    
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples);
-    
+    Amplitude getSample(Frequency freq);
     void aftertouchChanged (int newAftertouchValue);
-    
     void setCurrentPlaybackSampleRate (double newRate);
-    
     bool isPlayingChannel (int midiChannel) const;
-    
+    bool isVoiceActive() const;
+
     
 private:
     
@@ -74,6 +67,7 @@ private:
     int note = 0;
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
+    int algorithm = 3;
     
 //    Frequency calculateFrequency(int currentPitchWheelPosition);
 //    void tick();

@@ -42,13 +42,8 @@ SynthesiserVoice* Wx100Synthesiser::findVoiceToSteal (SynthesiserSound* soundToP
     for (int i = 0; i < voices.size(); ++i)
     {
         SynthesiserVoice* const voice = voices.getUnchecked (i);
-        
-        if (voice->canPlaySound (soundToPlay))
-        {
-            VoiceAgeSorter sorter;
-            usableVoices.addSorted (sorter, voice);
-            
-        }
+        VoiceAgeSorter sorter;
+        usableVoices.addSorted (sorter, voice);
     }
     
     // steal the oldest note
@@ -84,7 +79,6 @@ bool Wx100SynthVoice::canPlaySound (SynthesiserSound* sound)
 
 void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVelocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition)
 {
-    note = midiNoteNumber;
     for (int i = 0; i < numOperators; ++i)
     {
         operators[i].setPhase(0.0);
@@ -101,8 +95,8 @@ void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVeloc
 
 void Wx100SynthVoice::stopNote (float velocity, const bool allowTailOff)
 {
-    note = 0;
-    clearCurrentNote();
+//    note = 0;
+//    clearCurrentNote();
 }
 
 void Wx100SynthVoice::pitchWheelMoved (const int currentPitchWheelPosition)
@@ -125,35 +119,103 @@ void Wx100SynthVoice::controllerMoved (const int controllerNumber, const int new
 void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
     const int numChannels = outputBuffer.getNumChannels();
-    
+    Frequency freq = MidiMessage::getMidiNoteInHertz(getCurrentlyPlayingNote());
+    bool keyIsDown = isKeyDown();
     while (--numSamples >= 0)
     {
-        Frequency freq = MidiMessage::getMidiNoteInHertz(note);
-        bool keyIsDown = isKeyDown();
-        if (voiceIsActive && note > 0)
-        {
-            Amplitude modulator = 0.0;
-            operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
-            for (int i = 1; i < numOperators; ++i)
-            {
-                float coarse = localParameters[COARSE_1 + i];
-                float fine = localParameters[TUNING_1 + i];
-                Frequency operatorFrequency = (freq * coarse) + (freq * fine);
-                operators[i].setFrequency(operatorFrequency);
-                modulator += operators[i].currentSample * operators[i].currentAmplitude * localParameters[AMP_1 + i];
-            }
-            operators[0].setFm(modulator);
+        for (int i = 0; i < numChannels; ++i)
+            outputBuffer.addSample(i, startSample, getSample(freq) * 0.25);
 
-            for (int i = 0; i < numOperators; ++i)
-                operators[i].tick(keyIsDown);
-            
-            Amplitude currentSample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
-
-            for (int i = 0; i < numChannels; ++i)
-                outputBuffer.setSample(i, startSample, currentSample * 0.7);
-        }
+        for (int i = 0; i < numOperators; ++i)
+            operators[i].tick(keyIsDown);
         ++startSample;
     }
+}
+
+Amplitude Wx100SynthVoice::getSample(Frequency freq)
+{
+    Amplitude sample = 0.0;
+    switch (algorithm)
+    {
+        case 1:
+            if (operators[0].isActive())
+            {
+                operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
+                for (int i = 3; i > 0; --i)
+                {
+                    float coarse = localParameters[COARSE_1 + i];
+                    float fine = localParameters[TUNING_1 + i];
+                    Frequency operatorFrequency = (freq * coarse) + (freq * fine);
+                    operators[i].setFrequency(operatorFrequency);
+                    if (i == 3)
+                        operators[i].setFm(operators[i].currentSample *
+                                           operators[i].currentAmplitude *
+                                           localParameters[AMP_1 + i] *
+                                           localParameters[FEEDBACK_4]);
+                    operators[i - 1].setFm(
+                                           operators[i].currentSample *
+                                           operators[i].currentAmplitude *
+                                           localParameters[AMP_1 + i]);
+                }
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
+            }
+            else
+                clearCurrentNote();
+            break;
+        case 2:
+        case 3:
+            if (operators[0].isActive())
+            {
+                operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
+                Amplitude modulator = 0.0;
+                for (int i = 3; i > 0; --i)
+                {
+                    float coarse = localParameters[COARSE_1 + i];
+                    float fine = localParameters[TUNING_1 + i];
+                    Frequency operatorFrequency = (freq * coarse) + (freq * fine);
+                    operators[i].setFrequency(operatorFrequency);
+                    if (i < 3)
+                    {
+                        modulator = operators[i].currentSample * operators[i].currentAmplitude * localParameters[AMP_1 + i];
+                        operators[i - 1].setFm(modulator);                        
+                    }
+                }
+                modulator += operators[3].currentSample *
+                             operators[3].currentAmplitude *
+                             localParameters[AMP_4] *
+                             localParameters[FEEDBACK_4];
+                operators[0].setFm(modulator);
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
+            }
+            else
+                clearCurrentNote();
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            if (operators[0].isActive())
+            {
+                Amplitude modulator = 0.0;
+                operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
+                for (int i = 1; i < numOperators; ++i)
+                {
+                    float coarse = localParameters[COARSE_1 + i];
+                    float fine = localParameters[TUNING_1 + i];
+                    Frequency operatorFrequency = (freq * coarse) + (freq * fine);
+                    operators[i].setFrequency(operatorFrequency);
+                    modulator += operators[i].currentSample * operators[i].currentAmplitude * localParameters[AMP_1 + i];
+                }
+                operators[0].setFm(modulator);
+                
+                sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
+            }
+            else
+                clearCurrentNote();
+            break;
+    }
+    return sample;
 }
 
 void Wx100SynthVoice::aftertouchChanged (int newAftertouchValue)
@@ -163,4 +225,9 @@ void Wx100SynthVoice::aftertouchChanged (int newAftertouchValue)
 bool Wx100SynthVoice::isPlayingChannel (int midiChannel) const
 {
     return true;
+}
+
+bool Wx100SynthVoice::isVoiceActive() const
+{
+    return operators[0].isActive() && isKeyDown();
 }

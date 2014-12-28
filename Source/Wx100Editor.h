@@ -42,6 +42,7 @@ private:
     Slider decay[numOperators];
     Slider sustain[numOperators];
     Slider release[numOperators];
+    Slider feedback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessorEditor)
 };

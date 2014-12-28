@@ -25,10 +25,13 @@ Wx100AudioProcessor::Wx100AudioProcessor()
         parameters[RELEASE_1 + i] = 0.0;
     }
     parameters[AMP_1] = 1.0;
-    synth.addSound(new Wx100SynthSound());
-    synth.addVoice(new Wx100SynthVoice(parameters));
-    synth.setNoteStealingEnabled(true);
+    parameters[FEEDBACK_4] = 0.5;
     initAllParameters();
+
+    synth.addSound(new Wx100SynthSound());
+    for (int i = 0; i < 16; ++i)
+        synth.addVoice(new Wx100SynthVoice(parameters));
+    synth.setNoteStealingEnabled(true);
 }
 
 Wx100AudioProcessor::~Wx100AudioProcessor()
@@ -62,14 +65,14 @@ void Wx100AudioProcessor::initParameters()
     {
         char attackName[30];
         sprintf(attackName, "Attack_%i", i + 1);
-        addFloatParam(ATTACK_1 + i, attackName, true, SAVE, &parameters[ATTACK_1 + i], 0.00, 1.0);
+        addFloatParam(ATTACK_1 + i, attackName, true, SAVE, &parameters[ATTACK_1 + i], 0.001, 10.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char decayName[30];
         sprintf(decayName, "Decay_%i", i + 1);
-        addFloatParam(DECAY_1 + i, decayName, true, SAVE, &parameters[DECAY_1 + i], 0.00, 1.0);
+        addFloatParam(DECAY_1 + i, decayName, true, SAVE, &parameters[DECAY_1 + i], 0.001, 10.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
@@ -83,8 +86,12 @@ void Wx100AudioProcessor::initParameters()
     {
         char releaseName[30];
         sprintf(releaseName, "Release_%i", i + 1);
-        addFloatParam(RELEASE_1 + i, releaseName, true, SAVE, &parameters[RELEASE_1 + i], 0.00, 1.0);
+        addFloatParam(RELEASE_1 + i, releaseName, true, SAVE, &parameters[RELEASE_1 + i], 0.001, 10.0);
     }
+
+    char feedbackName[30];
+    sprintf(feedbackName, "Feedback_%i", 4);
+    addFloatParam(FEEDBACK_4, feedbackName, true, SAVE, &parameters[FEEDBACK_4], 0.0, 1.0);
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)
