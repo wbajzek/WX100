@@ -84,11 +84,9 @@ bool Wx100SynthVoice::canPlaySound (SynthesiserSound* sound)
 
 void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVelocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition)
 {
-    Frequency freq = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     note = midiNoteNumber;
     for (int i = 0; i < numOperators; ++i)
     {
-        operators[i].setFrequency(freq + (freq * localParameters[TUNING_1 + i]));
         operators[i].setPhase(0.0);
         Adsr adsr;
         adsr.attack = localParameters[ATTACK_1 + i];
@@ -130,24 +128,29 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
     
     while (--numSamples >= 0)
     {
+        Frequency freq = MidiMessage::getMidiNoteInHertz(note);
         bool keyIsDown = isKeyDown();
         if (voiceIsActive && note > 0)
         {
             Amplitude modulator = 0.0;
-            for (int i = numOperators; i > 0; --i)
+            operators[0].setFrequency(freq + (freq * localParameters[TUNING_1]));
+            for (int i = 1; i < numOperators; ++i)
             {
-                modulator += operators[i].currentSample * localParameters[AMP_4 - i];
+                float coarse = localParameters[COARSE_1 + i];
+                float fine = localParameters[TUNING_1 + i];
+                Frequency operatorFrequency = (freq * coarse) + (freq * fine);
+                operators[i].setFrequency(operatorFrequency);
+                modulator += operators[i].currentSample * operators[i].currentAmplitude * localParameters[AMP_1 + i];
             }
-            operators[ 0 ].setFm(modulator);
+            operators[0].setFm(modulator);
 
-            Amplitude currentSample = operators[0].currentSample;
+            for (int i = 0; i < numOperators; ++i)
+                operators[i].tick(keyIsDown);
+            
+            Amplitude currentSample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_1];
 
             for (int i = 0; i < numChannels; ++i)
                 outputBuffer.setSample(i, startSample, currentSample * 0.7);
-        }
-        for (int i = numOperators; i >= 0; --i)
-        {
-            operators[i].tick(keyIsDown);
         }
         ++startSample;
     }

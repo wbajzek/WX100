@@ -59,14 +59,13 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     void initParameters();
-    void setParameter(int index, float value) override;
 
 private:
     //==============================================================================
     
     Wx100Synthesiser synth;
     MidiKeyboardState keyboardState;
-    float parameters[1] = { 0.0 };
+    float parameters[NUMBER_OF_PARAMETERS] = { 0.0 };
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessor)
 };

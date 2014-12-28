@@ -64,7 +64,7 @@ public:
         jassert(frqTI > 0);
 
         int scaledIndex = ((index+0x8000) >> 16) ;
-        scaledIndex = (int)(scaledIndex + (scaledIndex * fm)) % waveTableLength;
+        scaledIndex = (int)(scaledIndex + (waveTableLength * fm)) % waveTableLength;
         
         jassert(scaledIndex < waveTableLength);
         switch (waveTableShape)

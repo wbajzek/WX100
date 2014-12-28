@@ -18,7 +18,7 @@
 //==============================================================================
 /**
 */
-class Wx100AudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener
+class Wx100AudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, public Timer
 {
 public:
     Wx100AudioProcessorEditor (Wx100AudioProcessor&);
@@ -28,6 +28,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void sliderValueChanged (Slider* slider) override;
+    void timerCallback();
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -35,6 +36,7 @@ private:
     Wx100AudioProcessor& processor;
 
     Slider amp[numOperators];
+    Slider coarse[numOperators];
     Slider tuning[numOperators];
     Slider attack[numOperators];
     Slider decay[numOperators];

@@ -17,12 +17,14 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     for (int i = 0; i < numOperators; ++i)
     {
         parameters[AMP_1 + i] = 0.0;
+        parameters[COARSE_1 + i] = 1.0;
         parameters[TUNING_1 + i] = 0.0;
         parameters[ATTACK_1 + i] = 0.0;
         parameters[DECAY_1 + i] = 0.0;
         parameters[SUSTAIN_1 + i] = 1.0;
         parameters[RELEASE_1 + i] = 0.0;
     }
+    parameters[AMP_1] = 1.0;
     synth.addSound(new Wx100SynthSound());
     synth.addVoice(new Wx100SynthVoice(parameters));
     synth.setNoteStealingEnabled(true);
@@ -44,9 +46,16 @@ void Wx100AudioProcessor::initParameters()
     
     for (int i = 0; i < numOperators; ++i)
     {
+        char coarseName[30];
+        sprintf(coarseName, "Coarse_%i", i + 1);
+        addFloatParam(COARSE_1 + i, coarseName, true, SAVE, &parameters[COARSE_1 + i], 1.00, 10.0);
+    }
+    
+    for (int i = 0; i < numOperators; ++i)
+    {
         char tuningName[30];
         sprintf(tuningName, "Tuning_%i", i + 1);
-        addFloatParam(TUNING_1 + i, tuningName, true, SAVE, &parameters[TUNING_1 + i], 0.00, 1.0);
+        addFloatParam(TUNING_1 + i, tuningName, true, SAVE, &parameters[TUNING_1 + i], -1.00, 1.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
@@ -76,11 +85,6 @@ void Wx100AudioProcessor::initParameters()
         sprintf(releaseName, "Release_%i", i + 1);
         addFloatParam(RELEASE_1 + i, releaseName, true, SAVE, &parameters[RELEASE_1 + i], 0.00, 1.0);
     }
-}
-
-void Wx100AudioProcessor::setParameter(int index, float value)
-{
-    parameters[index] = value;
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)
@@ -153,8 +157,6 @@ void Wx100AudioProcessor::runAfterParamGroupUpdate()
 void Wx100AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     synth.setCurrentPlaybackSampleRate(sampleRate);
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
 }
 
 void Wx100AudioProcessor::releaseResources()
