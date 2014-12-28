@@ -122,10 +122,12 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
     const int numChannels = outputBuffer.getNumChannels();
     Frequency freq = MidiMessage::getMidiNoteInHertz(getCurrentlyPlayingNote());
     bool keyIsDown = isKeyDown();
+    Amplitude sample;
     while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)
     {
+        sample = getSample(freq) * 0.25;
         for (int i = 0; i < numChannels; ++i)
-            outputBuffer.addSample(i, startSample, getSample(freq) * 0.25);
+            outputBuffer.addSample(i, startSample, sample);
 
         for (int i = 0; i < numOperators; ++i)
             operators[i].tick(keyIsDown);
@@ -150,7 +152,7 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
             {
                 operators[2].setFm(operators[3].currentSample * operators[3].currentAmplitude * localParameters[AMP_3]);
                 operators[1].setFm(operators[2].currentSample * operators[2].currentAmplitude * localParameters[AMP_2]);
-                operators[0].setFm((operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_1]));
+                operators[0].setFm(operators[1].currentSample * operators[1].currentAmplitude * localParameters[AMP_1]);
                 
                 sample = operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_0];
             }

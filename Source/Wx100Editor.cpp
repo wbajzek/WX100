@@ -146,19 +146,19 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
     for (int i = 0; i < numOperators; ++i) {
         if (slider == &amp[i])
-            processor.getFloatParam(AMP_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(AMP_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &coarse[i])
-            processor.getFloatParam(COARSE_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(COARSE_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &tuning[i])
-            processor.getFloatParam(TUNING_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(TUNING_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &attack[i])
-            processor.getFloatParam(ATTACK_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(ATTACK_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &decay[i])
-            processor.getFloatParam(DECAY_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(DECAY_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &sustain[i])
-            processor.getFloatParam(SUSTAIN_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(SUSTAIN_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &release[i])
-            processor.getFloatParam(RELEASE_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
+            processor.getFloatParam(RELEASE_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
     }
     if (slider == &feedback)
         processor.getFloatParam(FEEDBACK_3)->updateProcessorAndHostFromUi(slider->getValue());
@@ -174,31 +174,31 @@ void Wx100AudioProcessorEditor::timerCallback()
 {
     for (int i = 0; i < numOperators; ++i)
     {
-        FloatParam *param=processor.getFloatParam(AMP_1 + i);
+        FloatParam *param=processor.getFloatParam(AMP_0 + i);
         if (&amp[i] && param->updateUiRequested()){
             amp[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(COARSE_1 + i);
+        param=processor.getFloatParam(COARSE_0 + i);
         if (&coarse[i] && param->updateUiRequested()){
             coarse[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(TUNING_1 + i);
+        param=processor.getFloatParam(TUNING_0 + i);
         if (&tuning[i] && param->updateUiRequested()){
             tuning[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(ATTACK_1 + i);
+        param=processor.getFloatParam(ATTACK_0 + i);
         if (&attack[i] && param->updateUiRequested()){
             attack[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(DECAY_1 + i);
+        param=processor.getFloatParam(DECAY_0 + i);
         if (&decay[i] && param->updateUiRequested()){
             decay[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(SUSTAIN_1 + i);
+        param=processor.getFloatParam(SUSTAIN_0 + i);
         if (&sustain[i] && param->updateUiRequested()){
             sustain[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(RELEASE_1 + i);
+        param=processor.getFloatParam(RELEASE_0 + i);
         if (&release[i] && param->updateUiRequested()){
             release[i].setValue (param->uiGet(), dontSendNotification);
         }
