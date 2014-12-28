@@ -16,16 +16,16 @@ Wx100AudioProcessor::Wx100AudioProcessor()
 {
     for (int i = 0; i < numOperators; ++i)
     {
-        parameters[AMP_1 + i] = 0.0;
-        parameters[COARSE_1 + i] = 1.0;
-        parameters[TUNING_1 + i] = 0.0;
-        parameters[ATTACK_1 + i] = 0.0;
-        parameters[DECAY_1 + i] = 0.0;
-        parameters[SUSTAIN_1 + i] = 1.0;
-        parameters[RELEASE_1 + i] = 0.0;
+        parameters[AMP_0 + i] = 0.0;
+        parameters[COARSE_0 + i] = 1.0;
+        parameters[TUNING_0 + i] = 0.0;
+        parameters[ATTACK_0 + i] = 0.0;
+        parameters[DECAY_0 + i] = 0.0;
+        parameters[SUSTAIN_0 + i] = 1.0;
+        parameters[RELEASE_0 + i] = 0.0;
     }
-    parameters[AMP_1] = 1.0;
-    parameters[FEEDBACK_4] = 0.5;
+    parameters[AMP_0] = 1.0;
+    parameters[FEEDBACK_3] = 0.5;
     algorithm = 1;
     initAllParameters();
 
@@ -45,54 +45,54 @@ void Wx100AudioProcessor::initParameters()
     {
         char ampName[30];
         sprintf(ampName, "Amp_%i", i + 1);
-        addFloatParam(AMP_1 + i, ampName, true, SAVE, &parameters[AMP_1 + i], 0.00, 1.0);
+        addFloatParam(AMP_0 + i, ampName, true, SAVE, &parameters[AMP_0 + i], 0.00, 1.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char coarseName[30];
         sprintf(coarseName, "Coarse_%i", i + 1);
-        addFloatParam(COARSE_1 + i, coarseName, true, SAVE, &parameters[COARSE_1 + i], 1.00, 10.0);
+        addFloatParam(COARSE_0 + i, coarseName, true, SAVE, &parameters[COARSE_0 + i], 1.00, 10.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char tuningName[30];
         sprintf(tuningName, "Tuning_%i", i + 1);
-        addFloatParam(TUNING_1 + i, tuningName, true, SAVE, &parameters[TUNING_1 + i], -1.00, 1.0);
+        addFloatParam(TUNING_0 + i, tuningName, true, SAVE, &parameters[TUNING_0 + i], -1.00, 1.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char attackName[30];
         sprintf(attackName, "Attack_%i", i + 1);
-        addFloatParam(ATTACK_1 + i, attackName, true, SAVE, &parameters[ATTACK_1 + i], 0.001, 10.0);
+        addFloatParam(ATTACK_0 + i, attackName, true, SAVE, &parameters[ATTACK_0 + i], 0.001, 10.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char decayName[30];
         sprintf(decayName, "Decay_%i", i + 1);
-        addFloatParam(DECAY_1 + i, decayName, true, SAVE, &parameters[DECAY_1 + i], 0.001, 10.0);
+        addFloatParam(DECAY_0 + i, decayName, true, SAVE, &parameters[DECAY_0 + i], 0.001, 10.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char sustainName[30];
         sprintf(sustainName, "Sustain_%i", i + 1);
-        addFloatParam(SUSTAIN_1 + i, sustainName, true, SAVE, &parameters[SUSTAIN_1 + i], 0.00, 1.0);
+        addFloatParam(SUSTAIN_0 + i, sustainName, true, SAVE, &parameters[SUSTAIN_0 + i], 0.00, 1.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char releaseName[30];
         sprintf(releaseName, "Release_%i", i + 1);
-        addFloatParam(RELEASE_1 + i, releaseName, true, SAVE, &parameters[RELEASE_1 + i], 0.001, 10.0);
+        addFloatParam(RELEASE_0 + i, releaseName, true, SAVE, &parameters[RELEASE_0 + i], 0.001, 10.0);
     }
 
     char feedbackName[30];
     sprintf(feedbackName, "Feedback_%i", 4);
-    addFloatParam(FEEDBACK_4, feedbackName, true, SAVE, &parameters[FEEDBACK_4], 0.0, 1.0);
+    addFloatParam(FEEDBACK_3, feedbackName, true, SAVE, &parameters[FEEDBACK_3], 0.0, 1.0);
 
     addIntParam(ALGORITHM, "Algorithm", true, SAVE, &algorithm, 1, 8);
 }
@@ -160,7 +160,7 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
 void Wx100AudioProcessor::runAfterParamGroupUpdate()
 {
     for (int i = 0; i < NUMBER_OF_PARAMETERS; ++i)
-        getParam(AMP_1 + i)->updateHostAndUi(false,UPDATE_FROM_PROCESSOR);
+        getParam(AMP_0 + i)->updateHostAndUi(false,UPDATE_FROM_PROCESSOR);
 }
 
 //==============================================================================

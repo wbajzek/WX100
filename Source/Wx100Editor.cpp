@@ -161,7 +161,7 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
             processor.getFloatParam(RELEASE_1 + i)->updateProcessorAndHostFromUi(slider->getValue());
     }
     if (slider == &feedback)
-        processor.getFloatParam(FEEDBACK_4)->updateProcessorAndHostFromUi(slider->getValue());
+        processor.getFloatParam(FEEDBACK_3)->updateProcessorAndHostFromUi(slider->getValue());
 }
 
 void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
@@ -203,7 +203,7 @@ void Wx100AudioProcessorEditor::timerCallback()
             release[i].setValue (param->uiGet(), dontSendNotification);
         }
     }
-    FloatParam *param=processor.getFloatParam(FEEDBACK_4);
+    FloatParam *param=processor.getFloatParam(FEEDBACK_3);
     if (&feedback && param->updateUiRequested()){
         feedback.setValue (param->uiGet(), dontSendNotification);
     }
