@@ -18,7 +18,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (500, 350);
+    setSize (510, 355);
     for (int i = 0; i < numOperators; ++i)
     {
         amp[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -117,30 +117,35 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::black);
     g.setFont (15.0f);
-    g.drawFittedText ("Amp", 20, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Crse", 80, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Tune", 140, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Atk", 200, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Dcy", 260, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Sus", 320, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Rel", 380, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Fdbk", 440, 0, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Algo", 20, 260, 50, 25, Justification::centred, 1);
+    
+    int left = 20;
+    int top = 20;
+    g.drawFittedText ("Amp", left, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Ratio", left + 60, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Detune", left + 120, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Attack", left + 180, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Decay", left + 240, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Sustain", left + 300, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Release", left + 360, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Feedback", left + 420, top + 170, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Algorithm", left, top + 260, 50, 25, Justification::centred, 1);
 }
 
 void Wx100AudioProcessorEditor::resized()
 {
+    int left = 20;
+    int top = 40;
     for (int i = 0; i < numOperators; ++i) {
-        amp[i].setBounds (20, 20 + (60 * i), 20, 20);
-        coarse[i].setBounds (80, 20 + (60 * i), 20, 20);
-        tuning[i].setBounds (140, 20 + (60 * i), 20, 20);
-        attack[i].setBounds (200, 20 + (60 * i), 20, 20);
-        decay[i].setBounds (260, 20 + (60 * i), 20, 20);
-        sustain[i].setBounds (320, 20 + (60 * i), 20, 20);
-        release[i].setBounds (380, 20 + (60 * i), 20, 20);
+        amp[i].setBounds (left, top + (60 * i), 20, 20);
+        coarse[i].setBounds (left + 60, top + (60 * i), 20, 20);
+        tuning[i].setBounds (left + 120, top + (60 * i), 20, 20);
+        attack[i].setBounds (left + 180, top + (60 * i), 20, 20);
+        decay[i].setBounds (left + 240, top + (60 * i), 20, 20);
+        sustain[i].setBounds (left + 300, top + (60 * i), 20, 20);
+        release[i].setBounds (left + 360, top + (60 * i), 20, 20);
     }
-    feedback.setBounds(440, 200, 20, 20);
-    algorithm.setBounds(20, 275, 50, 20);
+    feedback.setBounds(left + 420, top + 180, 20, 20);
+    algorithm.setBounds(left, top + 270, 50, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
