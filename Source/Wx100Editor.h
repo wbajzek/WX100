@@ -46,7 +46,9 @@ private:
     Slider release[numOperators];
     Slider feedback;
     ComboBox algorithm;
-    
+    ComboBox scale;
+    ComboBox scaleRoot;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessorEditor)
 };
 

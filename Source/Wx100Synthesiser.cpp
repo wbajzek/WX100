@@ -51,10 +51,12 @@ SynthesiserVoice* Wx100Synthesiser::findVoiceToSteal (SynthesiserSound* soundToP
 }
 
 
-Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm)
+Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *scale, int *scaleRoot)
 {
     localParameters = parameters;
     localAlgorithm = algorithm;
+    localScale = scale;
+    localScaleRoot = scaleRoot;
     for (int i = 0; i < numOperators; ++i)
     {
         operators[i].setWaveTable(SINE_WAVE_TABLE);
@@ -80,6 +82,9 @@ bool Wx100SynthVoice::canPlaySound (SynthesiserSound* sound)
 
 void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVelocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition)
 {
+    noteNumber = midiNoteNumber;
+    freq = calculateFrequency(currentPitchWheelPosition);
+    
     for (int i = 0; i < numOperators; ++i)
     {
         operators[i].setPhase(0.0);
@@ -96,13 +101,20 @@ void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVeloc
 
 void Wx100SynthVoice::stopNote (float velocity, const bool allowTailOff)
 {
-//    note = 0;
-//    clearCurrentNote();
+}
+
+Frequency Wx100SynthVoice::calculateFrequency(int currentPitchWheelPosition)
+{
+    float pbCents = ( (float)currentPitchWheelPosition / 16383.0) * (400.0) + -200.0;
+    Frequency baseFreq = MidiMessage::getMidiNoteInHertz(noteNumber) * pow(2, pbCents/1200);
+    Scale scale = getScale();
+    int octaveNote = (noteNumber - getScaleRoot()) % 12;
+    return baseFreq * scale.offsets[octaveNote];
 }
 
 void Wx100SynthVoice::pitchWheelMoved (const int currentPitchWheelPosition)
 {
-//    freq = calculateFrequency(currentPitchWheelPosition);
+    freq = calculateFrequency(currentPitchWheelPosition);
 }
 
 void Wx100SynthVoice::controllerMoved (const int controllerNumber, const int newValue)
@@ -120,7 +132,6 @@ void Wx100SynthVoice::controllerMoved (const int controllerNumber, const int new
 void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
     const int numChannels = outputBuffer.getNumChannels();
-    Frequency freq = MidiMessage::getMidiNoteInHertz(getCurrentlyPlayingNote());
     bool keyIsDown = isKeyDown();
     Amplitude sample;
     while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)

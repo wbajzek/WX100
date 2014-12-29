@@ -12,6 +12,7 @@
               companyName="William Bajzek">
   <MAINGROUP id="EhwrY7" name="WX100">
     <GROUP id="{69FBD483-99EB-2D7B-15F4-6F444F697660}" name="Source">
+      <FILE id="DrAMZH" name="Scales.h" compile="0" resource="0" file="Source/Scales.h"/>
       <GROUP id="{43F9B69C-4D60-9A17-E647-1C201586E34E}" name="Synth">
         <FILE id="IQI5qi" name="Envelope.h" compile="0" resource="0" file="Source/Synth/Envelope.h"/>
         <FILE id="j3t9J6" name="Oscillator.h" compile="0" resource="0" file="Source/Synth/Oscillator.h"/>

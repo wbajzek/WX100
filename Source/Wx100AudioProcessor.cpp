@@ -27,11 +27,13 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     parameters[AMP_0] = 1.0;
     parameters[FEEDBACK_3] = 0.5;
     algorithm = 1;
+    scale = 1;
+    scaleRoot = 1;
     initAllParameters();
 
     synth.addSound(new Wx100SynthSound());
     for (int i = 0; i < 16; ++i)
-        synth.addVoice(new Wx100SynthVoice(parameters, &algorithm));
+        synth.addVoice(new Wx100SynthVoice(parameters, &algorithm, &scale, &scaleRoot));
     synth.setNoteStealingEnabled(true);
 }
 
@@ -95,6 +97,8 @@ void Wx100AudioProcessor::initParameters()
     addFloatParam(FEEDBACK_3, feedbackName, true, SAVE, &parameters[FEEDBACK_3], 0.0, 1.0);
 
     addIntParam(ALGORITHM, "Algorithm", true, SAVE, &algorithm, 1, 8);
+    addIntParam(SCALE, "Scale", true, SAVE, &scale, 1, numberOfScales+1);
+    addIntParam(SCALE_ROOT, "Scale_Root", true, SAVE, &scaleRoot, 1, 12);
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)

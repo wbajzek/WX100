@@ -101,6 +101,36 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     algorithm.addListener(this);
     addAndMakeVisible(algorithm);
     
+    for (int i = 0; i < numberOfScales; i++)
+    {
+        jassert(scales[i].description.isNotEmpty());
+        scale.addItem(scales[i].description, i+1);
+    }
+    scale.setWantsKeyboardFocus(false);
+    scale.setEditableText(false);
+    scale.setScrollWheelEnabled(false);
+    scale.addListener(this);
+    addAndMakeVisible(scale);
+    
+    scaleRoot.addItem("C",1);
+    scaleRoot.addItem("C#",2);
+    scaleRoot.addItem("D",3);
+    scaleRoot.addItem("D#",4);
+    scaleRoot.addItem("E",5);
+    scaleRoot.addItem("F",6);
+    scaleRoot.addItem("F#",7);
+    scaleRoot.addItem("G",8);
+    scaleRoot.addItem("G#",9);
+    scaleRoot.addItem("A",10);
+    scaleRoot.addItem("A#",11);
+    scaleRoot.addItem("B",12);
+    scaleRoot.setWantsKeyboardFocus(false);
+    scaleRoot.setItemEnabled(0, false);
+    scaleRoot.setEditableText(false);
+    scaleRoot.setScrollWheelEnabled(false);
+    scaleRoot.addListener(this);
+    addAndMakeVisible(scaleRoot);
+    
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -128,7 +158,10 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Sustain", left + 300, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Release", left + 360, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Feedback", left + 420, top + 170, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Algorithm", left, top + 260, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Algorithm", left, top + 265, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Scale", left + 60, top + 265, 140, 25, Justification::centred, 1);
+    g.drawFittedText ("Scale Root", left + 220, top + 265, 50, 25, Justification::centred, 1);
+
 }
 
 void Wx100AudioProcessorEditor::resized()
@@ -146,6 +179,9 @@ void Wx100AudioProcessorEditor::resized()
     }
     feedback.setBounds(left + 420, top + 180, 20, 20);
     algorithm.setBounds(left, top + 270, 50, 20);
+    scale.setBounds (left + 60, top + 270, 140, 20);
+    scaleRoot.setBounds (left + 220, top + 270, 50, 20);
+
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -174,6 +210,11 @@ void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
 {
     if (comboBox == &algorithm)
         processor.getIntParam(ALGORITHM)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
+    if (comboBox == &scale)
+        processor.getIntParam(SCALE)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
+    if (comboBox == &scaleRoot)
+        processor.getIntParam(SCALE_ROOT)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
+
 }
 
 void Wx100AudioProcessorEditor::timerCallback()
@@ -217,4 +258,12 @@ void Wx100AudioProcessorEditor::timerCallback()
     if (&algorithm && intParam->updateUiRequested()){
         algorithm.setSelectedId (intParam->uiGet(), dontSendNotification);
     }
+    intParam = processor.getIntParam(SCALE);
+    if (&scale && intParam->updateUiRequested()){
+        scale.setSelectedId(intParam->uiGet(), dontSendNotification);
+    }
+    intParam = processor.getIntParam(SCALE_ROOT);
+    if (&scaleRoot && intParam->updateUiRequested()){
+        scaleRoot.setSelectedId(intParam->uiGet(), dontSendNotification);
+    }    
 }

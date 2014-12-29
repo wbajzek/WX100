@@ -45,7 +45,7 @@ protected:
 class Wx100SynthVoice : public SynthesiserVoice, public ActionListener
 {
 public:
-    Wx100SynthVoice(float* parameters, int* algorithm /*, int* lfoShape, int* scale, int* scaleRoot*/);
+    Wx100SynthVoice(float* parameters, int* algorithm, /* int* lfoShape,*/ int* scale, int* scaleRoot);
     ~Wx100SynthVoice();
     bool canPlaySound (SynthesiserSound* sound);
     void startNote (const int midiNoteNumber, const float velocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition);
@@ -62,15 +62,25 @@ public:
     
 private:
     
-    float *localParameters;
     SynthVoice operators[numOperators];
+    float *localParameters;
+    int *localAlgorithm;
+    int *localScale;
+    int *localScaleRoot;
     int note = 0;
+    int noteNumber;
+    Frequency freq;
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
-    int *localAlgorithm;
     
-//    Frequency calculateFrequency(int currentPitchWheelPosition);
-//    void tick();
+    Frequency calculateFrequency(int currentPitchWheelPosition);
+    Scale getScale() {
+        return scales[*localScale - 1];
+    }
+    
+    int getScaleRoot() {
+        return *localScaleRoot - 1;
+    }
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Wx100SynthVoice);
 };
