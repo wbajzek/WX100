@@ -3,19 +3,18 @@
 ## Wishlist ##
 * velocity sensitivity control
 * LFO tempo sync
+* Envelope stages (AR, D1R, D1L, D2R, RR)?
+* output level
 * aftertouch
+* 0.5 multiplier
 * transpose knob
 * Mono legato mode
   * portamento
   * note priority
-* Phase control per operator
 * less ghetto UI
   * custom UI component where you can just draw in the partials
 * midi CC
 
 ## Bugs ##
-* Click at the end of notes getting cut off, if the amplitudes are
-  significantly different.
 * make undo/redo work, possibly without buying a commercial license for
   PluginParameters
-* voice stealing: prefer to steal unheld notes before held?
