@@ -11,7 +11,6 @@
   * portamento
   * note priority
 * less ghetto UI
-  * custom UI component where you can just draw in the partials
 * midi CC
 
 ## Bugs ##

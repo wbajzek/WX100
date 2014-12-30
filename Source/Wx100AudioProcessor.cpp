@@ -17,7 +17,7 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     for (int i = 0; i < numOperators; ++i)
     {
         parameters[AMP_0 + i] = 0.0;
-        parameters[COARSE_0 + i] = 1.0;
+        parameters[RATIO_0 + i] = 1.0;
         parameters[TUNING_0 + i] = 0.0;
         parameters[ATTACK_0 + i] = 0.0;
         parameters[DECAY_0 + i] = 0.0;
@@ -65,9 +65,9 @@ void Wx100AudioProcessor::initParameters()
     
     for (int i = 0; i < numOperators; ++i)
     {
-        char coarseName[30];
-        sprintf(coarseName, "Coarse_%i", i + 1);
-        addFloatParam(COARSE_0 + i, coarseName, true, SAVE, &parameters[COARSE_0 + i], ratios[0], ratios[numRatios - 1]);
+        char ratioName[30];
+        sprintf(ratioName, "Ratio_%i", i + 1);
+        addFloatParam(RATIO_0 + i, ratioName, true, SAVE, &parameters[RATIO_0 + i], ratios[0], ratios[numRatios - 1]);
     }
     
     for (int i = 0; i < numOperators; ++i)

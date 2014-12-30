@@ -18,9 +18,13 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (590, 355);
+    setSize (590, 415);
     for (int i = 0; i < numOperators; ++i)
     {
+        addAndMakeVisible(operators[i]);
+//        operators[i].setText(String(i + 1));
+//        operators[i].setTextLabelPosition(Justification::verticallyCentred);
+        
         amp[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         amp[i].setSize(50, 50);
         amp[i].setRange(0.0, 1.0, 0.001);
@@ -29,13 +33,13 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
         amp[i].addListener(this);
         addAndMakeVisible(amp[i]);
 
-        coarse[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-        coarse[i].setSize(50, 50);
-        coarse[i].setRange(ratios[0], ratios[numRatios - 1], 0.01);
-        coarse[i].setScrollWheelEnabled(false);
-        coarse[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-        coarse[i].addListener(this);
-        addAndMakeVisible(coarse[i]);
+        ratio[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+        ratio[i].setSize(50, 50);
+        ratio[i].setRange(ratios[0], ratios[numRatios - 1], 0.01);
+        ratio[i].setScrollWheelEnabled(false);
+        ratio[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+        ratio[i].addListener(this);
+        addAndMakeVisible(ratio[i]);
 
         tuning[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         tuning[i].setSize(50, 50);
@@ -200,7 +204,8 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.setFont (15.0f);
     
     int left = 20;
-    int top = 20;
+    int top = 0;
+    int bottomRow = top + 345;
     g.drawFittedText ("Amp", left, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Ratio", left + 60, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Detune", left + 120, top, 50, 25, Justification::centred, 1);
@@ -209,40 +214,43 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Sustain", left + 300, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Release", left + 360, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Phase", left + 420, top, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Feedback", left + 480, top + 180, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Algorithm", left, top + 265, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Scale", left + 60, top + 265, 140, 25, Justification::centred, 1);
-    g.drawFittedText ("Scale Root", left + 220, top + 265, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("LFO Freq", left + 280, top + 265, 60, 25, Justification::centred, 1);
-    g.drawFittedText ("Shape", left + 345, top + 265, 90, 25, Justification::centred, 1);
-    g.drawFittedText ("Amp", left + 430, top + 265, 60, 25, Justification::centred, 1);
-    g.drawFittedText ("Pitch", left + 470, top + 265, 60, 25, Justification::centred, 1);
-    g.drawFittedText ("Phase", left + 510, top + 265, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("Fdbk", left + 480, top + 240, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Algorithm", left, bottomRow, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Scale", left + 60, bottomRow, 140, 25, Justification::centred, 1);
+    g.drawFittedText ("Scale Root", left + 220, bottomRow, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("LFO Freq", left + 280, bottomRow, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("Shape", left + 345, bottomRow, 90, 25, Justification::centred, 1);
+    g.drawFittedText ("Amp", left + 430, bottomRow, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("Pitch", left + 470, bottomRow, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("Phase", left + 510, bottomRow, 60, 25, Justification::centred, 1);
 }
 
 void Wx100AudioProcessorEditor::resized()
 {
     int left = 20;
     int top = 40;
+    int bottomRow = top + 335;
     for (int i = 0; i < numOperators; ++i) {
-        amp[i].setBounds (left, top + (60 * i), 20, 20);
-        coarse[i].setBounds (left + 60, top + (60 * i), 20, 20);
-        tuning[i].setBounds (left + 120, top + (60 * i), 20, 20);
-        attack[i].setBounds (left + 180, top + (60 * i), 20, 20);
-        decay[i].setBounds (left + 240, top + (60 * i), 20, 20);
-        sustain[i].setBounds (left + 300, top + (60 * i), 20, 20);
-        release[i].setBounds (left + 360, top + (60 * i), 20, 20);
-        phase[i].setBounds (left + 420, top + (60 * i), 20, 20);
+        operators[i].setBounds (left - 10, top + (80 * i) - 20, 490, 80);
+        amp[i].setBounds (left, top + (80 * i), 20, 20);
+        ratio[i].setBounds (left + 60, top + (80 * i), 20, 20);
+        tuning[i].setBounds (left + 120, top + (80 * i), 20, 20);
+        attack[i].setBounds (left + 180, top + (80 * i), 20, 20);
+        decay[i].setBounds (left + 240, top + (80 * i), 20, 20);
+        sustain[i].setBounds (left + 300, top + (80 * i), 20, 20);
+        release[i].setBounds (left + 360, top + (80 * i), 20, 20);
+        phase[i].setBounds (left + 420, top + (80 * i), 20, 20);
     }
-    feedback.setBounds(left + 480, top + 180, 20, 20);
-    algorithm.setBounds(left, top + 270, 50, 20);
-    scale.setBounds (left + 60, top + 270, 140, 20);
-    scaleRoot.setBounds (left + 220, top + 270, 50, 20);
-    lfoFrequency.setBounds (left + 280, top + 270, 60, 20);
-    lfoShape.setBounds (left + 345, top + 270, 90, 20);
-    lfoAmpAmount.setBounds (left + 430, top + 270, 60, 20);
-    lfoPitchAmount.setBounds (left + 470, top + 270, 60, 20);
-    lfoInitPhase.setBounds (left + 510, top + 270, 60, 20);
+    operators[3].setBounds (left - 10, top + 220, 550, 80);
+    feedback.setBounds(left + 480, top + 240, 20, 20);
+    algorithm.setBounds(left, bottomRow, 50, 20);
+    scale.setBounds (left + 60, bottomRow, 140, 20);
+    scaleRoot.setBounds (left + 220, bottomRow, 50, 20);
+    lfoFrequency.setBounds (left + 280, bottomRow, 60, 20);
+    lfoShape.setBounds (left + 345, bottomRow, 90, 20);
+    lfoAmpAmount.setBounds (left + 430, bottomRow, 60, 20);
+    lfoPitchAmount.setBounds (left + 470, bottomRow, 60, 20);
+    lfoInitPhase.setBounds (left + 510, bottomRow, 60, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -250,8 +258,8 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
     for (int i = 0; i < numOperators; ++i) {
         if (slider == &amp[i])
             processor.getFloatParam(AMP_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
-        if (slider == &coarse[i])
-            processor.getFloatParam(COARSE_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
+        if (slider == &ratio[i])
+            processor.getFloatParam(RATIO_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &tuning[i])
             processor.getFloatParam(TUNING_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &attack[i])
@@ -297,9 +305,9 @@ void Wx100AudioProcessorEditor::timerCallback()
         if (&amp[i] && param->updateUiRequested()){
             amp[i].setValue (param->uiGet(), dontSendNotification);
         }
-        param=processor.getFloatParam(COARSE_0 + i);
-        if (&coarse[i] && param->updateUiRequested()){
-            coarse[i].setValue (param->uiGet(), dontSendNotification);
+        param=processor.getFloatParam(RATIO_0 + i);
+        if (&ratio[i] && param->updateUiRequested()){
+            ratio[i].setValue (param->uiGet(), dontSendNotification);
         }
         param=processor.getFloatParam(TUNING_0 + i);
         if (&tuning[i] && param->updateUiRequested()){

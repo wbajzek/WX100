@@ -56,13 +56,14 @@ private:
     Wx100AudioProcessor& processor;
 
     Slider amp[numOperators];
-    Wx100RatioSlider coarse[numOperators];
+    Wx100RatioSlider ratio[numOperators];
     Slider tuning[numOperators];
     Slider attack[numOperators];
     Slider decay[numOperators];
     Slider sustain[numOperators];
     Slider release[numOperators];
     Slider phase[numOperators];
+    GroupComponent operators[numOperators];
     Slider feedback;
     Slider lfoFrequency;
     Slider lfoAmpAmount;
