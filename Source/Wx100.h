@@ -51,6 +51,9 @@ enum params
     SCALE_ROOT,
     LFO_FREQ,
     LFO_SHAPE,
+    LFO_AMP_AMOUNT,
+    LFO_PITCH_AMOUNT,
+    LFO_INIT_PHASE,
     NUMBER_OF_PARAMETERS
 };
 

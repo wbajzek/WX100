@@ -25,7 +25,7 @@ public:
     
     void setPhase(float phase)
     {
-        index = waveTableLength * phase;
+        index = (int)(waveTableLength * phase) << 16;
     }
     
     void setFrequency(Frequency newFrequency)

@@ -74,7 +74,7 @@ private:
     Frequency freq;
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
-    float modWheel = 0.02;
+    float modWheel = 0.00;
     
     Frequency calculateFrequency(int currentPitchWheelPosition);
     Scale getScale() {

@@ -25,12 +25,15 @@ Wx100AudioProcessor::Wx100AudioProcessor()
         parameters[RELEASE_0 + i] = 0.0;
     }
     parameters[AMP_0] = 1.0;
-    parameters[FEEDBACK_3] = 0.5;
+    parameters[FEEDBACK_3] = 0.0;
+    parameters[LFO_AMP_AMOUNT] = 0.0;
+    parameters[LFO_PITCH_AMOUNT] = 0.0;
+    parameters[LFO_FREQ] = 7.0;
+    parameters[LFO_INIT_PHASE] = 0.0;
+    lfoShape = SINE_WAVE_TABLE;
     algorithm = 1;
     scale = 1;
     scaleRoot = 1;
-    parameters[LFO_FREQ] = 7.0;
-    lfoShape = SINE_WAVE_TABLE;
     
     initAllParameters();
 
@@ -41,6 +44,8 @@ Wx100AudioProcessor::Wx100AudioProcessor()
         addActionListener(voice);
         synth.addVoice(voice);
     }
+    sendActionMessage("LFO Frequency");
+    sendActionMessage("LFO Shape");
     synth.setNoteStealingEnabled(true);
 }
 
@@ -108,6 +113,9 @@ void Wx100AudioProcessor::initParameters()
     addIntParam(SCALE_ROOT, "Scale_Root", true, SAVE, &scaleRoot, 1, 12);
     addFloatParam(LFO_FREQ, "Lfo_Frequency", true, SAVE, &parameters[LFO_FREQ], 0.0, 100.0);
     addIntParam(LFO_SHAPE, "Lfo_Shape", true, SAVE, &lfoShape, SINE_WAVE_TABLE, NUMBER_OF_WAVE_TABLES);
+    addFloatParam(LFO_AMP_AMOUNT, "Lfo_Amp_Amount", true, SAVE, &parameters[LFO_AMP_AMOUNT], 0.0, 1.0);
+    addFloatParam(LFO_PITCH_AMOUNT, "Lfo_Pitch_Amount", true, SAVE, &parameters[LFO_PITCH_AMOUNT], 0.0, 1.0);
+    addFloatParam(LFO_INIT_PHASE, "Lfo_Init_Phase", true, SAVE, &parameters[LFO_INIT_PHASE], 0.0, 1.0);
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)

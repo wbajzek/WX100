@@ -100,6 +100,7 @@ void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVeloc
         operators[i].setAdsr(adsr);
         operators[i].trigger(midiVelocity);
     }
+    lfo.setPhase(localParameters[LFO_INIT_PHASE]);
     voiceIsActive = true;
 }
 
@@ -126,7 +127,7 @@ void Wx100SynthVoice::controllerMoved (const int controllerNumber, const int new
     switch (controllerNumber)
     {
         case MOD_WHEEL_CONTROL:
-            modWheel = (float)newValue / 3.0 / 127.0;
+            modWheel = (float)newValue * 0.0078740157 * localParameters[LFO_PITCH_AMOUNT]; // 0.0078740157 = 1 / 127
             break;
         default:
             break;
@@ -141,7 +142,7 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
     while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)
     {
         Amplitude lfoLevel = lfo.output();
-        sample = getSample(freq + (freq * modWheel * lfoLevel)) * 0.25;
+        sample = getSample(freq + (freq * modWheel * lfoLevel)) * (0.25 + lfoLevel * localParameters[LFO_AMP_AMOUNT]);
         for (int i = 0; i < numChannels; ++i)
             outputBuffer.addSample(i, startSample, sample);
 

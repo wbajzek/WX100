@@ -46,6 +46,9 @@ private:
     Slider release[numOperators];
     Slider feedback;
     Slider lfoFrequency;
+    Slider lfoAmpAmount;
+    Slider lfoPitchAmount;
+    Slider lfoInitPhase;
     ComboBox lfoShape;
     ComboBox algorithm;
     ComboBox scale;

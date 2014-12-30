@@ -18,7 +18,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (510, 355);
+    setSize (590, 355);
     for (int i = 0; i < numOperators; ++i)
     {
         amp[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -150,6 +150,30 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     lfoShape.addListener(this);
     addAndMakeVisible(lfoShape);
     
+    lfoAmpAmount.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+    lfoAmpAmount.setRange(0.0, 1.0, 0.01);
+    lfoAmpAmount.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+    lfoAmpAmount.setPopupDisplayEnabled(true, this);
+    lfoAmpAmount.setScrollWheelEnabled(false);
+    lfoAmpAmount.addListener(this);
+    addAndMakeVisible(lfoAmpAmount);
+    
+    lfoPitchAmount.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+    lfoPitchAmount.setRange(0.0, 1.0, 0.01);
+    lfoPitchAmount.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+    lfoPitchAmount.setPopupDisplayEnabled(true, this);
+    lfoPitchAmount.setScrollWheelEnabled(false);
+    lfoPitchAmount.addListener(this);
+    addAndMakeVisible(lfoPitchAmount);
+    
+    lfoInitPhase.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+    lfoInitPhase.setRange(0.0, 1.0, 0.01);
+    lfoInitPhase.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+    lfoInitPhase.setPopupDisplayEnabled(true, this);
+    lfoInitPhase.setScrollWheelEnabled(false);
+    lfoInitPhase.addListener(this);
+    addAndMakeVisible(lfoInitPhase);
+
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -181,8 +205,10 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Scale", left + 60, top + 265, 140, 25, Justification::centred, 1);
     g.drawFittedText ("Scale Root", left + 220, top + 265, 50, 25, Justification::centred, 1);
     g.drawFittedText ("LFO Freq", left + 280, top + 265, 60, 25, Justification::centred, 1);
-    g.drawFittedText ("LFO Shape", left + 345, top + 265, 90, 25, Justification::centred, 1);
-
+    g.drawFittedText ("Shape", left + 345, top + 265, 90, 25, Justification::centred, 1);
+    g.drawFittedText ("Amp", left + 430, top + 265, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("Pitch", left + 470, top + 265, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("Phase", left + 510, top + 265, 60, 25, Justification::centred, 1);
 }
 
 void Wx100AudioProcessorEditor::resized()
@@ -204,6 +230,9 @@ void Wx100AudioProcessorEditor::resized()
     scaleRoot.setBounds (left + 220, top + 270, 50, 20);
     lfoFrequency.setBounds (left + 280, top + 270, 60, 20);
     lfoShape.setBounds (left + 345, top + 270, 90, 20);
+    lfoAmpAmount.setBounds (left + 430, top + 270, 60, 20);
+    lfoPitchAmount.setBounds (left + 470, top + 270, 60, 20);
+    lfoInitPhase.setBounds (left + 510, top + 270, 60, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -228,7 +257,12 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
         processor.getFloatParam(FEEDBACK_3)->updateProcessorAndHostFromUi(slider->getValue());
     if (slider == &lfoFrequency)
         processor.getFloatParam(LFO_FREQ)->updateProcessorAndHostFromUi(slider->getValue());
-
+    if (slider == &lfoAmpAmount)
+        processor.getFloatParam(LFO_AMP_AMOUNT)->updateProcessorAndHostFromUi(slider->getValue());
+    if (slider == &lfoPitchAmount)
+        processor.getFloatParam(LFO_PITCH_AMOUNT)->updateProcessorAndHostFromUi(slider->getValue());
+    if (slider == &lfoInitPhase)
+        processor.getFloatParam(LFO_INIT_PHASE)->updateProcessorAndHostFromUi(slider->getValue());
 }
 
 void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
@@ -283,6 +317,18 @@ void Wx100AudioProcessorEditor::timerCallback()
     param=processor.getFloatParam(LFO_FREQ);
     if (&lfoFrequency && param->updateUiRequested()){
         lfoFrequency.setValue (param->uiGet(), dontSendNotification);
+    }
+    param=processor.getFloatParam(LFO_AMP_AMOUNT);
+    if (&lfoAmpAmount && param->updateUiRequested()){
+        lfoAmpAmount.setValue (param->uiGet(), dontSendNotification);
+    }
+    param=processor.getFloatParam(LFO_PITCH_AMOUNT);
+    if (&lfoPitchAmount && param->updateUiRequested()){
+        lfoPitchAmount.setValue (param->uiGet(), dontSendNotification);
+    }
+    param=processor.getFloatParam(LFO_INIT_PHASE);
+    if (&lfoInitPhase && param->updateUiRequested()){
+        lfoInitPhase.setValue (param->uiGet(), dontSendNotification);
     }
     IntParam *intParam=processor.getIntParam(ALGORITHM);
     if (&algorithm && intParam->updateUiRequested()){
