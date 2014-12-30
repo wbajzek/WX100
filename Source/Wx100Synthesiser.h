@@ -45,7 +45,7 @@ protected:
 class Wx100SynthVoice : public SynthesiserVoice, public ActionListener
 {
 public:
-    Wx100SynthVoice(float* parameters, int* algorithm, /* int* lfoShape,*/ int* scale, int* scaleRoot);
+    Wx100SynthVoice(float* parameters, int* algorithm, int* lfoShape, int* scale, int* scaleRoot);
     ~Wx100SynthVoice();
     bool canPlaySound (SynthesiserSound* sound);
     void startNote (const int midiNoteNumber, const float velocity, SynthesiserSound* /*sound*/, const int currentPitchWheelPosition);
@@ -63,15 +63,18 @@ public:
 private:
     
     SynthVoice operators[numOperators];
+    Oscillator lfo;
     float *localParameters;
     int *localAlgorithm;
     int *localScale;
     int *localScaleRoot;
+    int *localLfoShape;
     int note = 0;
     int noteNumber;
     Frequency freq;
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
+    float modWheel = 0.02;
     
     Frequency calculateFrequency(int currentPitchWheelPosition);
     Scale getScale() {

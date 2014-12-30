@@ -49,9 +49,13 @@ enum params
     ALGORITHM,
     SCALE,
     SCALE_ROOT,
+    LFO_FREQ,
+    LFO_SHAPE,
     NUMBER_OF_PARAMETERS
 };
 
-
+enum MidiControls {
+    MOD_WHEEL_CONTROL = 1
+};
 
 #endif  // WX100_H_INCLUDED

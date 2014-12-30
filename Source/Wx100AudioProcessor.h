@@ -19,7 +19,7 @@
 //==============================================================================
 /**
 */
-class Wx100AudioProcessor  : public PluginProcessor
+class Wx100AudioProcessor  : public PluginProcessor, public ActionBroadcaster
 {
 public:
     //==============================================================================
@@ -69,7 +69,8 @@ private:
     int algorithm;
     int scale = 1;
     int scaleRoot = 1;
-    
+    int lfoShape = 0;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessor)
 };
 

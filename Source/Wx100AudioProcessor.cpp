@@ -29,11 +29,18 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     algorithm = 1;
     scale = 1;
     scaleRoot = 1;
+    parameters[LFO_FREQ] = 7.0;
+    lfoShape = SINE_WAVE_TABLE;
+    
     initAllParameters();
 
     synth.addSound(new Wx100SynthSound());
     for (int i = 0; i < 16; ++i)
-        synth.addVoice(new Wx100SynthVoice(parameters, &algorithm, &scale, &scaleRoot));
+    {
+        Wx100SynthVoice *voice = new Wx100SynthVoice(parameters, &algorithm, &lfoShape, &scale, &scaleRoot);
+        addActionListener(voice);
+        synth.addVoice(voice);
+    }
     synth.setNoteStealingEnabled(true);
 }
 
@@ -99,6 +106,8 @@ void Wx100AudioProcessor::initParameters()
     addIntParam(ALGORITHM, "Algorithm", true, SAVE, &algorithm, 1, 8);
     addIntParam(SCALE, "Scale", true, SAVE, &scale, 1, numberOfScales+1);
     addIntParam(SCALE_ROOT, "Scale_Root", true, SAVE, &scaleRoot, 1, 12);
+    addFloatParam(LFO_FREQ, "Lfo_Frequency", true, SAVE, &parameters[LFO_FREQ], 0.0, 100.0);
+    addIntParam(LFO_SHAPE, "Lfo_Shape", true, SAVE, &lfoShape, SINE_WAVE_TABLE, NUMBER_OF_WAVE_TABLES);
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)
@@ -159,6 +168,14 @@ void Wx100AudioProcessor::changeProgramName (int index, const String& newName)
 void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags updateFromFlag)
 {
     getParam(paramIndex)->updateHostAndUi(false,UPDATE_FROM_PROCESSOR);
+    switch (paramIndex) {
+        case LFO_FREQ:
+            sendActionMessage("LFO Frequency");
+            break;
+        case LFO_SHAPE:
+            sendActionMessage("LFO Shape");
+            break;
+    }
 }
 
 void Wx100AudioProcessor::runAfterParamGroupUpdate()

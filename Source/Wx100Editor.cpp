@@ -131,6 +131,25 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     scaleRoot.addListener(this);
     addAndMakeVisible(scaleRoot);
     
+    lfoFrequency.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+    lfoFrequency.setRange(0.01, 100.0, 0.01);
+    lfoFrequency.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+    lfoFrequency.setPopupDisplayEnabled(true, this);
+    lfoFrequency.setScrollWheelEnabled(false);
+    lfoFrequency.addListener(this);
+    addAndMakeVisible(lfoFrequency);
+    
+    lfoShape.addItem("Sine",SINE_WAVE_TABLE + 1);
+    lfoShape.addItem("Triangle",TRIANGLE_WAVE_TABLE + 1);
+    lfoShape.addItem("Saw",SAW_WAVE_TABLE + 1);
+    lfoShape.addItem("Ramp",RAMP_WAVE_TABLE + 1);
+    lfoShape.setWantsKeyboardFocus(false);
+    lfoShape.setItemEnabled(0, false);
+    lfoShape.setEditableText(false);
+    lfoShape.setScrollWheelEnabled(false);
+    lfoShape.addListener(this);
+    addAndMakeVisible(lfoShape);
+    
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -157,10 +176,12 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Decay", left + 240, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Sustain", left + 300, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Release", left + 360, top, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Feedback", left + 420, top + 170, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Feedback", left + 420, top + 180, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Algorithm", left, top + 265, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Scale", left + 60, top + 265, 140, 25, Justification::centred, 1);
     g.drawFittedText ("Scale Root", left + 220, top + 265, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("LFO Freq", left + 280, top + 265, 60, 25, Justification::centred, 1);
+    g.drawFittedText ("LFO Shape", left + 345, top + 265, 90, 25, Justification::centred, 1);
 
 }
 
@@ -181,7 +202,8 @@ void Wx100AudioProcessorEditor::resized()
     algorithm.setBounds(left, top + 270, 50, 20);
     scale.setBounds (left + 60, top + 270, 140, 20);
     scaleRoot.setBounds (left + 220, top + 270, 50, 20);
-
+    lfoFrequency.setBounds (left + 280, top + 270, 60, 20);
+    lfoShape.setBounds (left + 345, top + 270, 90, 20);
 }
 
 void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -204,6 +226,9 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
     }
     if (slider == &feedback)
         processor.getFloatParam(FEEDBACK_3)->updateProcessorAndHostFromUi(slider->getValue());
+    if (slider == &lfoFrequency)
+        processor.getFloatParam(LFO_FREQ)->updateProcessorAndHostFromUi(slider->getValue());
+
 }
 
 void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
@@ -214,7 +239,8 @@ void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
         processor.getIntParam(SCALE)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
     if (comboBox == &scaleRoot)
         processor.getIntParam(SCALE_ROOT)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
-
+    if (comboBox == &lfoShape)
+        processor.getIntParam(LFO_SHAPE)->updateProcessorAndHostFromUi(comboBox->getSelectedId() - 1);
 }
 
 void Wx100AudioProcessorEditor::timerCallback()
@@ -254,6 +280,10 @@ void Wx100AudioProcessorEditor::timerCallback()
     if (&feedback && param->updateUiRequested()){
         feedback.setValue (param->uiGet(), dontSendNotification);
     }
+    param=processor.getFloatParam(LFO_FREQ);
+    if (&lfoFrequency && param->updateUiRequested()){
+        lfoFrequency.setValue (param->uiGet(), dontSendNotification);
+    }
     IntParam *intParam=processor.getIntParam(ALGORITHM);
     if (&algorithm && intParam->updateUiRequested()){
         algorithm.setSelectedId (intParam->uiGet(), dontSendNotification);
@@ -265,5 +295,9 @@ void Wx100AudioProcessorEditor::timerCallback()
     intParam = processor.getIntParam(SCALE_ROOT);
     if (&scaleRoot && intParam->updateUiRequested()){
         scaleRoot.setSelectedId(intParam->uiGet(), dontSendNotification);
-    }    
+    }
+    intParam = processor.getIntParam(LFO_SHAPE);
+    if (&lfoShape && intParam->updateUiRequested()){
+        lfoShape.setSelectedId(intParam->uiGet() + 1, dontSendNotification);
+    }
 }

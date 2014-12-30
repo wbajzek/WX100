@@ -51,12 +51,15 @@ SynthesiserVoice* Wx100Synthesiser::findVoiceToSteal (SynthesiserSound* soundToP
 }
 
 
-Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *scale, int *scaleRoot)
+Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *lfoShape, int *scale, int *scaleRoot)
 {
     localParameters = parameters;
     localAlgorithm = algorithm;
     localScale = scale;
     localScaleRoot = scaleRoot;
+    localLfoShape = lfoShape;
+    lfo.setFrequency(localParameters[LFO_FREQ]);
+    lfo.setWaveTable(*localLfoShape);
     for (int i = 0; i < numOperators; ++i)
     {
         operators[i].setWaveTable(SINE_WAVE_TABLE);
@@ -72,6 +75,7 @@ void Wx100SynthVoice::setCurrentPlaybackSampleRate(Frequency newSampleRate)
     sampleRate = newSampleRate;
     for (int i = 0; i < numOperators; ++i)
         operators[i].setSampleRate(newSampleRate);
+    lfo.setSampleRate(sampleRate);
 }
 
 
@@ -121,11 +125,11 @@ void Wx100SynthVoice::controllerMoved (const int controllerNumber, const int new
 {
     switch (controllerNumber)
     {
-//        case MOD_WHEEL_CONTROL:
-//            modWheel = (float)newValue / 3.0 / 127.0;
-//            break;
-//        default:
-//            break;
+        case MOD_WHEEL_CONTROL:
+            modWheel = (float)newValue / 3.0 / 127.0;
+            break;
+        default:
+            break;
     }
 }
 
@@ -136,12 +140,15 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
     Amplitude sample;
     while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)
     {
-        sample = getSample(freq) * 0.25;
+        Amplitude lfoLevel = lfo.output();
+        sample = getSample(freq + (freq * modWheel * lfoLevel)) * 0.25;
         for (int i = 0; i < numChannels; ++i)
             outputBuffer.addSample(i, startSample, sample);
 
         for (int i = 0; i < numOperators; ++i)
             operators[i].tick(keyIsDown);
+        
+        lfo.tick();
         ++startSample;
     }
 }
@@ -280,9 +287,13 @@ bool Wx100SynthVoice::isPlayingChannel (int midiChannel) const
 
 bool Wx100SynthVoice::isVoiceActive() const
 {
-    return operators[0].isActive() && isKeyDown();
+    return operators[0].isActive();
 }
 
 void Wx100SynthVoice::actionListenerCallback (const String &message)
 {
+    if (message.equalsIgnoreCase("LFO Frequency"))
+        lfo.setFrequency(localParameters[LFO_FREQ]);
+    else if (message.equalsIgnoreCase("LFO Shape"))
+        lfo.setWaveTable(*localLfoShape);
 }
