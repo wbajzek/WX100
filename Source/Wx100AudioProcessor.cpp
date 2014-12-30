@@ -67,7 +67,7 @@ void Wx100AudioProcessor::initParameters()
     {
         char coarseName[30];
         sprintf(coarseName, "Coarse_%i", i + 1);
-        addFloatParam(COARSE_0 + i, coarseName, true, SAVE, &parameters[COARSE_0 + i], 1.00, 10.0);
+        addFloatParam(COARSE_0 + i, coarseName, true, SAVE, &parameters[COARSE_0 + i], ratios[0], ratios[numRatios - 1]);
     }
     
     for (int i = 0; i < numOperators; ++i)

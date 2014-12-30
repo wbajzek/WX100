@@ -6,7 +6,6 @@
 * Envelope stages (AR, D1R, D1L, D2R, RR)?
 * output level
 * aftertouch
-* 0.5 multiplier
 * transpose knob
 * Mono legato mode
   * portamento

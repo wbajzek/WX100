@@ -18,6 +18,24 @@
 //==============================================================================
 /**
 */
+
+class Wx100RatioSlider : public Slider
+{
+public:
+    Wx100RatioSlider() {}
+    ~Wx100RatioSlider() {}
+    
+    double snapValue(double attemptedValue, DragMode dragmode)
+    {
+        double snappedValue = ratios[0];
+        int i = 0;
+        while (attemptedValue > snappedValue)
+            snappedValue = ratios[++i];
+        return snappedValue;
+    }
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100RatioSlider)
+};
+
 class Wx100AudioProcessorEditor  : public AudioProcessorEditor,
     private Slider::Listener, private ComboBox::Listener, public Timer
 {
@@ -38,7 +56,7 @@ private:
     Wx100AudioProcessor& processor;
 
     Slider amp[numOperators];
-    Slider coarse[numOperators];
+    Wx100RatioSlider coarse[numOperators];
     Slider tuning[numOperators];
     Slider attack[numOperators];
     Slider decay[numOperators];
@@ -57,6 +75,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessorEditor)
 };
-
 
 #endif  // PLUGINEDITOR_H_INCLUDED

@@ -31,7 +31,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         coarse[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         coarse[i].setSize(50, 50);
-        coarse[i].setRange(1.0, 10.0, 1.0);
+        coarse[i].setRange(ratios[0], ratios[numRatios - 1], 0.01);
         coarse[i].setScrollWheelEnabled(false);
         coarse[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         coarse[i].addListener(this);
