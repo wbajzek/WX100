@@ -91,7 +91,7 @@ void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVeloc
     
     for (int i = 0; i < numOperators; ++i)
     {
-        operators[i].setPhase(0.0);
+        operators[i].setPhase(localParameters[PHASE_0 + i]);
         Adsr adsr;
         adsr.attack = localParameters[ATTACK_0 + i];
         adsr.decay = localParameters[DECAY_0 + i];

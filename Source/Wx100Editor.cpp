@@ -76,6 +76,14 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
         release[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         release[i].addListener(this);
         addAndMakeVisible(release[i]);
+
+        phase[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+        phase[i].setSize(50, 50);
+        phase[i].setRange(0.0, 1.0, 0.0001);
+        phase[i].setScrollWheelEnabled(false);
+        phase[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+        phase[i].addListener(this);
+        addAndMakeVisible(phase[i]);
     }
     
     feedback.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -200,7 +208,8 @@ void Wx100AudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Decay", left + 240, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Sustain", left + 300, top, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Release", left + 360, top, 50, 25, Justification::centred, 1);
-    g.drawFittedText ("Feedback", left + 420, top + 180, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Phase", left + 420, top, 50, 25, Justification::centred, 1);
+    g.drawFittedText ("Feedback", left + 480, top + 180, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Algorithm", left, top + 265, 50, 25, Justification::centred, 1);
     g.drawFittedText ("Scale", left + 60, top + 265, 140, 25, Justification::centred, 1);
     g.drawFittedText ("Scale Root", left + 220, top + 265, 50, 25, Justification::centred, 1);
@@ -223,8 +232,9 @@ void Wx100AudioProcessorEditor::resized()
         decay[i].setBounds (left + 240, top + (60 * i), 20, 20);
         sustain[i].setBounds (left + 300, top + (60 * i), 20, 20);
         release[i].setBounds (left + 360, top + (60 * i), 20, 20);
+        phase[i].setBounds (left + 420, top + (60 * i), 20, 20);
     }
-    feedback.setBounds(left + 420, top + 180, 20, 20);
+    feedback.setBounds(left + 480, top + 180, 20, 20);
     algorithm.setBounds(left, top + 270, 50, 20);
     scale.setBounds (left + 60, top + 270, 140, 20);
     scaleRoot.setBounds (left + 220, top + 270, 50, 20);
@@ -252,6 +262,8 @@ void Wx100AudioProcessorEditor::sliderValueChanged(Slider* slider)
             processor.getFloatParam(SUSTAIN_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
         if (slider == &release[i])
             processor.getFloatParam(RELEASE_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
+        if (slider == &phase[i])
+            processor.getFloatParam(PHASE_0 + i)->updateProcessorAndHostFromUi(slider->getValue());
     }
     if (slider == &feedback)
         processor.getFloatParam(FEEDBACK_3)->updateProcessorAndHostFromUi(slider->getValue());
@@ -308,6 +320,10 @@ void Wx100AudioProcessorEditor::timerCallback()
         param=processor.getFloatParam(RELEASE_0 + i);
         if (&release[i] && param->updateUiRequested()){
             release[i].setValue (param->uiGet(), dontSendNotification);
+        }
+        param=processor.getFloatParam(PHASE_0 + i);
+        if (&phase[i] && param->updateUiRequested()){
+            phase[i].setValue (param->uiGet(), dontSendNotification);
         }
     }
     FloatParam *param=processor.getFloatParam(FEEDBACK_3);

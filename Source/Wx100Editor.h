@@ -44,6 +44,7 @@ private:
     Slider decay[numOperators];
     Slider sustain[numOperators];
     Slider release[numOperators];
+    Slider phase[numOperators];
     Slider feedback;
     Slider lfoFrequency;
     Slider lfoAmpAmount;

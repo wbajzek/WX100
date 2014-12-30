@@ -23,6 +23,7 @@ Wx100AudioProcessor::Wx100AudioProcessor()
         parameters[DECAY_0 + i] = 0.0;
         parameters[SUSTAIN_0 + i] = 1.0;
         parameters[RELEASE_0 + i] = 0.0;
+        parameters[PHASE_0 + i] = 0.0;
     }
     parameters[AMP_0] = 1.0;
     parameters[FEEDBACK_3] = 0.0;
@@ -102,6 +103,13 @@ void Wx100AudioProcessor::initParameters()
         char releaseName[30];
         sprintf(releaseName, "Release_%i", i + 1);
         addFloatParam(RELEASE_0 + i, releaseName, true, SAVE, &parameters[RELEASE_0 + i], 0.001, 10.0);
+    }
+
+    for (int i = 0; i < numOperators; ++i)
+    {
+        char phaseName[30];
+        sprintf(phaseName, "Phase_%i", i + 1);
+        addFloatParam(PHASE_0 + i, phaseName, true, SAVE, &parameters[PHASE_0 + i], 0.0, 1.0);
     }
 
     char feedbackName[30];
