@@ -261,7 +261,7 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         case 8:
             if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
             {
-                operators[1].setFm(0.0);
+                operators[2].setFm(0.0);
                 operators[1].setFm(0.0);
                 operators[0].setFm(0.0);
                 
