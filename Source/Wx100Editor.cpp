@@ -51,7 +51,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         attack[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         attack[i].setSize(50, 50);
-        attack[i].setRange(0.001, 10.0, 0.001);
+        attack[i].setRange(0.0, 20.0, 0.001);
         attack[i].setScrollWheelEnabled(false);
         attack[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         attack[i].addListener(this);
@@ -59,7 +59,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         decay[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         decay[i].setSize(50, 50);
-        decay[i].setRange(0.001, 10.0, 0.001);
+        decay[i].setRange(0.001, 20.0, 0.001);
         decay[i].setScrollWheelEnabled(false);
         decay[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         decay[i].addListener(this);
@@ -75,7 +75,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
         release[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         release[i].setSize(50, 50);
-        release[i].setRange(0.001, 10.0, 0.001);
+        release[i].setRange(0.001, 20.0, 0.001);
         release[i].setScrollWheelEnabled(false);
         release[i].setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
         release[i].addListener(this);

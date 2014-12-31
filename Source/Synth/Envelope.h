@@ -60,6 +60,7 @@ public:
                     envLevel = 1.0;
                     envIncrement = 0.0;
                     envelopeState = DECAY_STATE;
+                    envCoefficient = getSegmentCoefficient(envLevel, adsr.sustainLevel, decaySamples);
                 }
                 else
                 {

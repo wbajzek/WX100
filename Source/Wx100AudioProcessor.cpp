@@ -81,14 +81,14 @@ void Wx100AudioProcessor::initParameters()
     {
         char attackName[30];
         sprintf(attackName, "Attack_%i", i + 1);
-        addFloatParam(ATTACK_0 + i, attackName, true, SAVE, &parameters[ATTACK_0 + i], 0.001, 10.0);
+        addFloatParam(ATTACK_0 + i, attackName, true, SAVE, &parameters[ATTACK_0 + i], 0.0, 20.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
     {
         char decayName[30];
         sprintf(decayName, "Decay_%i", i + 1);
-        addFloatParam(DECAY_0 + i, decayName, true, SAVE, &parameters[DECAY_0 + i], 0.001, 10.0);
+        addFloatParam(DECAY_0 + i, decayName, true, SAVE, &parameters[DECAY_0 + i], 0.001, 20.0);
     }
     
     for (int i = 0; i < numOperators; ++i)
@@ -102,7 +102,7 @@ void Wx100AudioProcessor::initParameters()
     {
         char releaseName[30];
         sprintf(releaseName, "Release_%i", i + 1);
-        addFloatParam(RELEASE_0 + i, releaseName, true, SAVE, &parameters[RELEASE_0 + i], 0.001, 10.0);
+        addFloatParam(RELEASE_0 + i, releaseName, true, SAVE, &parameters[RELEASE_0 + i], 0.001, 20.0);
     }
 
     for (int i = 0; i < numOperators; ++i)
