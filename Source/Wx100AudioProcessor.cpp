@@ -203,14 +203,7 @@ void Wx100AudioProcessor::initScale()
 {
     String scale = getStringParam(SCALE)->getValue();
     int scaleRoot = getIntParam(SCALE_ROOT)->getValue();
-
-    if (scale.isEmpty())
-    {
-        for (int i = 1; i < 128; ++i)
-            tuningTable[i] = 8.1758 * pow(2.0, i * 100.0 / 1200.0); // in cents above root
-    }
-    else
-        SclParser::parse(scale, tuningTable, scaleRoot);
+    SclParser::parse(scale, tuningTable, scaleRoot);
 }
 
 void Wx100AudioProcessor::runAfterParamGroupUpdate()

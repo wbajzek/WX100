@@ -31,6 +31,14 @@ public:
                 --i;
             }
         }
+        
+        if (lines.size() == 0)
+        {
+            for (int i = 1; i < 128; ++i)
+                frequencies[i] = 8.1758 * pow(2.0, i * 100.0 / 1200.0); // in cents above root
+            return;
+        }
+
         int degrees = lines[1].getIntValue();
         int lowestDegree = scaleRoot - (degrees * (scaleRoot / degrees));
         
