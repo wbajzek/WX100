@@ -51,12 +51,12 @@ SynthesiserVoice* Wx100Synthesiser::findVoiceToSteal (SynthesiserSound* soundToP
 }
 
 
-Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *lfoShape, int *scale, int *scaleRoot)
+Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *lfoShape, int *scaleRoot, Frequency *tuningTable)
 {
     localParameters = parameters;
     localAlgorithm = algorithm;
-    localScale = scale;
     localScaleRoot = scaleRoot;
+    localTuningTable = tuningTable;
     localLfoShape = lfoShape;
     lfo.setFrequency(localParameters[LFO_FREQ]);
     lfo.setWaveTable(*localLfoShape);
@@ -111,10 +111,7 @@ void Wx100SynthVoice::stopNote (float velocity, const bool allowTailOff)
 Frequency Wx100SynthVoice::calculateFrequency(int currentPitchWheelPosition)
 {
     float pbCents = ( (float)currentPitchWheelPosition / 16383.0) * (400.0) + -200.0;
-    Frequency baseFreq = MidiMessage::getMidiNoteInHertz(noteNumber) * pow(2, pbCents/1200);
-    Scale scale = getScale();
-    int octaveNote = (noteNumber - getScaleRoot()) % 12;
-    return baseFreq * scale.offsets[octaveNote];
+    return localTuningTable[noteNumber] * pow(2, pbCents/1200);
 }
 
 void Wx100SynthVoice::pitchWheelMoved (const int currentPitchWheelPosition)

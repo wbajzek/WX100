@@ -66,10 +66,13 @@ private:
     Wx100Synthesiser synth;
     MidiKeyboardState keyboardState;
     float parameters[NUMBER_OF_PARAMETERS] = { 0.0 };
+    Frequency tuningTable[128];
     int algorithm;
-    int scale = 1;
+    String scale = "";
     int scaleRoot = 1;
     int lfoShape = 0;
+
+    void initScale();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessor)
 };

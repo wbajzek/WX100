@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Wx100AudioProcessor.h"
+#include "Wx100TuningEditor.h"
 #include "Wx100.h"
 
 //==============================================================================
@@ -36,8 +37,9 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100RatioSlider)
 };
 
+
 class Wx100AudioProcessorEditor  : public AudioProcessorEditor,
-    private Slider::Listener, private ComboBox::Listener, public Timer
+private Slider::Listener, private ComboBox::Listener, private TextButton::Listener, private TextEditor::Listener, public Timer
 {
 public:
     Wx100AudioProcessorEditor (Wx100AudioProcessor&);
@@ -48,6 +50,11 @@ public:
     void resized() override;
     void sliderValueChanged (Slider* slider) override;
     void comboBoxChanged (ComboBox* comboBox) override;
+    void buttonClicked(Button* button) override;
+    void textEditorTextChanged (TextEditor& editor);
+    void textEditorReturnKeyPressed (TextEditor&);
+    void textEditorEscapeKeyPressed (TextEditor&);
+    void textEditorFocusLost (TextEditor&);
     void timerCallback();
 
 private:
@@ -71,8 +78,9 @@ private:
     Slider lfoInitPhase;
     ComboBox lfoShape;
     ComboBox algorithm;
-    ComboBox scale;
+    TextButton scale;
     ComboBox scaleRoot;
+    Wx100TuningEditor tuningEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessorEditor)
 };

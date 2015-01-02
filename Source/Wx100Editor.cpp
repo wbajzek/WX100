@@ -10,20 +10,21 @@
 
 #include "Wx100AudioProcessor.h"
 #include "Wx100Editor.h"
+#include "Wx100TuningEditor.h"
 
 
 //==============================================================================
 Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), processor (p), tuningEditor(this)
 {
+
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
+    
     setSize (590, 415);
     for (int i = 0; i < numOperators; ++i)
     {
         addAndMakeVisible(operators[i]);
-//        operators[i].setText(String(i + 1));
-//        operators[i].setTextLabelPosition(Justification::verticallyCentred);
         
         amp[i].setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         amp[i].setSize(50, 50);
@@ -113,14 +114,7 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     algorithm.addListener(this);
     addAndMakeVisible(algorithm);
     
-    for (int i = 0; i < numberOfScales; i++)
-    {
-        jassert(scales[i].description.isNotEmpty());
-        scale.addItem(scales[i].description, i+1);
-    }
-    scale.setWantsKeyboardFocus(false);
-    scale.setEditableText(false);
-    scale.setScrollWheelEnabled(false);
+    scale.setButtonText("Scale Editor");
     scale.addListener(this);
     addAndMakeVisible(scale);
     
@@ -289,12 +283,41 @@ void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
 {
     if (comboBox == &algorithm)
         processor.getIntParam(ALGORITHM)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
-    if (comboBox == &scale)
-        processor.getIntParam(SCALE)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
     if (comboBox == &scaleRoot)
         processor.getIntParam(SCALE_ROOT)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
     if (comboBox == &lfoShape)
         processor.getIntParam(LFO_SHAPE)->updateProcessorAndHostFromUi(comboBox->getSelectedId() - 1);
+}
+
+void Wx100AudioProcessorEditor::buttonClicked(Button* button)
+{
+    if (button == &scale)
+        DialogWindow::showDialog("Scala File", &tuningEditor, &tuningEditor, Colours::white, true);
+}
+
+
+/** Called when the user changes the text in some way. */
+void Wx100AudioProcessorEditor::textEditorTextChanged (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+/** Called when the user presses the return key. */
+void Wx100AudioProcessorEditor::textEditorReturnKeyPressed (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+/** Called when the user presses the escape key. */
+void Wx100AudioProcessorEditor::textEditorEscapeKeyPressed (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+/** Called when the text editor loses focus. */
+void Wx100AudioProcessorEditor::textEditorFocusLost (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
 }
 
 void Wx100AudioProcessorEditor::timerCallback()
@@ -358,10 +381,6 @@ void Wx100AudioProcessorEditor::timerCallback()
     if (&algorithm && intParam->updateUiRequested()){
         algorithm.setSelectedId (intParam->uiGet(), dontSendNotification);
     }
-    intParam = processor.getIntParam(SCALE);
-    if (&scale && intParam->updateUiRequested()){
-        scale.setSelectedId(intParam->uiGet(), dontSendNotification);
-    }
     intParam = processor.getIntParam(SCALE_ROOT);
     if (&scaleRoot && intParam->updateUiRequested()){
         scaleRoot.setSelectedId(intParam->uiGet(), dontSendNotification);
@@ -370,4 +389,8 @@ void Wx100AudioProcessorEditor::timerCallback()
     if (&lfoShape && intParam->updateUiRequested()){
         lfoShape.setSelectedId(intParam->uiGet() + 1, dontSendNotification);
     }
+    StringParam *stringParam = processor.getStringParam(SCALE);
+    if (&tuningEditor && stringParam->updateUiRequested())
+        tuningEditor.setText(stringParam->uiGet());
+        
 }

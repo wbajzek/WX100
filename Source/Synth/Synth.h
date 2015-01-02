@@ -19,5 +19,6 @@ typedef double Seconds;
 #include "Oscillator.h"
 #include "Envelope.h"
 #include "SynthVoice.h"
+#include "SclParser.h"
 
 #endif  // SYNTH_H_INCLUDED

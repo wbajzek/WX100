@@ -33,7 +33,7 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     parameters[LFO_INIT_PHASE] = 0.0;
     lfoShape = SINE_WAVE_TABLE;
     algorithm = 1;
-    scale = 1;
+    scale = "";
     scaleRoot = 1;
     
     initAllParameters();
@@ -41,12 +41,13 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     synth.addSound(new Wx100SynthSound());
     for (int i = 0; i < 16; ++i)
     {
-        Wx100SynthVoice *voice = new Wx100SynthVoice(parameters, &algorithm, &lfoShape, &scale, &scaleRoot);
+        Wx100SynthVoice *voice = new Wx100SynthVoice(parameters, &algorithm, &lfoShape, &scaleRoot, tuningTable);
         addActionListener(voice);
         synth.addVoice(voice);
     }
     sendActionMessage("LFO Frequency");
     sendActionMessage("LFO Shape");
+    initScale();
     synth.setNoteStealingEnabled(true);
 }
 
@@ -117,7 +118,7 @@ void Wx100AudioProcessor::initParameters()
     addFloatParam(FEEDBACK_3, feedbackName, true, SAVE, &parameters[FEEDBACK_3], 0.0, 1.0);
 
     addIntParam(ALGORITHM, "Algorithm", true, SAVE, &algorithm, 1, 8);
-    addIntParam(SCALE, "Scale", true, SAVE, &scale, 1, numberOfScales+1);
+    addStringParam(SCALE, "Scale", false, SAVE, &scale, "");
     addIntParam(SCALE_ROOT, "Scale_Root", true, SAVE, &scaleRoot, 1, 12);
     addFloatParam(LFO_FREQ, "Lfo_Frequency", true, SAVE, &parameters[LFO_FREQ], 0.0, 100.0);
     addIntParam(LFO_SHAPE, "Lfo_Shape", true, SAVE, &lfoShape, SINE_WAVE_TABLE, NUMBER_OF_WAVE_TABLES);
@@ -191,7 +192,23 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
         case LFO_SHAPE:
             sendActionMessage("LFO Shape");
             break;
+        case SCALE:
+            initScale();
+            break;
     }
+}
+
+void Wx100AudioProcessor::initScale()
+{
+    String scale = getStringParam(SCALE)->getValue();
+    tuningTable[0] = 8.1758; // C -2
+    if (scale.isEmpty())
+    {
+        for (int i = 1; i < 128; ++i)
+            tuningTable[i] = tuningTable[0] * pow(2.0, i * 100.0 / 1200.0); // in cents above root
+    }
+    else
+        SclParser::parse(scale, tuningTable);
 }
 
 void Wx100AudioProcessor::runAfterParamGroupUpdate()
