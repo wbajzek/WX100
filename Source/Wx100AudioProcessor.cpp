@@ -34,7 +34,7 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     lfoShape = SINE_WAVE_TABLE;
     algorithm = 1;
     scale = "";
-    scaleRoot = 1;
+    scaleRoot = 60;
     
     initAllParameters();
 
@@ -119,7 +119,7 @@ void Wx100AudioProcessor::initParameters()
 
     addIntParam(ALGORITHM, "Algorithm", true, SAVE, &algorithm, 1, 8);
     addStringParam(SCALE, "Scale", false, SAVE, &scale, "");
-    addIntParam(SCALE_ROOT, "Scale_Root", true, SAVE, &scaleRoot, 1, 12);
+    addIntParam(SCALE_ROOT, "Scale_Root", true, SAVE, &scaleRoot, 0, 127);
     addFloatParam(LFO_FREQ, "Lfo_Frequency", true, SAVE, &parameters[LFO_FREQ], 0.0, 100.0);
     addIntParam(LFO_SHAPE, "Lfo_Shape", true, SAVE, &lfoShape, SINE_WAVE_TABLE, NUMBER_OF_WAVE_TABLES);
     addFloatParam(LFO_AMP_AMOUNT, "Lfo_Amp_Amount", true, SAVE, &parameters[LFO_AMP_AMOUNT], 0.0, 1.0);
@@ -193,6 +193,7 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
             sendActionMessage("LFO Shape");
             break;
         case SCALE:
+        case SCALE_ROOT:
             initScale();
             break;
     }
@@ -201,14 +202,15 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
 void Wx100AudioProcessor::initScale()
 {
     String scale = getStringParam(SCALE)->getValue();
-    tuningTable[0] = 8.1758; // C -2
+    int scaleRoot = getIntParam(SCALE_ROOT)->getValue();
+
     if (scale.isEmpty())
     {
         for (int i = 1; i < 128; ++i)
-            tuningTable[i] = tuningTable[0] * pow(2.0, i * 100.0 / 1200.0); // in cents above root
+            tuningTable[i] = 8.1758 * pow(2.0, i * 100.0 / 1200.0); // in cents above root
     }
     else
-        SclParser::parse(scale, tuningTable);
+        SclParser::parse(scale, tuningTable, scaleRoot);
 }
 
 void Wx100AudioProcessor::runAfterParamGroupUpdate()
@@ -269,6 +271,7 @@ void Wx100AudioProcessor::setStateInformation (const void* data, int sizeInBytes
         readXml(xmlState, true);
         //Update the parameter values from the preloaded XML values
         updateProcessorHostAndUiFromXml(true,true,true);
+        initScale();
     }
 }
 

@@ -13,10 +13,13 @@
 
 #include "../../JuceLibraryCode/JuceHeader.h"
 
+const Frequency frequencyRef = 440.0;
+const int noteRef = 69;
+
 class SclParser
 {
 public:
-    static void parse(String sclFile, double *frequencies)
+    static void parse(String sclFile, double *frequencies, int scaleRoot)
     {
         StringArray lines;
         lines.addLines(StringRef(sclFile));
@@ -28,9 +31,14 @@ public:
                 --i;
             }
         }
+        int degrees = lines[1].getIntValue();
+        int lowestDegree = scaleRoot - (degrees * (scaleRoot / degrees));
         
-        double root = frequencies[0];
-        for (int i = 1, line = 2; i < 128; ++i)
+        lines.removeRange(0, 2);
+        lines.insert(0, "1/1");
+        Frequency root = frequencyRef * pow(2.0, (((lowestDegree + 3) / 12)) - 6 + ((lowestDegree + 3) % 12)/12.0);
+        
+        for (int i = lowestDegree, line = 0; i < 128; ++i)
         {
             String interval = String(lines[line]).trim();
             if (intervalIsInCents(interval))
@@ -42,10 +50,11 @@ public:
             line++;
             if (line == lines.size())
             {
-                line = 2;
+                line = 1;
                 root = frequencies[i];
             }
         }
+
     }
 private:
     

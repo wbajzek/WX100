@@ -118,18 +118,23 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     scale.addListener(this);
     addAndMakeVisible(scale);
     
-    scaleRoot.addItem("C",1);
-    scaleRoot.addItem("C#",2);
-    scaleRoot.addItem("D",3);
-    scaleRoot.addItem("D#",4);
-    scaleRoot.addItem("E",5);
-    scaleRoot.addItem("F",6);
-    scaleRoot.addItem("F#",7);
-    scaleRoot.addItem("G",8);
-    scaleRoot.addItem("G#",9);
-    scaleRoot.addItem("A",10);
-    scaleRoot.addItem("A#",11);
-    scaleRoot.addItem("B",12);
+    StringArray scaleRootLabels;
+    for (int i = 0; i < 9; i++)
+    {
+        scaleRootLabels.add(String("C") += i);
+        scaleRootLabels.add(String("C#") += i);
+        scaleRootLabels.add(String("D") += i);
+        scaleRootLabels.add(String("D#") += i);
+        scaleRootLabels.add(String("E") += i);
+        scaleRootLabels.add(String("F") += i);
+        scaleRootLabels.add(String("F#") += i);
+        scaleRootLabels.add(String("G") += i);
+        scaleRootLabels.add(String("G#") += i);
+        scaleRootLabels.add(String("A") += i);
+        scaleRootLabels.add(String("A#") += i);
+        scaleRootLabels.add(String("B") += i);
+    }
+    scaleRoot.addItemList(scaleRootLabels, 1);
     scaleRoot.setWantsKeyboardFocus(false);
     scaleRoot.setItemEnabled(0, false);
     scaleRoot.setEditableText(false);
@@ -284,7 +289,7 @@ void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
     if (comboBox == &algorithm)
         processor.getIntParam(ALGORITHM)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
     if (comboBox == &scaleRoot)
-        processor.getIntParam(SCALE_ROOT)->updateProcessorAndHostFromUi(comboBox->getSelectedId());
+        processor.getIntParam(SCALE_ROOT)->updateProcessorAndHostFromUi(comboBox->getSelectedId() - 1);
     if (comboBox == &lfoShape)
         processor.getIntParam(LFO_SHAPE)->updateProcessorAndHostFromUi(comboBox->getSelectedId() - 1);
 }
@@ -292,7 +297,7 @@ void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
 void Wx100AudioProcessorEditor::buttonClicked(Button* button)
 {
     if (button == &scale)
-        DialogWindow::showDialog("Scala File", &tuningEditor, &tuningEditor, Colours::white, true);
+        DialogWindow::showDialog("Scala File", &tuningEditor, &tuningEditor, Colours::white, false);
 }
 
 
@@ -383,7 +388,7 @@ void Wx100AudioProcessorEditor::timerCallback()
     }
     intParam = processor.getIntParam(SCALE_ROOT);
     if (&scaleRoot && intParam->updateUiRequested()){
-        scaleRoot.setSelectedId(intParam->uiGet(), dontSendNotification);
+        scaleRoot.setSelectedId(intParam->uiGet() + 1, dontSendNotification);
     }
     intParam = processor.getIntParam(LFO_SHAPE);
     if (&lfoShape && intParam->updateUiRequested()){
