@@ -81,6 +81,7 @@ private:
     TextButton scale;
     ComboBox scaleRoot;
     Wx100TuningEditor tuningEditor;
+    Component::SafePointer<Component> editorWindow;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100AudioProcessorEditor)
 };

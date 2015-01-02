@@ -192,6 +192,9 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
 
 Wx100AudioProcessorEditor::~Wx100AudioProcessorEditor()
 {
+    if (editorWindow) {
+        editorWindow.deleteAndZero();
+    }
 }
 
 //==============================================================================
@@ -297,7 +300,10 @@ void Wx100AudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
 void Wx100AudioProcessorEditor::buttonClicked(Button* button)
 {
     if (button == &scale)
-        DialogWindow::showDialog("Scala File", &tuningEditor, &tuningEditor, Colours::white, false);
+    {
+        DialogWindow::showDialog("Scala File", &tuningEditor, &tuningEditor, Colours::white, true);
+        editorWindow = Component::SafePointer<Component> (tuningEditor.findParentComponentOfClass<DialogWindow>());
+    }
 }
 
 
