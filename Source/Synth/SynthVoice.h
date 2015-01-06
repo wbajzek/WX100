@@ -43,6 +43,10 @@ public:
         envelope.trigger();
     }
     
+    void triggerRelease() {
+        envelope.triggerRelease();
+    }
+    
     void setPhase(float phase)
     {
         oscillator.setPhase(phase);
@@ -63,9 +67,9 @@ public:
         oscillator.setFm(amount);
     }
     
-    void tick(bool keyIsDown)
+    void tick()
     {
-        currentAmplitude = envelope.tick(keyIsDown);
+        currentAmplitude = envelope.tick();
         if (currentAmplitude > 0.0)
             if ((currentAmplitude *= velocity) > 0.0)
                 currentSample = oscillator.tick() * currentAmplitude;

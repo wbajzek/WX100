@@ -106,6 +106,8 @@ void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVeloc
 
 void Wx100SynthVoice::stopNote (float velocity, const bool allowTailOff)
 {
+    for (int i = 0; i < numOperators; ++i)
+        operators[i].triggerRelease();
 }
 
 Frequency Wx100SynthVoice::calculateFrequency(int currentPitchWheelPosition)
@@ -134,7 +136,6 @@ void Wx100SynthVoice::controllerMoved (const int controllerNumber, const int new
 void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
     const int numChannels = outputBuffer.getNumChannels();
-    bool keyIsDown = isKeyDown();
     Amplitude sample;
     while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)
     {
@@ -144,7 +145,7 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
             outputBuffer.addSample(i, startSample, sample);
 
         for (int i = 0; i < numOperators; ++i)
-            operators[i].tick(keyIsDown);
+            operators[i].tick();
         
         lfo.tick();
         ++startSample;

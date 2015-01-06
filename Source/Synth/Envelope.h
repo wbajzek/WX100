@@ -49,8 +49,18 @@ public:
     {
         envelopeState = ATTACK_STATE;
         samplesSinceTrigger = 0;
+        if (attackSamples == 0)
+        {
+            envLevel = 1.0;
+            envIncrement = 0.0;
+            triggerDecay();
+        }
+        else
+        {
+            envIncrement = 1.0 / attackSamples;
+        }
     }
-
+    
     void triggerDecay()
     {
         envelopeState = DECAY_STATE;
@@ -63,40 +73,23 @@ public:
         envCoefficient = getSegmentCoefficient(envLevel, 0.0, releaseSamples);
     }
     
-    Amplitude tick(bool keyIsDown) {
+    Amplitude tick() {
         switch (envelopeState)
         {
             case ATTACK_STATE:
-                if (attackSamples == 0)
-                {
-                    envLevel = 1.0;
-                    envIncrement = 0.0;
+                if (samplesSinceTrigger > attackSamples)
                     triggerDecay();
-                }
-                else
-                {
-                    if (samplesSinceTrigger == 0)
-                        envIncrement = 1.0 / attackSamples;
-                    else if (samplesSinceTrigger > attackSamples)
-                        triggerDecay();
-
-                    if (!keyIsDown)
-                        triggerRelease();
-                    envLevel += envIncrement;
-                }
+                
+                envLevel += envIncrement;
                 
                 break;
             case DECAY_STATE:
                 if (samplesSinceTrigger > attackSamples + decaySamples)
                     envelopeState = SUSTAIN_STATE;
-                else if (!keyIsDown)
-                    triggerRelease();
                 else
                     envLevel += envCoefficient * envLevel;
                 break;
             case SUSTAIN_STATE:
-                if (!keyIsDown)
-                    triggerRelease();
                 break;
             case RELEASE_STATE:
                 envLevel += envCoefficient * envLevel;
@@ -132,11 +125,11 @@ public:
     int envelopeState = DEAD_STATE;
     
     enum EnvelopeState {
-        DEAD_STATE,
         ATTACK_STATE,
         DECAY_STATE,
         SUSTAIN_STATE,
         RELEASE_STATE,
+        DEAD_STATE,
     };
     
 private:
