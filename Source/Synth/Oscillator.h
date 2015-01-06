@@ -30,8 +30,11 @@ public:
     
     void setFrequency(Frequency newFrequency)
     {
-        frequency = newFrequency;
-        increment = (long)(frqTI * frequency) << 16;
+        if (frequency != newFrequency)
+        {
+            frequency = newFrequency;
+            increment = (long)(frqTI * frequency) << 16;
+        }
     }
     
     Frequency getFrequency() {
@@ -56,13 +59,8 @@ public:
     
     Amplitude tick()
     {
-        jassert(sampleRate > 0);
-        jassert(frqTI > 0);
+        int scaledIndex = (((index+0x8000) >> 16) + (int)(waveTableLength * fm)) & (waveTableLength - 1);
 
-        int scaledIndex = ((index+0x8000) >> 16) ;
-        scaledIndex = (int)(scaledIndex + (waveTableLength * fm)) % waveTableLength;
-        
-        jassert(scaledIndex < waveTableLength);
         switch (waveTableShape)
         {
             case SINE_WAVE_TABLE:
@@ -83,7 +81,7 @@ public:
             default:
                 break;
         }
-        jassert(value <= 1.0);
+
         index = index + increment & ((waveTableLength << 16) - 1);
         return value;
     }

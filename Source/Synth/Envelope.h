@@ -97,7 +97,6 @@ public:
                 triggerSustain();
             else if (envelopeState != ATTACK_STATE && envLevel <= 0.001)
                 triggerDead();
-            
         }
         return envLevel;
     }
