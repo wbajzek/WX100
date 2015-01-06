@@ -51,6 +51,18 @@ public:
         samplesSinceTrigger = 0;
     }
 
+    void triggerDecay()
+    {
+        envelopeState = DECAY_STATE;
+        envCoefficient = getSegmentCoefficient(envLevel, adsr.sustainLevel, decaySamples);
+    }
+    
+    void triggerRelease()
+    {
+        envelopeState = RELEASE_STATE;
+        envCoefficient = getSegmentCoefficient(envLevel, 0.0, releaseSamples);
+    }
+    
     Amplitude tick(bool keyIsDown) {
         switch (envelopeState)
         {
@@ -59,24 +71,17 @@ public:
                 {
                     envLevel = 1.0;
                     envIncrement = 0.0;
-                    envelopeState = DECAY_STATE;
-                    envCoefficient = getSegmentCoefficient(envLevel, adsr.sustainLevel, decaySamples);
+                    triggerDecay();
                 }
                 else
                 {
                     if (samplesSinceTrigger == 0)
                         envIncrement = 1.0 / attackSamples;
                     else if (samplesSinceTrigger > attackSamples)
-                    {
-                        envelopeState = DECAY_STATE;
-                        envCoefficient = getSegmentCoefficient(envLevel, adsr.sustainLevel, decaySamples);
-                    }
+                        triggerDecay();
 
                     if (!keyIsDown)
-                    {
-                        envelopeState = RELEASE_STATE;
-                        envCoefficient = getSegmentCoefficient(envLevel, 0.0, releaseSamples);
-                    }
+                        triggerRelease();
                     envLevel += envIncrement;
                 }
                 
@@ -85,19 +90,13 @@ public:
                 if (samplesSinceTrigger > attackSamples + decaySamples)
                     envelopeState = SUSTAIN_STATE;
                 else if (!keyIsDown)
-                {
-                    envelopeState = RELEASE_STATE;
-                    envCoefficient = getSegmentCoefficient(envLevel, 0.0, releaseSamples);
-                }
+                    triggerRelease();
                 else
                     envLevel += envCoefficient * envLevel;
                 break;
             case SUSTAIN_STATE:
                 if (!keyIsDown)
-                {
-                    envelopeState = RELEASE_STATE;
-                    envCoefficient = getSegmentCoefficient(envLevel, 0.0, releaseSamples);
-                }
+                    triggerRelease();
                 break;
             case RELEASE_STATE:
                 envLevel += envCoefficient * envLevel;
