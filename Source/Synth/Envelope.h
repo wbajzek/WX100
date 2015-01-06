@@ -48,7 +48,6 @@ public:
     void trigger()
     {
         envelopeState = ATTACK_STATE;
-        samplesSinceTrigger = 0;
         if (attackSamples == 0)
         {
             envLevel = 1.0;
@@ -58,57 +57,48 @@ public:
         else
         {
             envIncrement = 1.0 / attackSamples;
+            envCoefficient = 0.0;
         }
     }
     
     void triggerDecay()
     {
         envelopeState = DECAY_STATE;
+        envIncrement = 0.0;
         envCoefficient = getSegmentCoefficient(envLevel, adsr.sustainLevel, decaySamples);
+    }
+    
+    void triggerSustain()
+    {
+        envLevel = adsr.sustainLevel;
+        envIncrement = 0.0;
+        envCoefficient = 0.0;
     }
     
     void triggerRelease()
     {
         envelopeState = RELEASE_STATE;
+        envIncrement = 0.0;
         envCoefficient = getSegmentCoefficient(envLevel, 0.0, releaseSamples);
     }
     
+    void triggerDead()
+    {
+        envelopeState = DEAD_STATE;
+        envLevel = 0.0;
+    }
+
     Amplitude tick() {
-        switch (envelopeState)
-        {
-            case ATTACK_STATE:
-                if (samplesSinceTrigger > attackSamples)
-                    triggerDecay();
-                
-                envLevel += envIncrement;
-                
-                break;
-            case DECAY_STATE:
-                if (samplesSinceTrigger > attackSamples + decaySamples)
-                    envelopeState = SUSTAIN_STATE;
-                else
-                    envLevel += envCoefficient * envLevel;
-                break;
-            case SUSTAIN_STATE:
-                break;
-            case RELEASE_STATE:
-                envLevel += envCoefficient * envLevel;
-                if (envLevel < 0.001)
-                {
-                    envelopeState = DEAD_STATE;
-                    envLevel = 0.0;
-                    // caller will need to clear current note
-                }
-                break;
-            case DEAD_STATE:
-                break;
+        if (envelopeState != DEAD_STATE) {
+            envLevel += envIncrement + (envCoefficient * envLevel);
+            if (envLevel >= 1.0)
+                triggerDecay();
+            else if (envelopeState == DECAY_STATE && envLevel <= adsr.sustainLevel)
+                triggerSustain();
+            else if (envelopeState != ATTACK_STATE && envLevel <= 0.001)
+                triggerDead();
+            
         }
-        if (envLevel > 1.0)
-            envLevel = 1.0;
-        if (envLevel < 0.0)
-            envLevel = 0.0;
-        
-        samplesSinceTrigger++;
         return envLevel;
     }
     
@@ -119,7 +109,7 @@ public:
     
     bool isActive() const
     {
-        return envelopeState;
+        return envelopeState != DEAD_STATE;
     }
 
     int envelopeState = DEAD_STATE;
@@ -147,7 +137,6 @@ private:
         releaseSamples = sampleRate * adsr.release;
     }
     
-    unsigned long samplesSinceTrigger = 0;
     Frequency sampleRate = 0.0;
     Amplitude envLevel = 0.0;
     float envCoefficient = 0.0;
