@@ -84,6 +84,30 @@ Wx100AdvancedEditor::Wx100AdvancedEditor (Wx100AudioProcessor& newProcessor)
 
 
     //[Constructor] You can add your own custom stuff here..
+    StringArray scaleRootLabels;
+    for (int i = 0; i < 9; i++)
+    {
+        scaleRootLabels.add(String("C") += i);
+        scaleRootLabels.add(String("C#") += i);
+        scaleRootLabels.add(String("D") += i);
+        scaleRootLabels.add(String("D#") += i);
+        scaleRootLabels.add(String("E") += i);
+        scaleRootLabels.add(String("F") += i);
+        scaleRootLabels.add(String("F#") += i);
+        scaleRootLabels.add(String("G") += i);
+        scaleRootLabels.add(String("G#") += i);
+        scaleRootLabels.add(String("A") += i);
+        scaleRootLabels.add(String("A#") += i);
+        scaleRootLabels.add(String("B") += i);
+    }
+    scaleRoot->setItemEnabled(0, false);
+    scaleRoot->setEditableText(false);
+    scaleRoot->addItemList(scaleRootLabels, 1);
+    scaleRoot->setWantsKeyboardFocus(false);
+
+    voiceCount->setItemEnabled(0, false);
+    voiceCount->setEditableText(false);
+
     scaleEditor->addListener(this);
     processor.updateUi(true,true);
     timerCallback();
@@ -141,6 +165,7 @@ void Wx100AdvancedEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == scaleRoot)
     {
         //[UserComboBoxCode_scaleRoot] -- add your combo box handling code here..
+        processor.getIntParam(SCALE_ROOT)->updateProcessorAndHostFromUi(comboBoxThatHasChanged->getSelectedId() - 1);
         //[/UserComboBoxCode_scaleRoot]
     }
     else if (comboBoxThatHasChanged == voiceCount)
@@ -185,6 +210,10 @@ void Wx100AdvancedEditor::timerCallback()
     StringParam *param = processor.getStringParam(SCALE);
     if (&scaleEditor && param->updateUiRequested()){
         scaleEditor->setText (param->uiGet(), dontSendNotification);
+    }
+    IntParam *intParam = processor.getIntParam(SCALE_ROOT);
+    if (&scaleRoot && intParam->updateUiRequested()){
+        scaleRoot->setSelectedId(intParam->uiGet() + 1, dontSendNotification);
     }
 }
 //[/MiscUserCode]

@@ -259,6 +259,14 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
 
 
     //[Constructor] You can add your own custom stuff here..
+    amp->setScrollWheelEnabled(false);
+    ratio->setScrollWheelEnabled(false);
+    detune->setScrollWheelEnabled(false);
+    phase->setScrollWheelEnabled(false);
+    attack->setScrollWheelEnabled(false);
+    decay->setScrollWheelEnabled(false);
+    sustain->setScrollWheelEnabled(false);
+    release->setScrollWheelEnabled(false);
     //[/Constructor]
 }
 

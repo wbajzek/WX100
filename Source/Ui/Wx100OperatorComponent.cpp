@@ -235,6 +235,14 @@ Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorN
 
 
     //[Constructor] You can add your own custom stuff here..
+    amp->setScrollWheelEnabled(false);
+    ratio->setScrollWheelEnabled(false);
+    detune->setScrollWheelEnabled(false);
+    phase->setScrollWheelEnabled(false);
+    attack->setScrollWheelEnabled(false);
+    decay->setScrollWheelEnabled(false);
+    sustain->setScrollWheelEnabled(false);
+    release->setScrollWheelEnabled(false);
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
