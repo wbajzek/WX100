@@ -28,7 +28,7 @@
 
 //==============================================================================
 Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, int newOperatorNumber, Wx100AudioProcessor &newProcessor)
-    : operatorNumber(newOperatorNumber), processor(newProcessor)
+    : processor(newProcessor), operatorNumber(newOperatorNumber)
 {
     addAndMakeVisible (groupComponent = new GroupComponent ("operatorGroup",
                                                             TRANS("Operator")));
@@ -457,7 +457,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="Wx100FeedbackOperatorComponent"
                  componentName="" parentClasses="public Component, public SliderListener, public Timer"
                  constructorParams="String newName, int newOperatorNumber, Wx100AudioProcessor &amp;newProcessor"
-                 variableInitialisers="operatorNumber(newOperatorNumber), processor(newProcessor)"
+                 variableInitialisers="processor(newProcessor), operatorNumber(newOperatorNumber)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="656" initialHeight="112">
   <BACKGROUND backgroundColour="ff2b2b2b"/>

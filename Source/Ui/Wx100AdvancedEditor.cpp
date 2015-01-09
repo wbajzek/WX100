@@ -28,17 +28,17 @@
 
 //==============================================================================
 Wx100AdvancedEditor::Wx100AdvancedEditor (Wx100AudioProcessor& newProcessor)
-    : AudioProcessorEditor(processor),
+    : AudioProcessorEditor(newProcessor),
       processor(newProcessor)
 {
-    addAndMakeVisible (textEditor = new TextEditor ("new text editor"));
-    textEditor->setMultiLine (false);
-    textEditor->setReturnKeyStartsNewLine (false);
-    textEditor->setReadOnly (false);
-    textEditor->setScrollbarsShown (true);
-    textEditor->setCaretVisible (true);
-    textEditor->setPopupMenuEnabled (true);
-    textEditor->setText (String::empty);
+    addAndMakeVisible (scaleEditor = new TextEditor ("scaleEditor"));
+    scaleEditor->setMultiLine (true);
+    scaleEditor->setReturnKeyStartsNewLine (true);
+    scaleEditor->setReadOnly (false);
+    scaleEditor->setScrollbarsShown (true);
+    scaleEditor->setCaretVisible (true);
+    scaleEditor->setPopupMenuEnabled (true);
+    scaleEditor->setText (String::empty);
 
     addAndMakeVisible (scaleLabel = new Label ("scaleLabel",
                                                TRANS("Scala editor")));
@@ -84,6 +84,10 @@ Wx100AdvancedEditor::Wx100AdvancedEditor (Wx100AudioProcessor& newProcessor)
 
 
     //[Constructor] You can add your own custom stuff here..
+    scaleEditor->addListener(this);
+    processor.updateUi(true,true);
+    timerCallback();
+    startTimer(50);
     //[/Constructor]
 }
 
@@ -92,7 +96,7 @@ Wx100AdvancedEditor::~Wx100AdvancedEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    textEditor = nullptr;
+    scaleEditor = nullptr;
     scaleLabel = nullptr;
     scaleRoot = nullptr;
     voiceCount = nullptr;
@@ -120,11 +124,11 @@ void Wx100AdvancedEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    textEditor->setBounds (16, 32, 152, 432);
+    scaleEditor->setBounds (16, 32, 376, 432);
     scaleLabel->setBounds (16, 8, 150, 24);
     scaleRoot->setBounds (16, 472, 150, 24);
-    voiceCount->setBounds (192, 32, 72, 24);
-    voiceCountLabel->setBounds (192, 8, 150, 24);
+    voiceCount->setBounds (400, 32, 72, 24);
+    voiceCountLabel->setBounds (400, 8, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -152,6 +156,37 @@ void Wx100AdvancedEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+/** Called when the user changes the text in some way. */
+void Wx100AdvancedEditor::textEditorTextChanged (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+/** Called when the user presses the return key. */
+void Wx100AdvancedEditor::textEditorReturnKeyPressed (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+/** Called when the user presses the escape key. */
+void Wx100AdvancedEditor::textEditorEscapeKeyPressed (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+/** Called when the text editor loses focus. */
+void Wx100AdvancedEditor::textEditorFocusLost (TextEditor& editor)
+{
+    processor.getStringParam(SCALE)->updateProcessorAndHostFromUi(editor.getText());
+}
+
+void Wx100AdvancedEditor::timerCallback()
+{
+    StringParam *param = processor.getStringParam(SCALE);
+    if (&scaleEditor && param->updateUiRequested()){
+        scaleEditor->setText (param->uiGet(), dontSendNotification);
+    }
+}
 //[/MiscUserCode]
 
 
@@ -165,14 +200,14 @@ void Wx100AdvancedEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Wx100AdvancedEditor" componentName=""
-                 parentClasses="public AudioProcessorEditor" constructorParams="Wx100AudioProcessor&amp; newProcessor"
-                 variableInitialisers="AudioProcessorEditor(processor),&#10;processor(newProcessor)"
+                 parentClasses="public AudioProcessorEditor, public TextEditorListener, public ComboBoxListener, public Timer"
+                 constructorParams="Wx100AudioProcessor&amp; newProcessor" variableInitialisers="AudioProcessorEditor(newProcessor),&#10;processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="690" initialHeight="510">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <TEXTEDITOR name="new text editor" id="a2cf9598d5ec2ef3" memberName="textEditor"
-              virtualName="" explicitFocusOrder="0" pos="16 32 152 432" initialText=""
-              multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
+  <TEXTEDITOR name="scaleEditor" id="a2cf9598d5ec2ef3" memberName="scaleEditor"
+              virtualName="" explicitFocusOrder="0" pos="16 32 376 432" initialText=""
+              multiline="1" retKeyStartsLine="1" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
   <LABEL name="scaleLabel" id="c56fba7a12a5d00f" memberName="scaleLabel"
          virtualName="" explicitFocusOrder="0" pos="16 8 150 24" edTextCol="ff000000"
@@ -183,11 +218,11 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="16 472 150 24" editable="0"
             layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="voiceCount" id="7029ad1eb9ac7e7e" memberName="voiceCount"
-            virtualName="" explicitFocusOrder="0" pos="192 32 72 24" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="400 32 72 24" editable="0"
             layout="33" items="1&#10;2&#10;4&#10;8&#10;16&#10;24" textWhenNonSelected=""
             textWhenNoItems="(no choices)"/>
   <LABEL name="voiceCountLabel" id="ee14fa6c0211c07a" memberName="voiceCountLabel"
-         virtualName="" explicitFocusOrder="0" pos="192 8 150 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="400 8 150 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Voices" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>

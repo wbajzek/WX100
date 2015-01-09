@@ -22,8 +22,8 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "Wx100AudioProcessor.h"
 #include "Wx100Editor.h"
+class Wx100AudioProcessor;
 //[/Headers]
 
 

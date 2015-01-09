@@ -22,7 +22,8 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-class Wx100AudioProcessor;
+#include "Wx100.h"
+#include "Wx100AudioProcessor.h"
 //[/Headers]
 
 
@@ -36,7 +37,9 @@ class Wx100AudioProcessor;
                                                                     //[/Comments]
 */
 class Wx100AdvancedEditor  : public AudioProcessorEditor,
-                             public ComboBoxListener
+                             public TextEditorListener,
+                             public ComboBoxListener,
+                             public Timer
 {
 public:
     //==============================================================================
@@ -45,6 +48,11 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void textEditorTextChanged (TextEditor& editor);
+    void textEditorReturnKeyPressed (TextEditor&);
+    void textEditorEscapeKeyPressed (TextEditor&);
+    void textEditorFocusLost (TextEditor&);
+    void timerCallback();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -55,11 +63,11 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Wx100AudioProcessor &processor;
+    Wx100AudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<TextEditor> textEditor;
+    ScopedPointer<TextEditor> scaleEditor;
     ScopedPointer<Label> scaleLabel;
     ScopedPointer<ComboBox> scaleRoot;
     ScopedPointer<ComboBox> voiceCount;
