@@ -85,25 +85,25 @@ void Wx100AlgorithmSelector::paint (Graphics& g)
 
     g.setColour (Colours::azure);
     g.setFont (Font (28.60f, Font::plain));
-    g.drawText (TRANS("A"),
+    g.drawText (TRANS("D"),
                 40, 40, 40, 40,
                 Justification::centred, true);
 
     g.setColour (Colours::azure);
     g.setFont (Font (28.60f, Font::plain));
-    g.drawText (TRANS("B"),
+    g.drawText (TRANS("C"),
                 40, 160, 40, 40,
                 Justification::centred, true);
 
     g.setColour (Colours::azure);
     g.setFont (Font (28.60f, Font::plain));
-    g.drawText (TRANS("C"),
+    g.drawText (TRANS("B"),
                 40, 280, 40, 40,
                 Justification::centred, true);
 
     g.setColour (Colours::azure);
     g.setFont (Font (28.60f, Font::plain));
-    g.drawText (TRANS("D"),
+    g.drawText (TRANS("A"),
                 40, 400, 40, 40,
                 Justification::centred, true);
 
@@ -148,16 +148,16 @@ BEGIN_JUCER_METADATA
           strokeColour="solid: ff00ff19"/>
     <RECT pos="40 400 40 40" fill="solid: 7f00a809" hasStroke="1" stroke="5, mitered, butt"
           strokeColour="solid: ff00ff19"/>
-    <TEXT pos="40 40 40 40" fill="solid: fff0ffff" hasStroke="0" text="A"
+    <TEXT pos="40 40 40 40" fill="solid: fff0ffff" hasStroke="0" text="D"
           fontname="Default font" fontsize="28.600000000000001421" bold="0"
           italic="0" justification="36"/>
-    <TEXT pos="40 160 40 40" fill="solid: fff0ffff" hasStroke="0" text="B"
+    <TEXT pos="40 160 40 40" fill="solid: fff0ffff" hasStroke="0" text="C"
           fontname="Default font" fontsize="28.600000000000001421" bold="0"
           italic="0" justification="36"/>
-    <TEXT pos="40 280 40 40" fill="solid: fff0ffff" hasStroke="0" text="C"
+    <TEXT pos="40 280 40 40" fill="solid: fff0ffff" hasStroke="0" text="B"
           fontname="Default font" fontsize="28.600000000000001421" bold="0"
           italic="0" justification="36"/>
-    <TEXT pos="40 400 40 40" fill="solid: fff0ffff" hasStroke="0" text="D"
+    <TEXT pos="40 400 40 40" fill="solid: fff0ffff" hasStroke="0" text="A"
           fontname="Default font" fontsize="28.600000000000001421" bold="0"
           italic="0" justification="36"/>
   </BACKGROUND>

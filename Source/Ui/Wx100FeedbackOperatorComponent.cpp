@@ -27,7 +27,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String name, int operatorNumber, Wx100AudioProcessor &processor)
+Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, int newOperatorNumber, Wx100AudioProcessor &newProcessor)
+    : operatorNumber(newOperatorNumber), processor(newProcessor)
 {
     addAndMakeVisible (groupComponent = new GroupComponent ("operatorGroup",
                                                             TRANS("Operator")));
@@ -227,7 +228,7 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String name, int
     phaseLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (feedback = new Slider ("feedback"));
-    feedback->setRange (0.001, 20, 0.001);
+    feedback->setRange (0, 1, 0.01);
     feedback->setSliderStyle (Slider::RotaryVerticalDrag);
     feedback->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     feedback->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
@@ -339,56 +340,108 @@ void Wx100FeedbackOperatorComponent::sliderValueChanged (Slider* sliderThatWasMo
     if (sliderThatWasMoved == amp)
     {
         //[UserSliderCode_amp] -- add your slider handling code here..
+        processor.getFloatParam(AMP_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_amp]
     }
     else if (sliderThatWasMoved == ratio)
     {
         //[UserSliderCode_ratio] -- add your slider handling code here..
+        processor.getFloatParam(RATIO_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_ratio]
     }
     else if (sliderThatWasMoved == detune)
     {
         //[UserSliderCode_detune] -- add your slider handling code here..
+        processor.getFloatParam(TUNING_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_detune]
     }
     else if (sliderThatWasMoved == attack)
     {
         //[UserSliderCode_attack] -- add your slider handling code here..
+        processor.getFloatParam(ATTACK_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_attack]
     }
     else if (sliderThatWasMoved == decay)
     {
         //[UserSliderCode_decay] -- add your slider handling code here..
+        processor.getFloatParam(DECAY_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_decay]
     }
     else if (sliderThatWasMoved == sustain)
     {
         //[UserSliderCode_sustain] -- add your slider handling code here..
+        processor.getFloatParam(SUSTAIN_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_sustain]
     }
     else if (sliderThatWasMoved == release)
     {
         //[UserSliderCode_release] -- add your slider handling code here..
+        processor.getFloatParam(RELEASE_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_release]
     }
     else if (sliderThatWasMoved == phase)
     {
         //[UserSliderCode_phase] -- add your slider handling code here..
+        processor.getFloatParam(PHASE_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_phase]
     }
     else if (sliderThatWasMoved == feedback)
     {
         //[UserSliderCode_feedback] -- add your slider handling code here..
+        // only one with feedback
+        processor.getFloatParam(FEEDBACK_3)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_feedback]
     }
 
     //[UsersliderValueChanged_Post]
+    processor.updateUi(true,true);
+    timerCallback();
+    startTimer(50);
     //[/UsersliderValueChanged_Post]
 }
 
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void Wx100FeedbackOperatorComponent::timerCallback()
+{
+    FloatParam *param = processor.getFloatParam(AMP_0 + operatorNumber);
+    if (&amp && param->updateUiRequested()){
+        amp->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(TUNING_0 + operatorNumber);
+    if (&detune && param->updateUiRequested()){
+        detune->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(ATTACK_0 + operatorNumber);
+    if (&attack && param->updateUiRequested()){
+        attack->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(DECAY_0 + operatorNumber);
+    if (&decay && param->updateUiRequested()){
+        decay->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(SUSTAIN_0 + operatorNumber);
+    if (&sustain && param->updateUiRequested()){
+        sustain->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(RELEASE_0 + operatorNumber);
+    if (&release && param->updateUiRequested()){
+        release->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(PHASE_0 + operatorNumber);
+    if (&phase && param->updateUiRequested()){
+        phase->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(RATIO_0 + operatorNumber);
+    if (&ratio && param->updateUiRequested()){
+        ratio->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(FEEDBACK_3);
+    if (&feedback && param->updateUiRequested()){
+        feedback->setValue (param->uiGet(), dontSendNotification);
+    }
+}
 //[/MiscUserCode]
 
 
@@ -403,9 +456,10 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Wx100FeedbackOperatorComponent"
                  componentName="" parentClasses="public Component, public SliderListener, public Timer"
-                 constructorParams="String name, int operatorNumber, Wx100AudioProcessor &amp;processor"
-                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330" fixedSize="1" initialWidth="656" initialHeight="112">
+                 constructorParams="String newName, int newOperatorNumber, Wx100AudioProcessor &amp;newProcessor"
+                 variableInitialisers="operatorNumber(newOperatorNumber), processor(newProcessor)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="1" initialWidth="656" initialHeight="112">
   <BACKGROUND backgroundColour="ff2b2b2b"/>
   <GROUPCOMPONENT name="operatorGroup" id="508e4f8731ff05d0" memberName="groupComponent"
                   virtualName="" explicitFocusOrder="0" pos="0 0 656 112" outlinecol="7f00a809"
@@ -510,9 +564,9 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="584 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
           trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
           textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="20"
-          int="0.0010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textboxoutline="ffffff" min="0" max="1" int="0.010000000000000000208"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="feedbackLabel" id="7be64f4c15964aaf" memberName="feedbackLabel"
          virtualName="" explicitFocusOrder="0" pos="568 16 72 24" textCol="ff00ff19"
          edTextCol="ff000000" edBkgCol="0" labelText="Feedback" editableSingleClick="0"

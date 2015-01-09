@@ -27,7 +27,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-Wx100OperatorComponent::Wx100OperatorComponent (String name, int operatorNumber, Wx100AudioProcessor &processor)
+Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorNumber, Wx100AudioProcessor &newProcessor)
+    : operatorNumber(newOperatorNumber), processor(newProcessor)
 {
     addAndMakeVisible (groupComponent1 = new GroupComponent ("operatorGroup1",
                                                              TRANS("Operator")));
@@ -234,6 +235,9 @@ Wx100OperatorComponent::Wx100OperatorComponent (String name, int operatorNumber,
 
 
     //[Constructor] You can add your own custom stuff here..
+    processor.updateUi(true,true);
+    timerCallback();
+    startTimer(50);
     //[/Constructor]
 }
 
@@ -311,41 +315,49 @@ void Wx100OperatorComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == amp)
     {
         //[UserSliderCode_amp] -- add your slider handling code here..
+        processor.getFloatParam(AMP_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_amp]
     }
     else if (sliderThatWasMoved == detune)
     {
         //[UserSliderCode_detune] -- add your slider handling code here..
+        processor.getFloatParam(TUNING_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_detune]
     }
     else if (sliderThatWasMoved == attack)
     {
         //[UserSliderCode_attack] -- add your slider handling code here..
+        processor.getFloatParam(ATTACK_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_attack]
     }
     else if (sliderThatWasMoved == decay)
     {
         //[UserSliderCode_decay] -- add your slider handling code here..
+        processor.getFloatParam(DECAY_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_decay]
     }
     else if (sliderThatWasMoved == sustain)
     {
         //[UserSliderCode_sustain] -- add your slider handling code here..
+        processor.getFloatParam(SUSTAIN_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_sustain]
     }
     else if (sliderThatWasMoved == release)
     {
         //[UserSliderCode_release] -- add your slider handling code here..
+        processor.getFloatParam(RELEASE_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_release]
     }
     else if (sliderThatWasMoved == phase)
     {
         //[UserSliderCode_phase] -- add your slider handling code here..
+        processor.getFloatParam(PHASE_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_phase]
     }
     else if (sliderThatWasMoved == ratio)
     {
         //[UserSliderCode_ratio] -- add your slider handling code here..
+        processor.getFloatParam(RATIO_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_ratio]
     }
 
@@ -356,6 +368,41 @@ void Wx100OperatorComponent::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void Wx100OperatorComponent::timerCallback()
+{
+    FloatParam *param = processor.getFloatParam(AMP_0 + operatorNumber);
+    if (&amp && param->updateUiRequested()){
+        amp->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(TUNING_0 + operatorNumber);
+    if (&detune && param->updateUiRequested()){
+        detune->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(ATTACK_0 + operatorNumber);
+    if (&attack && param->updateUiRequested()){
+        attack->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(DECAY_0 + operatorNumber);
+    if (&decay && param->updateUiRequested()){
+        decay->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(SUSTAIN_0 + operatorNumber);
+    if (&sustain && param->updateUiRequested()){
+        sustain->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(RELEASE_0 + operatorNumber);
+    if (&release && param->updateUiRequested()){
+        release->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(PHASE_0 + operatorNumber);
+    if (&phase && param->updateUiRequested()){
+        phase->setValue (param->uiGet(), dontSendNotification);
+    }
+    param = processor.getFloatParam(RATIO_0 + operatorNumber);
+    if (&ratio && param->updateUiRequested()){
+        ratio->setValue (param->uiGet(), dontSendNotification);
+    }
+}
 //[/MiscUserCode]
 
 
@@ -370,9 +417,10 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Wx100OperatorComponent" componentName=""
                  parentClasses="public Component, public SliderListener, public Timer"
-                 constructorParams="String name, int operatorNumber, Wx100AudioProcessor &amp;processor"
-                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330" fixedSize="1" initialWidth="552" initialHeight="112">
+                 constructorParams="String newName, int newOperatorNumber, Wx100AudioProcessor &amp;newProcessor"
+                 variableInitialisers="operatorNumber(newOperatorNumber), processor(newProcessor)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="1" initialWidth="552" initialHeight="112">
   <BACKGROUND backgroundColour="ff2b2b2b"/>
   <GROUPCOMPONENT name="operatorGroup1" id="557eadee78372da9" memberName="groupComponent1"
                   virtualName="" explicitFocusOrder="0" pos="0 0 552 112" outlinecol="7f00a809"

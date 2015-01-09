@@ -42,12 +42,12 @@ class Wx100FeedbackOperatorComponent  : public Component,
 {
 public:
     //==============================================================================
-    Wx100FeedbackOperatorComponent (String name, int operatorNumber, Wx100AudioProcessor &processor);
+    Wx100FeedbackOperatorComponent (String newName, int newOperatorNumber, Wx100AudioProcessor &newProcessor);
     ~Wx100FeedbackOperatorComponent();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void timerCallback() {};
+    void timerCallback();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -58,6 +58,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Wx100AudioProcessor& processor;
+    int operatorNumber = 0;
     //[/UserVariables]
 
     //==============================================================================
