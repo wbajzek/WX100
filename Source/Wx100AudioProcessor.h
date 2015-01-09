@@ -14,6 +14,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Wx100Synthesiser.h"
 #include "Wx100.h"
+#include "Wx100Window.h"
 
 
 //==============================================================================

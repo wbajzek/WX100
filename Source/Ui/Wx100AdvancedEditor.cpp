@@ -27,7 +27,9 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-Wx100AdvancedEditor::Wx100AdvancedEditor ()
+Wx100AdvancedEditor::Wx100AdvancedEditor (Wx100AudioProcessor& newProcessor)
+    : AudioProcessorEditor(processor),
+      processor(newProcessor)
 {
     addAndMakeVisible (textEditor = new TextEditor ("new text editor"));
     textEditor->setMultiLine (false);
@@ -163,7 +165,8 @@ void Wx100AdvancedEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Wx100AdvancedEditor" componentName=""
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
+                 parentClasses="public AudioProcessorEditor" constructorParams="Wx100AudioProcessor&amp; newProcessor"
+                 variableInitialisers="AudioProcessorEditor(processor),&#10;processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="690" initialHeight="510">
   <BACKGROUND backgroundColour="ffffffff"/>

@@ -9,7 +9,6 @@
 */
 
 #include "Wx100AudioProcessor.h"
-#include "Wx100SynthEditor.h"
 
 //==============================================================================
 Wx100AudioProcessor::Wx100AudioProcessor()
@@ -240,7 +239,7 @@ bool Wx100AudioProcessor::hasEditor() const
 
 AudioProcessorEditor* Wx100AudioProcessor::createEditor()
 {
-    return new Wx100SynthEditor (*this);
+    return new Wx100Window (*this);
 }
 
 //==============================================================================
