@@ -30,6 +30,8 @@ public:
 class Wx100Synthesiser : public Synthesiser
 {
 public:
+    void refreshCurrentPlaybackSampleRate ();
+
 protected:
     /** Chooses a voice that is most suitable for being re-used.
      The default method will attempt to find the oldest voice that isn't the

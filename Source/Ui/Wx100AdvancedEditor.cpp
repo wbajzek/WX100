@@ -60,12 +60,6 @@ Wx100AdvancedEditor::Wx100AdvancedEditor (Wx100AudioProcessor& newProcessor)
     voiceCount->setJustificationType (Justification::centredLeft);
     voiceCount->setTextWhenNothingSelected (String::empty);
     voiceCount->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    voiceCount->addItem (TRANS("1"), 1);
-    voiceCount->addItem (TRANS("2"), 2);
-    voiceCount->addItem (TRANS("4"), 3);
-    voiceCount->addItem (TRANS("8"), 4);
-    voiceCount->addItem (TRANS("16"), 5);
-    voiceCount->addItem (TRANS("24"), 6);
     voiceCount->addListener (this);
 
     addAndMakeVisible (voiceCountLabel = new Label ("voiceCountLabel",
@@ -106,6 +100,13 @@ Wx100AdvancedEditor::Wx100AdvancedEditor (Wx100AudioProcessor& newProcessor)
     scaleRoot->setWantsKeyboardFocus(false);
 
     voiceCount->setItemEnabled(0, false);
+    voiceCount->addItem("1",1);
+    voiceCount->addItem("2",2);
+    voiceCount->addItem("4",4);
+    voiceCount->addItem("8",8);
+    voiceCount->addItem("16",16);
+    voiceCount->addItem("24",24);
+    voiceCount->addItem("32",32);
     voiceCount->setEditableText(false);
 
     scaleEditor->addListener(this);
@@ -171,6 +172,7 @@ void Wx100AdvancedEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     else if (comboBoxThatHasChanged == voiceCount)
     {
         //[UserComboBoxCode_voiceCount] -- add your combo box handling code here..
+        processor.getIntParam(VOICE_COUNT)->updateProcessorAndHostFromUi(comboBoxThatHasChanged->getSelectedId());
         //[/UserComboBoxCode_voiceCount]
     }
 
@@ -215,6 +217,10 @@ void Wx100AdvancedEditor::timerCallback()
     if (&scaleRoot && intParam->updateUiRequested()){
         scaleRoot->setSelectedId(intParam->uiGet() + 1, dontSendNotification);
     }
+    intParam = processor.getIntParam(VOICE_COUNT);
+    if (&voiceCount && intParam->updateUiRequested()){
+        voiceCount->setSelectedId(intParam->uiGet(), dontSendNotification);
+    }
 }
 //[/MiscUserCode]
 
@@ -248,8 +254,7 @@ BEGIN_JUCER_METADATA
             layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="voiceCount" id="7029ad1eb9ac7e7e" memberName="voiceCount"
             virtualName="" explicitFocusOrder="0" pos="400 32 72 24" editable="0"
-            layout="33" items="1&#10;2&#10;4&#10;8&#10;16&#10;24" textWhenNonSelected=""
-            textWhenNoItems="(no choices)"/>
+            layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <LABEL name="voiceCountLabel" id="ee14fa6c0211c07a" memberName="voiceCountLabel"
          virtualName="" explicitFocusOrder="0" pos="400 8 150 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Voices" editableSingleClick="0" editableDoubleClick="0"

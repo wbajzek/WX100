@@ -50,6 +50,15 @@ SynthesiserVoice* Wx100Synthesiser::findVoiceToSteal (SynthesiserSound* soundToP
     return usableVoices[voices.size()-1];
 }
 
+void Wx100Synthesiser::refreshCurrentPlaybackSampleRate ()
+{
+    double sampleRate = getSampleRate();
+
+    allNotesOff (0, false);
+
+    for (int i = voices.size(); --i >= 0;)
+        voices.getUnchecked (i)->setCurrentPlaybackSampleRate (sampleRate);
+}
 
 Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *lfoShape, int *scaleRoot, Frequency *tuningTable)
 {

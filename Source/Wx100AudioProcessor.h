@@ -60,6 +60,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     void initParameters();
+    void initVoices();
 
 private:
     //==============================================================================
@@ -72,6 +73,7 @@ private:
     String scale = "";
     int scaleRoot = 1;
     int lfoShape = 0;
+    int voiceCount;
 
     void initScale();
 

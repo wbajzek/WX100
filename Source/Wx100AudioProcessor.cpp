@@ -34,19 +34,16 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     algorithm = 1;
     scale = "";
     scaleRoot = 60;
+    voiceCount = 32;
     
     initAllParameters();
 
     synth.addSound(new Wx100SynthSound());
-    for (int i = 0; i < 16; ++i)
-    {
-        Wx100SynthVoice *voice = new Wx100SynthVoice(parameters, &algorithm, &lfoShape, &scaleRoot, tuningTable);
-        addActionListener(voice);
-        synth.addVoice(voice);
-    }
+
     sendActionMessage("LFO Frequency");
     sendActionMessage("LFO Shape");
     initScale();
+    initVoices();
     synth.setNoteStealingEnabled(true);
 }
 
@@ -124,6 +121,24 @@ void Wx100AudioProcessor::initParameters()
     addFloatParam(LFO_AMP_AMOUNT, "Lfo_Amp_Amount", true, SAVE, &parameters[LFO_AMP_AMOUNT], 0.0, 1.0);
     addFloatParam(LFO_PITCH_AMOUNT, "Lfo_Pitch_Amount", true, SAVE, &parameters[LFO_PITCH_AMOUNT], 0.0, 1.0);
     addFloatParam(LFO_INIT_PHASE, "Lfo_Init_Phase", true, SAVE, &parameters[LFO_INIT_PHASE], 0.0, 1.0);
+    addIntParam(VOICE_COUNT, "Voice_Count", true, SAVE, &voiceCount, 1, 32);
+}
+
+void Wx100AudioProcessor::initVoices()
+{
+    synth.clearVoices();
+    removeAllActionListeners();
+
+    for (int i = 0; i < voiceCount; i++)
+    {
+        Wx100SynthVoice *voice = new Wx100SynthVoice(parameters, &algorithm, &lfoShape, &scaleRoot, tuningTable);
+        addActionListener(voice);
+        synth.addVoice(voice);
+    }
+
+    // make sure all the voices know the current sample rate
+    synth.refreshCurrentPlaybackSampleRate ();
+    sendActionMessage("Amplitudes");
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)
@@ -191,6 +206,8 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
         case LFO_SHAPE:
             sendActionMessage("LFO Shape");
             break;
+        case VOICE_COUNT:
+            initVoices();
         case SCALE:
         case SCALE_ROOT:
             initScale();
@@ -264,6 +281,7 @@ void Wx100AudioProcessor::setStateInformation (const void* data, int sizeInBytes
         //Update the parameter values from the preloaded XML values
         updateProcessorHostAndUiFromXml(true,true,true);
         initScale();
+        initVoices();
     }
 }
 

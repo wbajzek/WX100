@@ -56,6 +56,7 @@ enum params
     LFO_AMP_AMOUNT,
     LFO_PITCH_AMOUNT,
     LFO_INIT_PHASE,
+    VOICE_COUNT,
     NUMBER_OF_PARAMETERS
 };
 
