@@ -23,6 +23,7 @@
 class Wx100RatioSlider : public Slider
 {
 public:
+    Wx100RatioSlider(String name    ) {}
     Wx100RatioSlider() {}
     ~Wx100RatioSlider() {}
     
@@ -62,8 +63,9 @@ private:
     // access the processor object that created it.
     Wx100AudioProcessor& processor;
 
+    LookAndFeel_V3 wx100LookAndFeel;
     Slider amp[numOperators];
-    Wx100RatioSlider ratio[numOperators];
+    Slider ratio[numOperators];
     Slider tuning[numOperators];
     Slider attack[numOperators];
     Slider decay[numOperators];

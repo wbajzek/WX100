@@ -18,8 +18,26 @@ Wx100AudioProcessorEditor::Wx100AudioProcessorEditor (Wx100AudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p), tuningEditor(this)
 {
 
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
+    
+    wx100LookAndFeel.setColour(Slider::rotarySliderOutlineColourId, Colours::green);
+    wx100LookAndFeel.setColour(Slider::rotarySliderFillColourId, Colours::greenyellow);
+    wx100LookAndFeel.setColour(Slider::textBoxTextColourId, Colours::green);
+    wx100LookAndFeel.setColour(TextEditor::textColourId, Colours::greenyellow);
+    wx100LookAndFeel.setColour(Slider::textBoxOutlineColourId, Colours::transparentWhite);
+    wx100LookAndFeel.setColour(Slider::textBoxBackgroundColourId, Colours::transparentWhite);
+    wx100LookAndFeel.setColour(Label::textColourId, Colours::green);
+    wx100LookAndFeel.setColour(GroupComponent::outlineColourId, Colours::green);
+    wx100LookAndFeel.setColour(TextButton::buttonColourId, Colours::green);
+    wx100LookAndFeel.setColour(TextButton::buttonOnColourId, Colours::greenyellow);
+    wx100LookAndFeel.setColour(TextButton::textColourOnId, Colours::white);
+    wx100LookAndFeel.setColour(TextButton::textColourOffId, Colours::white);
+    wx100LookAndFeel.setColour(ComboBox::backgroundColourId, Colours::transparentWhite);
+    wx100LookAndFeel.setColour(ComboBox::textColourId, Colours::green);
+    wx100LookAndFeel.setColour(ComboBox::arrowColourId, Colours::green);
+    wx100LookAndFeel.setColour(ComboBox::outlineColourId, Colours::green);
+    wx100LookAndFeel.setColour(ComboBox::buttonColourId, Colours::green);
+    LookAndFeel::setDefaultLookAndFeel(&wx100LookAndFeel);
+    
     
     setSize (590, 415);
     for (int i = 0; i < numOperators; ++i)
@@ -200,9 +218,9 @@ Wx100AudioProcessorEditor::~Wx100AudioProcessorEditor()
 //==============================================================================
 void Wx100AudioProcessorEditor::paint (Graphics& g)
 {
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff2b2b2b));
 
-    g.setColour (Colours::black);
+    g.setColour (Colours::green);
     g.setFont (15.0f);
     
     int left = 20;

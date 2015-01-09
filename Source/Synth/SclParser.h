@@ -33,7 +33,9 @@ public:
         }
         
         // If SCL is invalid, default to standard 12EDO
-        if (lines.size() < 3)        {
+
+        if (lines.size() < 3)
+        {
             for (int i = 1; i < 128; ++i)
                 frequencies[i] = 8.1758 * pow(2.0, i * 100.0 / 1200.0); // in cents above root
             return;

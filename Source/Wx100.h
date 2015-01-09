@@ -11,8 +11,6 @@
 #ifndef WX100_H_INCLUDED
 #define WX100_H_INCLUDED
 
-#include "Scales.h"
-
 const int numOperators = 4;
 
 enum params
