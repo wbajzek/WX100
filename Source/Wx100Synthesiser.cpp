@@ -157,7 +157,8 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
     Amplitude sample = 0.0;
     for (int i = 0; i < numOperators; ++i)
     {
-        operators[i].setFrequency(freq * (localParameters[RATIO_0 + i] + localParameters[TUNING_0 + i]));
+        Frequency ratioFreq = freq * localParameters[RATIO_0 + i];
+        operators[i].setFrequency(ratioFreq + (ratioFreq * pow(2.0, localParameters[TUNING_0 + i] / 4.0))); // 4.0 for reasonable range
     }
     // last operator always feeds back
     operators[3].setFm(operators[3].currentSample * localParameters[FEEDBACK_3]);
