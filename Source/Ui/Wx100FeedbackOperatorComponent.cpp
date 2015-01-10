@@ -267,6 +267,9 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     decay->setScrollWheelEnabled(false);
     sustain->setScrollWheelEnabled(false);
     release->setScrollWheelEnabled(false);
+    processor.updateUi(true,true);
+    timerCallback();
+    startTimer(50);
     //[/Constructor]
 }
 
