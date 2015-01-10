@@ -178,7 +178,7 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& processor)
     addAndMakeVisible (component3 = new Wx100OperatorComponent ("Operator 2", 1, processor));
     addAndMakeVisible (component4 = new Wx100OperatorComponent ("Operator 3", 2, processor));
     addAndMakeVisible (component = new Wx100FeedbackOperatorComponent ("Operator 4", 3, processor));
-    addAndMakeVisible (component5 = new Wx100AlgorithmSelector());
+    addAndMakeVisible (component5 = new Wx100AlgorithmSelector (processor));
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -253,7 +253,7 @@ void Wx100SynthEditor::resized()
     component3->setBounds (128, 256, 552, 112);
     component4->setBounds (128, 136, 552, 112);
     component->setBounds (128, 16, 656, 112);
-    component5->setBounds (8, 16, 112, 468);
+    component5->setBounds (8, 16, 112, 480);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -411,8 +411,8 @@ BEGIN_JUCER_METADATA
              explicitFocusOrder="0" pos="128 16 656 112" sourceFile="Wx100FeedbackOperatorComponent.cpp"
              constructorParams="&quot;Operator 4&quot;, 3, processor"/>
   <JUCERCOMP name="" id="1f2c10ddb5238693" memberName="component5" virtualName=""
-             explicitFocusOrder="0" pos="8 16 112 468" sourceFile="Wx100AlgorithmSelector.cpp"
-             constructorParams=""/>
+             explicitFocusOrder="0" pos="8 16 112 480" sourceFile="Wx100AlgorithmSelector.cpp"
+             constructorParams="processor"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

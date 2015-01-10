@@ -34,28 +34,33 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class Wx100AlgorithmSelector  : public Component
+class Wx100AlgorithmSelector  : public Component,
+                                public ComboBoxListener,
+                                public Timer
 {
 public:
     //==============================================================================
-    Wx100AlgorithmSelector ();
+    Wx100AlgorithmSelector (Wx100AudioProcessor &newProcessor);
     ~Wx100AlgorithmSelector();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void timerCallback();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    int algorithm = 0;
+    Wx100AudioProcessor &processor;
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<ComboBox> algorithm;
 
 
     //==============================================================================
