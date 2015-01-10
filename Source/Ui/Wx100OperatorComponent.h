@@ -63,7 +63,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<GroupComponent> groupComponent1;
+    ScopedPointer<GroupComponent> groupComponent;
     ScopedPointer<Slider> amp;
     ScopedPointer<Label> ampLabel;
     ScopedPointer<Label> ratioLabel;

@@ -267,6 +267,7 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     decay->setScrollWheelEnabled(false);
     sustain->setScrollWheelEnabled(false);
     release->setScrollWheelEnabled(false);
+    groupComponent->setText("");
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -405,9 +406,6 @@ void Wx100FeedbackOperatorComponent::sliderValueChanged (Slider* sliderThatWasMo
     }
 
     //[UsersliderValueChanged_Post]
-    processor.updateUi(true,true);
-    timerCallback();
-    startTimer(50);
     //[/UsersliderValueChanged_Post]
 }
 

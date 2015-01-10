@@ -31,10 +31,10 @@ class Wx100AudioProcessor;
 Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorNumber, Wx100AudioProcessor &newProcessor)
     : operatorNumber(newOperatorNumber), processor(newProcessor)
 {
-    addAndMakeVisible (groupComponent1 = new GroupComponent ("operatorGroup1",
-                                                             TRANS("Operator")));
-    groupComponent1->setColour (GroupComponent::outlineColourId, Colour (0x7f00a809));
-    groupComponent1->setColour (GroupComponent::textColourId, Colour (0xff00ff19));
+    addAndMakeVisible (groupComponent = new GroupComponent ("operatorGroup1",
+                                                            TRANS("Operator")));
+    groupComponent->setColour (GroupComponent::outlineColourId, Colour (0x7f00a809));
+    groupComponent->setColour (GroupComponent::textColourId, Colour (0xff00ff19));
 
     addAndMakeVisible (amp = new Slider ("amp"));
     amp->setRange (0, 1, 0.01);
@@ -244,6 +244,7 @@ Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorN
     decay->setScrollWheelEnabled(false);
     sustain->setScrollWheelEnabled(false);
     release->setScrollWheelEnabled(false);
+    groupComponent->setText("");
     processor.updateUi(true,true);
     timerCallback();
     startTimer(50);
@@ -255,7 +256,7 @@ Wx100OperatorComponent::~Wx100OperatorComponent()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    groupComponent1 = nullptr;
+    groupComponent = nullptr;
     amp = nullptr;
     ampLabel = nullptr;
     ratioLabel = nullptr;
@@ -295,7 +296,7 @@ void Wx100OperatorComponent::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    groupComponent1->setBounds (0, 0, 552, 112);
+    groupComponent->setBounds (0, 0, 552, 112);
     amp->setBounds (24, 40, 39, 56);
     ampLabel->setBounds (16, 16, 56, 24);
     ratioLabel->setBounds (72, 16, 56, 24);
@@ -431,7 +432,7 @@ BEGIN_JUCER_METADATA
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="552" initialHeight="112">
   <BACKGROUND backgroundColour="ff2b2b2b"/>
-  <GROUPCOMPONENT name="operatorGroup1" id="557eadee78372da9" memberName="groupComponent1"
+  <GROUPCOMPONENT name="operatorGroup1" id="557eadee78372da9" memberName="groupComponent"
                   virtualName="" explicitFocusOrder="0" pos="0 0 552 112" outlinecol="7f00a809"
                   textcol="ff00ff19" title="Operator"/>
   <SLIDER name="amp" id="b3a99d3a9fb93a88" memberName="amp" virtualName=""
