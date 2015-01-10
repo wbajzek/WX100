@@ -30,7 +30,7 @@
 
 //==============================================================================
 Wx100Window::Wx100Window (Wx100AudioProcessor &newProcessor)
-    : AudioProcessorEditor(processor),
+    : AudioProcessorEditor(newProcessor),
       processor(newProcessor)
 {
     addAndMakeVisible (tabbedComponent = new TabbedComponent (TabbedButtonBar::TabsAtTop));
@@ -101,7 +101,7 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Wx100Window" componentName=""
                  parentClasses="public AudioProcessorEditor" constructorParams="Wx100AudioProcessor &amp;newProcessor"
-                 variableInitialisers="AudioProcessorEditor(processor),&#10;processor(newProcessor)"
+                 variableInitialisers="AudioProcessorEditor(newProcessor),&#10;processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="800" initialHeight="536">
   <BACKGROUND backgroundColour="ffffffff"/>
