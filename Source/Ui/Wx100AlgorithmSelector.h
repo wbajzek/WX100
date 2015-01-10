@@ -48,15 +48,11 @@ public:
     void paint (Graphics& g);
     void resized();
 
-    // Binary resources:
-    static const char* yamahadx100390575_jpg;
-    static const int yamahadx100390575_jpgSize;
-    static const char* algorithms_png;
-    static const int algorithms_pngSize;
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    int algorithm = 0;
     //[/UserVariables]
 
     //==============================================================================
