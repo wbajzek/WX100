@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+class Wx100AudioProcessor;
 //[/Headers]
 
 #include "Wx100OperatorComponent.h"

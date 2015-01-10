@@ -17,7 +17,9 @@
 class Wx100RatioSlider : public Slider
 {
 public:
-    Wx100RatioSlider(String name    ) {}
+    Wx100RatioSlider(String name)
+    {
+    }
     Wx100RatioSlider() {}
     ~Wx100RatioSlider() {}
     
@@ -29,6 +31,8 @@ public:
             snappedValue = ratios[++i];
         return snappedValue;
     }
+private:
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wx100RatioSlider)
 };
 

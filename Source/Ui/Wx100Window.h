@@ -22,6 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
+#include "Wx100LookAndFeel.h"
 class Wx100AudioProcessor;
 //[/Headers]
 
@@ -54,6 +55,7 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     Wx100AudioProcessor& processor;
+    Wx100LookAndFeel laf;
     //[/UserVariables]
 
     //==============================================================================

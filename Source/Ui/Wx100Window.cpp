@@ -41,6 +41,10 @@ Wx100Window::Wx100Window (Wx100AudioProcessor &newProcessor)
 
 
     //[UserPreSize]
+    laf.setColour(Slider::rotarySliderFillColourId, Colours::white);
+    laf.setColour(Label::textColourId, Colours::white);
+    LookAndFeel::setDefaultLookAndFeel(&laf);
+    sendLookAndFeelChange();
     //[/UserPreSize]
 
     setSize (800, 536);

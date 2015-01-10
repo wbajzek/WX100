@@ -13,6 +13,8 @@
   <MAINGROUP id="EhwrY7" name="WX100">
     <GROUP id="{69FBD483-99EB-2D7B-15F4-6F444F697660}" name="Source">
       <GROUP id="{8A179D6A-EE6E-72B4-6C22-1A9E0D0C38CA}" name="Ui">
+        <FILE id="fy2Uqv" name="Wx100LookAndFeel.h" compile="0" resource="0"
+              file="Source/Ui/Wx100LookAndFeel.h"/>
         <FILE id="vR92HM" name="Wx100RatioSlider.h" compile="0" resource="0"
               file="Source/Ui/Wx100RatioSlider.h"/>
         <FILE id="ZugxHO" name="Wx100Window.cpp" compile="1" resource="0" file="Source/Ui/Wx100Window.cpp"/>
