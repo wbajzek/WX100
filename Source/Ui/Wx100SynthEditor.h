@@ -39,16 +39,18 @@
                                                                     //[/Comments]
 */
 class Wx100SynthEditor  : public AudioProcessorEditor,
+                          public Timer,
                           public SliderListener,
                           public ComboBoxListener
 {
 public:
     //==============================================================================
-    Wx100SynthEditor (Wx100AudioProcessor& processor);
+    Wx100SynthEditor (Wx100AudioProcessor& newProcessor);
     ~Wx100SynthEditor();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void timerCallback();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -60,6 +62,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Wx100AudioProcessor &processor;
     //[/UserVariables]
 
     //==============================================================================
@@ -74,8 +77,8 @@ private:
     ScopedPointer<Slider> lfoInitPhase;
     ScopedPointer<Label> lfoShapeLabel;
     ScopedPointer<Label> lfoSyncLabel;
-    ScopedPointer<ComboBox> lfoShapeComboBox;
-    ScopedPointer<ComboBox> lfoShapeComboBox2;
+    ScopedPointer<ComboBox> lfoShape;
+    ScopedPointer<ComboBox> lfoSync;
     ScopedPointer<Wx100OperatorComponent> component2;
     ScopedPointer<Wx100OperatorComponent> component3;
     ScopedPointer<Wx100OperatorComponent> component4;

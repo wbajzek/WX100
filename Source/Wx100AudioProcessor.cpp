@@ -282,6 +282,8 @@ void Wx100AudioProcessor::setStateInformation (const void* data, int sizeInBytes
         updateProcessorHostAndUiFromXml(true,true,true);
         initScale();
         initVoices();
+        sendActionMessage("LFO Frequency");
+        sendActionMessage("LFO Shape");
     }
 }
 

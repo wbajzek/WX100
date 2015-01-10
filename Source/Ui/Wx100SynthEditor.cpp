@@ -29,8 +29,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& processor)
-    : AudioProcessorEditor(processor)
+Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
+    : AudioProcessorEditor(newProcessor), processor(newProcessor)
 {
     addAndMakeVisible (lfoGroupComponent = new GroupComponent ("lfoGroup",
                                                                TRANS("LFO")));
@@ -152,27 +152,27 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& processor)
     lfoSyncLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoSyncLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (lfoShapeComboBox = new ComboBox ("lfoShapeComboBox"));
-    lfoShapeComboBox->setEditableText (false);
-    lfoShapeComboBox->setJustificationType (Justification::centredLeft);
-    lfoShapeComboBox->setTextWhenNothingSelected (String::empty);
-    lfoShapeComboBox->setTextWhenNoChoicesAvailable (String::empty);
-    lfoShapeComboBox->addItem (TRANS("sine"), 1);
-    lfoShapeComboBox->addItem (TRANS("triangle"), 2);
-    lfoShapeComboBox->addItem (TRANS("saw"), 3);
-    lfoShapeComboBox->addItem (TRANS("ramp"), 4);
-    lfoShapeComboBox->addItem (TRANS("square"), 5);
-    lfoShapeComboBox->addItem (TRANS("noise"), 6);
-    lfoShapeComboBox->addListener (this);
+    addAndMakeVisible (lfoShape = new ComboBox ("lfoShape"));
+    lfoShape->setEditableText (false);
+    lfoShape->setJustificationType (Justification::centredLeft);
+    lfoShape->setTextWhenNothingSelected (String::empty);
+    lfoShape->setTextWhenNoChoicesAvailable (String::empty);
+    lfoShape->addItem (TRANS("sine"), 1);
+    lfoShape->addItem (TRANS("triangle"), 2);
+    lfoShape->addItem (TRANS("saw"), 3);
+    lfoShape->addItem (TRANS("ramp"), 4);
+    lfoShape->addItem (TRANS("square"), 5);
+    lfoShape->addItem (TRANS("noise"), 6);
+    lfoShape->addListener (this);
 
-    addAndMakeVisible (lfoShapeComboBox2 = new ComboBox ("lfoShapeComboBox"));
-    lfoShapeComboBox2->setEditableText (false);
-    lfoShapeComboBox2->setJustificationType (Justification::centredLeft);
-    lfoShapeComboBox2->setTextWhenNothingSelected (String::empty);
-    lfoShapeComboBox2->setTextWhenNoChoicesAvailable (String::empty);
-    lfoShapeComboBox2->addItem (TRANS("Off"), 1);
-    lfoShapeComboBox2->addItem (TRANS("On"), 2);
-    lfoShapeComboBox2->addListener (this);
+    addAndMakeVisible (lfoSync = new ComboBox ("lfoShape"));
+    lfoSync->setEditableText (false);
+    lfoSync->setJustificationType (Justification::centredLeft);
+    lfoSync->setTextWhenNothingSelected (String::empty);
+    lfoSync->setTextWhenNoChoicesAvailable (String::empty);
+    lfoSync->addItem (TRANS("Off"), 1);
+    lfoSync->addItem (TRANS("On"), 2);
+    lfoSync->addListener (this);
 
     addAndMakeVisible (component2 = new Wx100OperatorComponent ("Operator 1", 0, processor));
     addAndMakeVisible (component3 = new Wx100OperatorComponent ("Operator 2", 1, processor));
@@ -187,6 +187,13 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& processor)
 
 
     //[Constructor] You can add your own custom stuff here..
+    lfoShape->setItemEnabled(0, false);
+    lfoShape->addListener(this);
+    lfoSync->setItemEnabled(0, false);
+    lfoSync->addListener(this);
+    processor.updateUi(true,true);
+    timerCallback();
+    startTimer(50);
     //[/Constructor]
 }
 
@@ -206,8 +213,8 @@ Wx100SynthEditor::~Wx100SynthEditor()
     lfoInitPhase = nullptr;
     lfoShapeLabel = nullptr;
     lfoSyncLabel = nullptr;
-    lfoShapeComboBox = nullptr;
-    lfoShapeComboBox2 = nullptr;
+    lfoShape = nullptr;
+    lfoSync = nullptr;
     component2 = nullptr;
     component3 = nullptr;
     component4 = nullptr;
@@ -247,8 +254,8 @@ void Wx100SynthEditor::resized()
     lfoInitPhase->setBounds (720, 352, 39, 24);
     lfoShapeLabel->setBounds (704, 384, 72, 24);
     lfoSyncLabel->setBounds (704, 432, 72, 24);
-    lfoShapeComboBox->setBounds (712, 408, 56, 16);
-    lfoShapeComboBox2->setBounds (712, 456, 56, 16);
+    lfoShape->setBounds (712, 408, 56, 16);
+    lfoSync->setBounds (712, 456, 56, 16);
     component2->setBounds (128, 376, 552, 112);
     component3->setBounds (128, 256, 552, 112);
     component4->setBounds (128, 136, 552, 112);
@@ -266,21 +273,25 @@ void Wx100SynthEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == lfoFreq)
     {
         //[UserSliderCode_lfoFreq] -- add your slider handling code here..
+        processor.getFloatParam(LFO_FREQ)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_lfoFreq]
     }
     else if (sliderThatWasMoved == lfoAmpMod)
     {
         //[UserSliderCode_lfoAmpMod] -- add your slider handling code here..
+        processor.getFloatParam(LFO_AMP_AMOUNT)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_lfoAmpMod]
     }
     else if (sliderThatWasMoved == lfoPitchWheel)
     {
         //[UserSliderCode_lfoPitchWheel] -- add your slider handling code here..
+        processor.getFloatParam(LFO_PITCH_AMOUNT)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_lfoPitchWheel]
     }
     else if (sliderThatWasMoved == lfoInitPhase)
     {
         //[UserSliderCode_lfoInitPhase] -- add your slider handling code here..
+        processor.getFloatParam(LFO_INIT_PHASE)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_lfoInitPhase]
     }
 
@@ -293,15 +304,16 @@ void Wx100SynthEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[UsercomboBoxChanged_Pre]
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == lfoShapeComboBox)
+    if (comboBoxThatHasChanged == lfoShape)
     {
-        //[UserComboBoxCode_lfoShapeComboBox] -- add your combo box handling code here..
-        //[/UserComboBoxCode_lfoShapeComboBox]
+        //[UserComboBoxCode_lfoShape] -- add your combo box handling code here..
+        processor.getIntParam(LFO_SHAPE)->updateProcessorAndHostFromUi(comboBoxThatHasChanged->getSelectedId() - 1);
+        //[/UserComboBoxCode_lfoShape]
     }
-    else if (comboBoxThatHasChanged == lfoShapeComboBox2)
+    else if (comboBoxThatHasChanged == lfoSync)
     {
-        //[UserComboBoxCode_lfoShapeComboBox2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_lfoShapeComboBox2]
+        //[UserComboBoxCode_lfoSync] -- add your combo box handling code here..
+        //[/UserComboBoxCode_lfoSync]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -311,6 +323,29 @@ void Wx100SynthEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void Wx100SynthEditor::timerCallback()
+{
+    FloatParam *param=processor.getFloatParam(LFO_FREQ);
+    if (&lfoFreq && param->updateUiRequested()){
+        lfoFreq->setValue (param->uiGet(), dontSendNotification);
+    }
+    param=processor.getFloatParam(LFO_AMP_AMOUNT);
+    if (&lfoAmpMod && param->updateUiRequested()){
+        lfoAmpMod->setValue (param->uiGet(), dontSendNotification);
+    }
+    param=processor.getFloatParam(LFO_PITCH_AMOUNT);
+    if (&lfoPitchWheel && param->updateUiRequested()){
+        lfoPitchWheel->setValue (param->uiGet(), dontSendNotification);
+    }
+    param=processor.getFloatParam(LFO_INIT_PHASE);
+    if (&lfoInitPhase && param->updateUiRequested()){
+        lfoInitPhase->setValue (param->uiGet(), dontSendNotification);
+    }
+    IntParam *intParam = processor.getIntParam(LFO_SHAPE);
+    if (&lfoShape && intParam->updateUiRequested()){
+        lfoShape->setSelectedId(intParam->uiGet() + 1, dontSendNotification);
+    }
+}
 //[/MiscUserCode]
 
 
@@ -324,10 +359,10 @@ void Wx100SynthEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Wx100SynthEditor" componentName=""
-                 parentClasses="public AudioProcessorEditor" constructorParams="Wx100AudioProcessor&amp; processor"
-                 variableInitialisers="AudioProcessorEditor(processor)" snapPixels="8"
-                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
-                 initialWidth="800" initialHeight="510">
+                 parentClasses="public AudioProcessorEditor, public Timer" constructorParams="Wx100AudioProcessor&amp; newProcessor"
+                 variableInitialisers="AudioProcessorEditor(newProcessor), processor(newProcessor)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="1" initialWidth="800" initialHeight="510">
   <BACKGROUND backgroundColour="ff2b2b2b"/>
   <GROUPCOMPONENT name="lfoGroup" id="aba28bb1757b0546" memberName="lfoGroupComponent"
                   virtualName="" explicitFocusOrder="0" pos="696 136 88 352" outlinecol="7f00a809"
@@ -391,13 +426,13 @@ BEGIN_JUCER_METADATA
          edTextCol="ff000000" edBkgCol="0" labelText="Sync" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
-  <COMBOBOX name="lfoShapeComboBox" id="51612512185d500b" memberName="lfoShapeComboBox"
-            virtualName="" explicitFocusOrder="0" pos="712 408 56 16" editable="0"
-            layout="33" items="sine&#10;triangle&#10;saw&#10;ramp&#10;square&#10;noise"
+  <COMBOBOX name="lfoShape" id="51612512185d500b" memberName="lfoShape" virtualName=""
+            explicitFocusOrder="0" pos="712 408 56 16" editable="0" layout="33"
+            items="sine&#10;triangle&#10;saw&#10;ramp&#10;square&#10;noise"
             textWhenNonSelected="" textWhenNoItems=""/>
-  <COMBOBOX name="lfoShapeComboBox" id="e7048a05607d62e0" memberName="lfoShapeComboBox2"
-            virtualName="" explicitFocusOrder="0" pos="712 456 56 16" editable="0"
-            layout="33" items="Off&#10;On" textWhenNonSelected="" textWhenNoItems=""/>
+  <COMBOBOX name="lfoShape" id="e7048a05607d62e0" memberName="lfoSync" virtualName=""
+            explicitFocusOrder="0" pos="712 456 56 16" editable="0" layout="33"
+            items="Off&#10;On" textWhenNonSelected="" textWhenNoItems=""/>
   <JUCERCOMP name="" id="fc9691fa991bdf63" memberName="component2" virtualName=""
              explicitFocusOrder="0" pos="128 376 552 112" sourceFile="Wx100OperatorComponent.cpp"
              constructorParams="&quot;Operator 1&quot;, 0, processor"/>
