@@ -22,7 +22,6 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "Wx100Editor.h"
 //[/Headers]
 
 #include "Wx100OperatorComponent.h"

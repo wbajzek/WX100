@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "Wx100Editor.h"
+#include "Wx100RatioSlider.h"
 class Wx100AudioProcessor;
 //[/Headers]
 
