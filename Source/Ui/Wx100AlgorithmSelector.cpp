@@ -79,58 +79,63 @@ void Wx100AlgorithmSelector::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff2b2b2b));
+    g.fillAll (Colours::white);
 
-    g.setColour (Colour (0x7f00a809));
+    //[UserPaint] Add your own custom painting code here..
+
+    Colour fillColour = Colours::lightgrey;
+    Colour borderColour = Colours::darkgrey;
+    Colour textColour = Colours::black;
+
+    g.setColour (fillColour);
     g.fillRect (40, 40, 40, 40);
 
-    g.setColour (Colour (0xff00ff19));
+    g.setColour (borderColour);
     g.drawRect (40, 40, 40, 40, 5);
 
-    g.setColour (Colour (0x7f00a809));
+    g.setColour (fillColour);
     g.fillRect (40, 160, 40, 40);
 
-    g.setColour (Colour (0xff00ff19));
+    g.setColour (borderColour);
     g.drawRect (40, 160, 40, 40, 5);
 
-    g.setColour (Colour (0x7f00a809));
+    g.setColour (fillColour);
     g.fillRect (40, 280, 40, 40);
 
-    g.setColour (Colour (0xff00ff19));
+    g.setColour (borderColour);
     g.drawRect (40, 280, 40, 40, 5);
 
-    g.setColour (Colour (0x7f00a809));
+    g.setColour (fillColour);
     g.fillRect (40, 400, 40, 40);
 
-    g.setColour (Colour (0xff00ff19));
+    g.setColour (borderColour);
     g.drawRect (40, 400, 40, 40, 5);
 
-    g.setColour (Colours::azure);
+    g.setColour (borderColour);
     g.setFont (Font (28.60f, Font::plain));
     g.drawText (TRANS("D"),
                 40, 40, 40, 40,
                 Justification::centred, true);
 
-    g.setColour (Colours::azure);
+    g.setColour (borderColour);
     g.setFont (Font (28.60f, Font::plain));
     g.drawText (TRANS("C"),
                 40, 160, 40, 40,
                 Justification::centred, true);
 
-    g.setColour (Colours::azure);
+    g.setColour (borderColour);
     g.setFont (Font (28.60f, Font::plain));
     g.drawText (TRANS("B"),
                 40, 280, 40, 40,
                 Justification::centred, true);
 
-    g.setColour (Colours::azure);
+    g.setColour (borderColour);
     g.setFont (Font (28.60f, Font::plain));
     g.drawText (TRANS("A"),
                 40, 400, 40, 40,
                 Justification::centred, true);
 
-    //[UserPaint] Add your own custom painting code here..
-    g.setColour(Colour (0x7f00a809));
+    g.setColour(fillColour);
     // operator 4 feedback
     g.drawLine(Line<float>(60,40,60,22), 4);
     g.drawLine(Line<float>(58,20,102,20), 4);
@@ -240,28 +245,7 @@ BEGIN_JUCER_METADATA
                  constructorParams="Wx100AudioProcessor &amp;newProcessor" variableInitialisers="processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="112" initialHeight="472">
-  <BACKGROUND backgroundColour="ff2b2b2b">
-    <RECT pos="40 40 40 40" fill="solid: 7f00a809" hasStroke="1" stroke="5, mitered, butt"
-          strokeColour="solid: ff00ff19"/>
-    <RECT pos="40 160 40 40" fill="solid: 7f00a809" hasStroke="1" stroke="5, mitered, butt"
-          strokeColour="solid: ff00ff19"/>
-    <RECT pos="40 280 40 40" fill="solid: 7f00a809" hasStroke="1" stroke="5, mitered, butt"
-          strokeColour="solid: ff00ff19"/>
-    <RECT pos="40 400 40 40" fill="solid: 7f00a809" hasStroke="1" stroke="5, mitered, butt"
-          strokeColour="solid: ff00ff19"/>
-    <TEXT pos="40 40 40 40" fill="solid: fff0ffff" hasStroke="0" text="D"
-          fontname="Default font" fontsize="28.600000000000001421" bold="0"
-          italic="0" justification="36"/>
-    <TEXT pos="40 160 40 40" fill="solid: fff0ffff" hasStroke="0" text="C"
-          fontname="Default font" fontsize="28.600000000000001421" bold="0"
-          italic="0" justification="36"/>
-    <TEXT pos="40 280 40 40" fill="solid: fff0ffff" hasStroke="0" text="B"
-          fontname="Default font" fontsize="28.600000000000001421" bold="0"
-          italic="0" justification="36"/>
-    <TEXT pos="40 400 40 40" fill="solid: fff0ffff" hasStroke="0" text="A"
-          fontname="Default font" fontsize="28.600000000000001421" bold="0"
-          italic="0" justification="36"/>
-  </BACKGROUND>
+  <BACKGROUND backgroundColour="ffffffff"/>
   <COMBOBOX name="algorithm" id="2d5ee64c3083b8c0" memberName="algorithm"
             virtualName="" explicitFocusOrder="0" pos="32 456 56 16" editable="0"
             layout="33" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"

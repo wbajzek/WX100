@@ -32,22 +32,11 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
 {
     addAndMakeVisible (groupComponent = new GroupComponent ("operatorGroup",
                                                             TRANS("Operator")));
-    groupComponent->setColour (GroupComponent::outlineColourId, Colour (0x7f00a809));
-    groupComponent->setColour (GroupComponent::textColourId, Colour (0xff00ff19));
 
     addAndMakeVisible (amp = new Slider ("amp"));
     amp->setRange (0, 1, 0.01);
     amp->setSliderStyle (Slider::RotaryVerticalDrag);
     amp->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    amp->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    amp->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    amp->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    amp->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    amp->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    amp->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    amp->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    amp->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    amp->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     amp->addListener (this);
 
     addAndMakeVisible (ampLabel = new Label ("ampLabel",
@@ -55,7 +44,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     ampLabel->setFont (Font (15.00f, Font::plain));
     ampLabel->setJustificationType (Justification::centred);
     ampLabel->setEditable (false, false, false);
-    ampLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     ampLabel->setColour (TextEditor::textColourId, Colours::black);
     ampLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -63,15 +51,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     ratio->setRange (0.25, 25.95, 0.01);
     ratio->setSliderStyle (Slider::RotaryVerticalDrag);
     ratio->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    ratio->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    ratio->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    ratio->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    ratio->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    ratio->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    ratio->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    ratio->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    ratio->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    ratio->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ratio->addListener (this);
 
     addAndMakeVisible (ratioLabel = new Label ("ratioLabel",
@@ -79,7 +58,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     ratioLabel->setFont (Font (15.00f, Font::plain));
     ratioLabel->setJustificationType (Justification::centred);
     ratioLabel->setEditable (false, false, false);
-    ratioLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     ratioLabel->setColour (TextEditor::textColourId, Colours::black);
     ratioLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -87,15 +65,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     detune->setRange (-1, 1, 0.01);
     detune->setSliderStyle (Slider::RotaryVerticalDrag);
     detune->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    detune->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    detune->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    detune->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    detune->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    detune->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    detune->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    detune->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    detune->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    detune->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     detune->addListener (this);
 
     addAndMakeVisible (detuneLabel = new Label ("detuneLabel",
@@ -103,7 +72,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     detuneLabel->setFont (Font (15.00f, Font::plain));
     detuneLabel->setJustificationType (Justification::centred);
     detuneLabel->setEditable (false, false, false);
-    detuneLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     detuneLabel->setColour (TextEditor::textColourId, Colours::black);
     detuneLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -112,7 +80,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     attackLabel->setFont (Font (15.00f, Font::plain));
     attackLabel->setJustificationType (Justification::centred);
     attackLabel->setEditable (false, false, false);
-    attackLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     attackLabel->setColour (TextEditor::textColourId, Colours::black);
     attackLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -120,30 +87,12 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     attack->setRange (0, 20, 0.001);
     attack->setSliderStyle (Slider::RotaryVerticalDrag);
     attack->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    attack->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    attack->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    attack->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    attack->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    attack->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    attack->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    attack->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    attack->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    attack->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     attack->addListener (this);
 
     addAndMakeVisible (decay = new Slider ("decay"));
     decay->setRange (0.001, 20, 0.001);
     decay->setSliderStyle (Slider::RotaryVerticalDrag);
     decay->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    decay->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    decay->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    decay->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    decay->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    decay->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    decay->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    decay->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    decay->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    decay->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     decay->addListener (this);
 
     addAndMakeVisible (decayLabel = new Label ("decayLabel",
@@ -151,23 +100,13 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     decayLabel->setFont (Font (15.00f, Font::plain));
     decayLabel->setJustificationType (Justification::centred);
     decayLabel->setEditable (false, false, false);
-    decayLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     decayLabel->setColour (TextEditor::textColourId, Colours::black);
     decayLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (sustain = new Slider ("sustain"));
-    sustain->setRange (0.001, 20, 0.001);
+    sustain->setRange (0, 1, 0.001);
     sustain->setSliderStyle (Slider::RotaryVerticalDrag);
     sustain->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    sustain->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    sustain->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    sustain->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    sustain->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    sustain->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    sustain->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    sustain->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    sustain->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    sustain->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     sustain->addListener (this);
 
     addAndMakeVisible (sustainLabel = new Label ("sustainLabel",
@@ -175,7 +114,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     sustainLabel->setFont (Font (15.00f, Font::plain));
     sustainLabel->setJustificationType (Justification::centred);
     sustainLabel->setEditable (false, false, false);
-    sustainLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     sustainLabel->setColour (TextEditor::textColourId, Colours::black);
     sustainLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -183,15 +121,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     release->setRange (0.001, 20, 0.001);
     release->setSliderStyle (Slider::RotaryVerticalDrag);
     release->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    release->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    release->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    release->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    release->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    release->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    release->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    release->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    release->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    release->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     release->addListener (this);
 
     addAndMakeVisible (releaseLabel = new Label ("releaseLabel",
@@ -199,7 +128,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     releaseLabel->setFont (Font (15.00f, Font::plain));
     releaseLabel->setJustificationType (Justification::centred);
     releaseLabel->setEditable (false, false, false);
-    releaseLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     releaseLabel->setColour (TextEditor::textColourId, Colours::black);
     releaseLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -207,15 +135,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     phase->setRange (0, 1, 0.001);
     phase->setSliderStyle (Slider::RotaryVerticalDrag);
     phase->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    phase->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    phase->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    phase->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    phase->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    phase->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    phase->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    phase->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    phase->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    phase->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     phase->addListener (this);
 
     addAndMakeVisible (phaseLabel = new Label ("phaseLabel",
@@ -223,7 +142,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     phaseLabel->setFont (Font (15.00f, Font::plain));
     phaseLabel->setJustificationType (Justification::centred);
     phaseLabel->setEditable (false, false, false);
-    phaseLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     phaseLabel->setColour (TextEditor::textColourId, Colours::black);
     phaseLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -231,15 +149,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     feedback->setRange (0, 1, 0.01);
     feedback->setSliderStyle (Slider::RotaryVerticalDrag);
     feedback->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    feedback->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    feedback->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    feedback->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    feedback->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    feedback->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    feedback->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    feedback->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    feedback->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    feedback->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     feedback->addListener (this);
 
     addAndMakeVisible (feedbackLabel = new Label ("feedbackLabel",
@@ -247,7 +156,6 @@ Wx100FeedbackOperatorComponent::Wx100FeedbackOperatorComponent (String newName, 
     feedbackLabel->setFont (Font (15.00f, Font::plain));
     feedbackLabel->setJustificationType (Justification::centred);
     feedbackLabel->setEditable (false, false, false);
-    feedbackLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     feedbackLabel->setColour (TextEditor::textColourId, Colours::black);
     feedbackLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -310,7 +218,7 @@ void Wx100FeedbackOperatorComponent::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff2b2b2b));
+    g.fillAll (Colours::white);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -469,118 +377,92 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="processor(newProcessor), operatorNumber(newOperatorNumber)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="656" initialHeight="112">
-  <BACKGROUND backgroundColour="ff2b2b2b"/>
+  <BACKGROUND backgroundColour="ffffffff"/>
   <GROUPCOMPONENT name="operatorGroup" id="508e4f8731ff05d0" memberName="groupComponent"
-                  virtualName="" explicitFocusOrder="0" pos="0 0 656 112" outlinecol="7f00a809"
-                  textcol="ff00ff19" title="Operator"/>
+                  virtualName="" explicitFocusOrder="0" pos="0 0 656 112" title="Operator"/>
   <SLIDER name="amp" id="ce6c74e2b835cdf7" memberName="amp" virtualName=""
-          explicitFocusOrder="0" pos="24 40 39 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0" max="1" int="0.010000000000000000208"
+          explicitFocusOrder="0" pos="24 40 39 56" min="0" max="1" int="0.010000000000000000208"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="ampLabel" id="eba77c8120b80f1c" memberName="ampLabel" virtualName=""
-         explicitFocusOrder="0" pos="16 16 56 24" textCol="ff00ff19" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="16 16 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amp&#10;" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="ratio" id="53ae365e9f93b88f" memberName="ratio" virtualName="Wx100RatioSlider"
-          explicitFocusOrder="0" pos="80 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0.25" max="25.949999999999999289"
+          explicitFocusOrder="0" pos="80 40 40 56" min="0.25" max="25.949999999999999289"
           int="0.010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="ratioLabel" id="79bdfbd630590cc0" memberName="ratioLabel"
-         virtualName="" explicitFocusOrder="0" pos="72 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Ratio" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="72 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Ratio" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="detune" id="455e6269f7ade9db" memberName="detune" virtualName=""
-          explicitFocusOrder="0" pos="136 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="-1" max="1" int="0.010000000000000000208"
+          explicitFocusOrder="0" pos="136 40 40 56" min="-1" max="1" int="0.010000000000000000208"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="detuneLabel" id="8f25b61b08c86300" memberName="detuneLabel"
-         virtualName="" explicitFocusOrder="0" pos="128 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Detune" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="128 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Detune" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <LABEL name="attackLabel" id="fd65b26aa809484e" memberName="attackLabel"
-         virtualName="" explicitFocusOrder="0" pos="288 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Attack" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="288 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Attack" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="attack" id="285920f3139a4dde" memberName="attack" virtualName=""
-          explicitFocusOrder="0" pos="296 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0" max="20" int="0.0010000000000000000208"
+          explicitFocusOrder="0" pos="296 40 40 56" min="0" max="20" int="0.0010000000000000000208"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="decay" id="e884465479df73d" memberName="decay" virtualName=""
-          explicitFocusOrder="0" pos="360 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="20"
-          int="0.0010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="360 40 40 56" min="0.0010000000000000000208"
+          max="20" int="0.0010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="decayLabel" id="26023aad35b5fc30" memberName="decayLabel"
-         virtualName="" explicitFocusOrder="0" pos="352 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Decay&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="352 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Decay&#10;" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="sustain" id="dbf7ff85a99e1cc1" memberName="sustain" virtualName=""
-          explicitFocusOrder="0" pos="424 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="20"
-          int="0.0010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="424 40 40 56" min="0" max="1" int="0.0010000000000000000208"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="sustainLabel" id="830600c9d8619ddb" memberName="sustainLabel"
-         virtualName="" explicitFocusOrder="0" pos="416 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Sustain" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="416 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Sustain" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="release" id="7829583fef75bd12" memberName="release" virtualName=""
-          explicitFocusOrder="0" pos="488 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="20"
-          int="0.0010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="488 40 40 56" min="0.0010000000000000000208"
+          max="20" int="0.0010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="releaseLabel" id="e6f24aba9944a141" memberName="releaseLabel"
-         virtualName="" explicitFocusOrder="0" pos="480 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Release" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="480 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Release" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="phase" id="d7edb2b76b9c771c" memberName="phase" virtualName=""
-          explicitFocusOrder="0" pos="200 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0" max="1" int="0.0010000000000000000208"
+          explicitFocusOrder="0" pos="200 40 40 56" min="0" max="1" int="0.0010000000000000000208"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="phaseLabel" id="d9280ced4b4bd3f7" memberName="phaseLabel"
-         virtualName="" explicitFocusOrder="0" pos="192 16 56 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Phase" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="192 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Phase" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="feedback" id="110efb4dd567415" memberName="feedback" virtualName=""
-          explicitFocusOrder="0" pos="584 40 40 56" bkgcol="ff00ff19" thumbcol="ff00ff19"
-          trackcol="ff00ff19" rotarysliderfill="ff00ff19" rotaryslideroutline="ff00ff19"
-          textboxtext="ff00ff19" textboxbkgd="ffffff" textboxhighlight="ff808080"
-          textboxoutline="ffffff" min="0" max="1" int="0.010000000000000000208"
+          explicitFocusOrder="0" pos="584 40 40 56" min="0" max="1" int="0.010000000000000000208"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="feedbackLabel" id="7be64f4c15964aaf" memberName="feedbackLabel"
-         virtualName="" explicitFocusOrder="0" pos="568 16 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Feedback" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="568 16 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Feedback" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

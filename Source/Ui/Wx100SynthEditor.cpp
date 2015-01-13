@@ -35,22 +35,11 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     addAndMakeVisible (lfoGroupComponent = new GroupComponent ("lfoGroup",
                                                                TRANS("LFO")));
     lfoGroupComponent->setTextLabelPosition (Justification::centred);
-    lfoGroupComponent->setColour (GroupComponent::outlineColourId, Colour (0x7f00a809));
-    lfoGroupComponent->setColour (GroupComponent::textColourId, Colour (0xff00ff19));
 
     addAndMakeVisible (lfoFreq = new Slider ("lfoFreq"));
     lfoFreq->setRange (0.01, 20, 0.01);
     lfoFreq->setSliderStyle (Slider::RotaryVerticalDrag);
     lfoFreq->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    lfoFreq->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    lfoFreq->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    lfoFreq->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    lfoFreq->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    lfoFreq->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    lfoFreq->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    lfoFreq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    lfoFreq->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    lfoFreq->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfoFreq->addListener (this);
 
     addAndMakeVisible (lfoFreqLabel = new Label ("lfoFreqLabel",
@@ -58,7 +47,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoFreqLabel->setFont (Font (15.00f, Font::plain));
     lfoFreqLabel->setJustificationType (Justification::centred);
     lfoFreqLabel->setEditable (false, false, false);
-    lfoFreqLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     lfoFreqLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoFreqLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -67,7 +55,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoAmpModLabel->setFont (Font (15.00f, Font::plain));
     lfoAmpModLabel->setJustificationType (Justification::centred);
     lfoAmpModLabel->setEditable (false, false, false);
-    lfoAmpModLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     lfoAmpModLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoAmpModLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -75,15 +62,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoAmpMod->setRange (0, 1, 0.01);
     lfoAmpMod->setSliderStyle (Slider::RotaryVerticalDrag);
     lfoAmpMod->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    lfoAmpMod->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    lfoAmpMod->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    lfoAmpMod->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    lfoAmpMod->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    lfoAmpMod->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    lfoAmpMod->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    lfoAmpMod->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    lfoAmpMod->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    lfoAmpMod->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfoAmpMod->addListener (this);
 
     addAndMakeVisible (lfoPitchModLabel = new Label ("lfoPitchModLabel",
@@ -91,7 +69,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoPitchModLabel->setFont (Font (15.00f, Font::plain));
     lfoPitchModLabel->setJustificationType (Justification::centred);
     lfoPitchModLabel->setEditable (false, false, false);
-    lfoPitchModLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     lfoPitchModLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoPitchModLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -99,15 +76,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoPitchWheel->setRange (0, 1, 0.01);
     lfoPitchWheel->setSliderStyle (Slider::RotaryVerticalDrag);
     lfoPitchWheel->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    lfoPitchWheel->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    lfoPitchWheel->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    lfoPitchWheel->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    lfoPitchWheel->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    lfoPitchWheel->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    lfoPitchWheel->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    lfoPitchWheel->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    lfoPitchWheel->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    lfoPitchWheel->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfoPitchWheel->addListener (this);
 
     addAndMakeVisible (lfoInitPhaseLabel = new Label ("lfoInitPhaseLabel",
@@ -115,7 +83,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoInitPhaseLabel->setFont (Font (15.00f, Font::plain));
     lfoInitPhaseLabel->setJustificationType (Justification::centred);
     lfoInitPhaseLabel->setEditable (false, false, false);
-    lfoInitPhaseLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     lfoInitPhaseLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoInitPhaseLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -123,15 +90,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoInitPhase->setRange (0, 1, 0.001);
     lfoInitPhase->setSliderStyle (Slider::RotaryVerticalDrag);
     lfoInitPhase->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    lfoInitPhase->setColour (Slider::backgroundColourId, Colour (0xff00ff19));
-    lfoInitPhase->setColour (Slider::thumbColourId, Colour (0xff00ff19));
-    lfoInitPhase->setColour (Slider::trackColourId, Colour (0xff00ff19));
-    lfoInitPhase->setColour (Slider::rotarySliderFillColourId, Colour (0xff00ff19));
-    lfoInitPhase->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff00ff19));
-    lfoInitPhase->setColour (Slider::textBoxTextColourId, Colour (0xff00ff19));
-    lfoInitPhase->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    lfoInitPhase->setColour (Slider::textBoxHighlightColourId, Colours::grey);
-    lfoInitPhase->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfoInitPhase->addListener (this);
 
     addAndMakeVisible (lfoShapeLabel = new Label ("lfoShapeLabel",
@@ -139,7 +97,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoShapeLabel->setFont (Font (15.00f, Font::plain));
     lfoShapeLabel->setJustificationType (Justification::centred);
     lfoShapeLabel->setEditable (false, false, false);
-    lfoShapeLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     lfoShapeLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoShapeLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -148,7 +105,6 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     lfoSyncLabel->setFont (Font (15.00f, Font::plain));
     lfoSyncLabel->setJustificationType (Justification::centred);
     lfoSyncLabel->setEditable (false, false, false);
-    lfoSyncLabel->setColour (Label::textColourId, Colour (0xff00ff19));
     lfoSyncLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoSyncLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -232,7 +188,7 @@ void Wx100SynthEditor::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff2b2b2b));
+    g.fillAll (Colours::white);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -363,69 +319,60 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="AudioProcessorEditor(newProcessor), processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="800" initialHeight="510">
-  <BACKGROUND backgroundColour="ff2b2b2b"/>
+  <BACKGROUND backgroundColour="ffffffff"/>
   <GROUPCOMPONENT name="lfoGroup" id="aba28bb1757b0546" memberName="lfoGroupComponent"
-                  virtualName="" explicitFocusOrder="0" pos="696 136 88 352" outlinecol="7f00a809"
-                  textcol="ff00ff19" title="LFO" textpos="36"/>
+                  virtualName="" explicitFocusOrder="0" pos="696 136 88 352" title="LFO"
+                  textpos="36"/>
   <SLIDER name="lfoFreq" id="c7a83db99a034b3f" memberName="lfoFreq" virtualName=""
-          explicitFocusOrder="0" pos="720 184 39 24" bkgcol="ff00ff19"
-          thumbcol="ff00ff19" trackcol="ff00ff19" rotarysliderfill="ff00ff19"
-          rotaryslideroutline="ff00ff19" textboxtext="ff00ff19" textboxbkgd="ffffff"
-          textboxhighlight="ff808080" textboxoutline="ffffff" min="0.010000000000000000208"
+          explicitFocusOrder="0" pos="720 184 39 24" min="0.010000000000000000208"
           max="20" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoFreqLabel" id="7da8785668a166a3" memberName="lfoFreqLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 160 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Frequency" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="704 160 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Frequency" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <LABEL name="lfoAmpModLabel" id="66021bf3a143f5a4" memberName="lfoAmpModLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 216 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Amp Mod" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="704 216 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Amp Mod" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="lfoAmpMod" id="255e38bf2c50137f" memberName="lfoAmpMod"
-          virtualName="" explicitFocusOrder="0" pos="720 240 39 24" bkgcol="ff00ff19"
-          thumbcol="ff00ff19" trackcol="ff00ff19" rotarysliderfill="ff00ff19"
-          rotaryslideroutline="ff00ff19" textboxtext="ff00ff19" textboxbkgd="ffffff"
-          textboxhighlight="ff808080" textboxoutline="ffffff" min="0" max="1"
-          int="0.010000000000000000208" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="720 240 39 24" min="0"
+          max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoPitchModLabel" id="bf2fd785f5374a9e" memberName="lfoPitchModLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 272 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Pitch Wheel" editableSingleClick="0"
+         virtualName="" explicitFocusOrder="0" pos="704 272 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Pitch Wheel" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="lfoPitchWheel" id="a3d7c10d9d07522a" memberName="lfoPitchWheel"
-          virtualName="" explicitFocusOrder="0" pos="720 296 39 24" bkgcol="ff00ff19"
-          thumbcol="ff00ff19" trackcol="ff00ff19" rotarysliderfill="ff00ff19"
-          rotaryslideroutline="ff00ff19" textboxtext="ff00ff19" textboxbkgd="ffffff"
-          textboxhighlight="ff808080" textboxoutline="ffffff" min="0" max="1"
-          int="0.010000000000000000208" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="720 296 39 24" min="0"
+          max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoInitPhaseLabel" id="a932d7c20ebf90e3" memberName="lfoInitPhaseLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 328 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Init Phase" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="704 328 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Init Phase" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="lfoInitPhase" id="381e7951cfb7933" memberName="lfoInitPhase"
-          virtualName="" explicitFocusOrder="0" pos="720 352 39 24" bkgcol="ff00ff19"
-          thumbcol="ff00ff19" trackcol="ff00ff19" rotarysliderfill="ff00ff19"
-          rotaryslideroutline="ff00ff19" textboxtext="ff00ff19" textboxbkgd="ffffff"
-          textboxhighlight="ff808080" textboxoutline="ffffff" min="0" max="1"
-          int="0.0010000000000000000208" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="720 352 39 24" min="0"
+          max="1" int="0.0010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoShapeLabel" id="8a24102051de127f" memberName="lfoShapeLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 384 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Shape" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="704 384 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Shape" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <LABEL name="lfoSyncLabel" id="6f8b2d0dcc1c43c0" memberName="lfoSyncLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 432 72 24" textCol="ff00ff19"
-         edTextCol="ff000000" edBkgCol="0" labelText="Sync" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+         virtualName="" explicitFocusOrder="0" pos="704 432 72 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Sync" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <COMBOBOX name="lfoShape" id="51612512185d500b" memberName="lfoShape" virtualName=""
             explicitFocusOrder="0" pos="712 408 56 16" editable="0" layout="33"
             items="sine&#10;triangle&#10;saw&#10;ramp&#10;square&#10;noise"
