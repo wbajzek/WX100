@@ -269,7 +269,7 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
                 clearCurrentNote();
             break;
         case 8:
-            if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
+            if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive() || operators[3].isActive())
             {
                 operators[2].setFm(0.0);
                 operators[1].setFm(0.0);
