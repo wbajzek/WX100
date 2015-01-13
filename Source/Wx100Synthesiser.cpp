@@ -153,9 +153,11 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
         for (int i = 0; i < numChannels; ++i)
             outputBuffer.addSample(i, startSample, sample);
 
+        lastOp4Samples[1] = lastOp4Samples[0];
+        lastOp4Samples[0] = (lastOp4Samples[1] + operators[3].currentSample) * 0.5;
         for (int i = 0; i < numOperators; ++i)
             operators[i].tick();
-        
+
         lfo.tick();
         ++startSample;
     }
@@ -170,7 +172,8 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         operators[i].setFrequency(ratioFreq + (ratioFreq * pow(2.0, localParameters[TUNING_0 + i] / 4.0))); // 4.0 for reasonable range
     }
     // last operator always feeds back
-    operators[3].setFm(operators[3].currentSample * localParameters[FEEDBACK_3]);
+
+    operators[3].setFm((lastOp4Samples[0] + operators[3].currentSample) * 0.5 * localParameters[FEEDBACK_3]);
     switch (*localAlgorithm)
     {
         case 1:

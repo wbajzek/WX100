@@ -71,6 +71,7 @@ private:
     int *localAlgorithm;
     int *localScaleRoot;
     int *localLfoShape;
+    Amplitude lastOp4Samples[2] = { 0.0 };
     int note = 0;
     int noteNumber;
     Frequency freq;
