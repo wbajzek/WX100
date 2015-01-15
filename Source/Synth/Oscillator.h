@@ -45,6 +45,7 @@ public:
     {
         sampleRate = newSampleRate;
         frqTI = waveTableLength/sampleRate;
+        increment = (long)(frqTI * frequency) << 16;
     }
     
     void setWaveTable(int newWaveTableShape)
