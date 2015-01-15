@@ -13,7 +13,7 @@
 
 #include "../../JuceLibraryCode/JuceHeader.h"
 
-const Frequency frequencyRef = 440.0;
+const Frequency frequencyRef = 220.0;
 const int noteRef = 69;
 
 class SclParser
@@ -36,16 +36,15 @@ public:
 
         if (lines.size() < 3)
         {
-            for (int i = 1; i < 128; ++i)
-                frequencies[i] = 8.1758 * pow(2.0, i * 100.0 / 1200.0); // in cents above root
-            return;
+            lines.clear();
+            lines.addLines(StringRef("12EDO\n12\n100.0\n200.0\n300.0\n400.0\n500.0\n600.0\n700.0\n800.0\n900.0\n1000.0\n1100.0\n1200.0"));
         }
-
         int degrees = lines[1].getIntValue();
         int lowestDegree = scaleRoot - (degrees * (scaleRoot / degrees));
         
         lines.removeRange(0, 2);
         lines.insert(0, "1/1");
+        // something about this is wrong, hence frequencyRef is 220.0 and not 440.0
         Frequency root = frequencyRef * pow(2.0, (((lowestDegree + 3) / 12)) - 6 + ((lowestDegree + 3) % 12)/12.0);
         
         for (int i = lowestDegree, line = 0; i < 128; ++i)
