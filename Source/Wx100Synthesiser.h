@@ -58,14 +58,13 @@ public:
     Amplitude getSample(Frequency freq);
     void aftertouchChanged (int newAftertouchValue);
     void setCurrentPlaybackSampleRate (double newRate);
-    bool isPlayingChannel (int midiChannel) const;
-    bool isVoiceActive() const;
     void actionListenerCallback (const String &message);
     Frequency* getTuningTable();
     
 private:
     
     SynthVoice operators[numOperators];
+    float detune[numOperators] = { 0.0 };
     Oscillator lfo;
     float *localParameters;
     int *localAlgorithm;
@@ -78,7 +77,7 @@ private:
     Frequency *localTuningTable;
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
-    float modWheel = 0.00;
+    float modWheel = 0.0;
     
     Frequency calculateFrequency(int currentPitchWheelPosition);
 

@@ -139,6 +139,8 @@ void Wx100AudioProcessor::initVoices()
     // make sure all the voices know the current sample rate
     synth.refreshCurrentPlaybackSampleRate ();
     sendActionMessage("Amplitudes");
+    sendActionMessage("Detune");
+    sendActionMessage("LFO Frequency");
 }
 
 const String Wx100AudioProcessor::getParameterText (int index)
@@ -208,6 +210,13 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
             break;
         case VOICE_COUNT:
             initVoices();
+            break;
+        case TUNING_0:
+        case TUNING_1:
+        case TUNING_2:
+        case TUNING_3:
+            sendActionMessage("Detune");
+            break;
         case SCALE:
         case SCALE_ROOT:
             initScale();
@@ -280,10 +289,8 @@ void Wx100AudioProcessor::setStateInformation (const void* data, int sizeInBytes
         readXml(xmlState, true);
         //Update the parameter values from the preloaded XML values
         updateProcessorHostAndUiFromXml(true,true,true);
-        initScale();
         initVoices();
-        sendActionMessage("LFO Frequency");
-        sendActionMessage("LFO Shape");
+        initScale();
     }
 }
 
