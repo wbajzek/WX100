@@ -77,8 +77,9 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="10.10 SDK" osxCompatibility="10.9 SDK" osxArchitecture="32BitUniversal"
                        isDebug="1" optimisation="1" targetName="WX100" linkTimeOptimisation="0"/>
-        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="0" optimisation="2" targetName="WX100"/>
+        <CONFIGURATION name="Release" osxSDK="10.10 SDK" osxCompatibility="10.9 SDK"
+                       osxArchitecture="32BitUniversal" isDebug="0" optimisation="3"
+                       targetName="WX100" linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
