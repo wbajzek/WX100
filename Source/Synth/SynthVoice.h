@@ -46,6 +46,10 @@ public:
     void triggerRelease() {
         envelope.triggerRelease();
     }
+
+    void stop() {
+        envelope.triggerDead();
+    }
     
     void setPhase(float phase)
     {

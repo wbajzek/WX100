@@ -114,8 +114,12 @@ void Wx100SynthVoice::startNote (const int midiNoteNumber, const float midiVeloc
 
 void Wx100SynthVoice::stopNote (float velocity, const bool allowTailOff)
 {
-    for (int i = 0; i < numOperators; ++i)
-        operators[i].triggerRelease();
+    if (allowTailOff)
+        for (int i = 0; i < numOperators; ++i)
+            operators[i].triggerRelease();
+    else
+        for (int i = 0; i < numOperators; ++i)
+            operators[i].stop();
 }
 
 Frequency Wx100SynthVoice::calculateFrequency(int currentPitchWheelPosition)
