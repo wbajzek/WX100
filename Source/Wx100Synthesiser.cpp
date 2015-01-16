@@ -67,7 +67,6 @@ Wx100SynthVoice::Wx100SynthVoice(float *parameters, int *algorithm, int *lfoShap
     localScaleRoot = scaleRoot;
     localTuningTable = tuningTable;
     localLfoShape = lfoShape;
-    lfo.setFrequency(localParameters[LFO_FREQ]);
     lfo.setWaveTable(*localLfoShape);
     for (int i = 0; i < numOperators; ++i)
     {
@@ -148,7 +147,7 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
 
     while (--numSamples >= 0 && getCurrentlyPlayingNote() != -1)
     {
-        Amplitude lfoLevel = lfo.tick();
+        lfoLevel = lfo.tick();
         Amplitude sample = getSample(freq + (freq * modWheel * lfoLevel)) * (0.25 + lfoLevel * localParameters[LFO_AMP_AMOUNT]);
 
         outputBuffer.addSample(0, startSample, sample);
@@ -167,6 +166,13 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
         outputBuffer.copyFrom(1, 0, outputBuffer, 0, 0, startSample);
 }
 
+inline Amplitude Wx100SynthVoice::operatorOutput(int i) const
+{
+    Amplitude temp = operators[i].currentSample * localParameters[AMP_0 + i];
+    temp += temp * lfoLevel * localParameters[LFO_AMP_0 + i];
+    return temp;
+}
+
 Amplitude Wx100SynthVoice::getSample(Frequency freq)
 {
     for (int i = 0; i < numOperators; ++i)
@@ -182,11 +188,11 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         case 1:
             if (operators[0].isActive())
             {
-                operators[2].setFm(operators[3].currentSample * localParameters[AMP_3]);
-                operators[1].setFm(operators[2].currentSample * localParameters[AMP_2]);
-                operators[0].setFm(operators[1].currentSample * localParameters[AMP_1]);
+                operators[2].setFm(operatorOutput(3));
+                operators[1].setFm(operatorOutput(2));
+                operators[0].setFm(operatorOutput(1));
                 
-                return operators[0].currentSample * localParameters[AMP_0];
+                return operatorOutput(0);
             }
             else
                 clearCurrentNote();
@@ -195,11 +201,11 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
             if (operators[0].isActive())
             {
                 operators[2].setFm(0.0);
-                operators[1].setFm(operators[2].currentSample * localParameters[AMP_2] +
-                                   (operators[3].currentSample * localParameters[AMP_3]));
-                operators[0].setFm((operators[1].currentSample * localParameters[AMP_1]));
+                operators[1].setFm(operatorOutput(2) +
+                                   operatorOutput(3));
+                operators[0].setFm(operatorOutput(1));
                 
-                return operators[0].currentSample * localParameters[AMP_0];
+                return operatorOutput(0);
             }
             else
                 clearCurrentNote();
@@ -208,11 +214,11 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
             if (operators[0].isActive())
             {
                 operators[2].setFm(0.0);
-                operators[1].setFm(operators[2].currentSample * localParameters[AMP_2]);
-                operators[0].setFm((operators[1].currentSample * localParameters[AMP_1]) +
-                                   (operators[3].currentSample * localParameters[AMP_3]));
+                operators[1].setFm(operatorOutput(2));
+                operators[0].setFm(operatorOutput(1) +
+                                   operatorOutput(3));
                 
-                return operators[0].currentSample * localParameters[AMP_0];
+                return operatorOutput(0);
             }
             else
                 clearCurrentNote();
@@ -220,12 +226,12 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         case 4:
             if (operators[0].isActive())
             {
-                operators[2].setFm(operators[3].currentSample * localParameters[AMP_3]);
+                operators[2].setFm(operatorOutput(3));
                 operators[1].setFm(0.0);
-                operators[0].setFm((operators[1].currentSample * localParameters[AMP_1]) +
-                                   (operators[2].currentSample * localParameters[AMP_2]));
+                operators[0].setFm(operatorOutput(1) +
+                                   operatorOutput(2));
 
-                return operators[0].currentSample * localParameters[AMP_0];
+                return operatorOutput(0);
             }
             else
                 clearCurrentNote();
@@ -233,12 +239,12 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         case 5:
             if (operators[0].isActive() || operators[2].isActive())
             {
-                operators[2].setFm(operators[3].currentSample * localParameters[AMP_3]);
+                operators[2].setFm(operatorOutput(3));
                 operators[1].setFm(0.0);
-                operators[0].setFm(operators[1].currentSample * localParameters[AMP_1]);
+                operators[0].setFm(operatorOutput(1));
 
-                return operators[0].currentSample * localParameters[AMP_0] +
-                        operators[2].currentSample * localParameters[AMP_2];
+                return operatorOutput(0) +
+                        operatorOutput(2);
             }
             else
                 clearCurrentNote();
@@ -246,13 +252,13 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         case 6:
             if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
             {
-                operators[2].setFm(operators[3].currentSample * localParameters[AMP_3]);
-                operators[1].setFm(operators[3].currentSample * localParameters[AMP_3]);
-                operators[0].setFm(operators[3].currentSample * localParameters[AMP_3]);
+                operators[2].setFm(operatorOutput(3));
+                operators[1].setFm(operatorOutput(3));
+                operators[0].setFm(operatorOutput(3));
                 
-                return operators[0].currentSample * operators[0].currentAmplitude * localParameters[AMP_0] +
-                    operators[1].currentSample * localParameters[AMP_1] +
-                    operators[2].currentSample * localParameters[AMP_2];
+                return operatorOutput(0) +
+                    operatorOutput(1) +
+                    operatorOutput(2);
             }
             else
                 clearCurrentNote();
@@ -260,13 +266,13 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
         case 7:
             if (operators[0].isActive() || operators[1].isActive() || operators[2].isActive())
             {
-                operators[2].setFm(operators[3].currentSample * localParameters[AMP_3]);
+                operators[2].setFm(operatorOutput(3));
                 operators[1].setFm(0.0);
                 operators[0].setFm(0.0);
                 
-                return operators[0].currentSample * localParameters[AMP_0] +
-                    operators[1].currentSample * localParameters[AMP_1] +
-                    operators[2].currentSample * localParameters[AMP_2];
+                return operatorOutput(0) +
+                    operatorOutput(1) +
+                    operatorOutput(2);
             }
             else
                 clearCurrentNote();
@@ -278,10 +284,10 @@ Amplitude Wx100SynthVoice::getSample(Frequency freq)
                 operators[1].setFm(0.0);
                 operators[0].setFm(0.0);
                 
-                return operators[0].currentSample * localParameters[AMP_0] +
-                operators[1].currentSample * localParameters[AMP_1] +
-                operators[2].currentSample * localParameters[AMP_2] +
-                operators[3].currentSample * localParameters[AMP_3];
+                return operatorOutput(0) +
+                    operatorOutput(1) +
+                    operatorOutput(2) +
+                    operatorOutput(3);
             }
             else
                 clearCurrentNote();

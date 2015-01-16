@@ -23,6 +23,7 @@ Wx100AudioProcessor::Wx100AudioProcessor()
         parameters[SUSTAIN_0 + i] = 1.0;
         parameters[RELEASE_0 + i] = 0.0;
         parameters[PHASE_0 + i] = 0.0;
+        parameters[LFO_AMP_0 + i] = 0.0;
     }
     parameters[AMP_0] = 1.0;
     parameters[FEEDBACK_3] = 0.0;
@@ -107,6 +108,13 @@ void Wx100AudioProcessor::initParameters()
         char phaseName[30];
         sprintf(phaseName, "Phase_%i", i + 1);
         addFloatParam(PHASE_0 + i, phaseName, true, SAVE, &parameters[PHASE_0 + i], 0.0, 1.0);
+    }
+
+    for (int i = 0; i < numOperators; ++i)
+    {
+        char lfoAmpName[30];
+        sprintf(lfoAmpName, "LFO_Amp_%i", i + 1);
+        addFloatParam(LFO_AMP_0 + i, lfoAmpName, true, SAVE, &parameters[LFO_AMP_0 + i], 0.0, 1.0);
     }
 
     char feedbackName[30];
@@ -208,6 +216,8 @@ void Wx100AudioProcessor::runAfterParamChange(int paramIndex,UpdateFromFlags upd
         case LFO_SHAPE:
             sendActionMessage("LFO Shape");
             break;
+        case LFO_PITCH_AMOUNT:
+            sendActionMessage("Mod Wheel");
         case VOICE_COUNT:
             initVoices();
             break;

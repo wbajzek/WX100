@@ -46,7 +46,7 @@ Wx100Window::Wx100Window (Wx100AudioProcessor &newProcessor)
     sendLookAndFeelChange();
     //[/UserPreSize]
 
-    setSize (800, 536);
+    setSize (912, 536);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -82,7 +82,7 @@ void Wx100Window::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    tabbedComponent->setBounds (0, 0, 800, 536);
+    tabbedComponent->setBounds (0, 0, 912, 536);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -106,10 +106,10 @@ BEGIN_JUCER_METADATA
                  parentClasses="public AudioProcessorEditor" constructorParams="Wx100AudioProcessor &amp;newProcessor"
                  variableInitialisers="AudioProcessorEditor(newProcessor),&#10;processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="800" initialHeight="536">
+                 fixedSize="1" initialWidth="912" initialHeight="536">
   <BACKGROUND backgroundColour="ffffffff"/>
   <TABBEDCOMPONENT name="new tabbed component" id="babfd188dad31636" memberName="tabbedComponent"
-                   virtualName="" explicitFocusOrder="0" pos="0 0 800 536" orientation="top"
+                   virtualName="" explicitFocusOrder="0" pos="0 0 912 536" orientation="top"
                    tabBarDepth="31" initialTab="0">
     <TAB name="Synth" colour="ffd3d3d3" useJucerComp="1" contentClassName=""
          constructorParams="newProcessor" jucerComponentFile="Wx100SynthEditor.cpp"/>

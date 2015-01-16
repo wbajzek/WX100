@@ -78,9 +78,11 @@ private:
     bool voiceIsActive = false;
     Frequency sampleRate = 0.0;
     float modWheel = 0.0;
+    Amplitude lfoLevel = 0.0;
     
     Frequency calculateFrequency(int currentPitchWheelPosition);
-
+    inline Amplitude operatorOutput(int i) const;
+    
     int getScaleRoot() {
         return *localScaleRoot - 1;
     }

@@ -147,11 +147,25 @@ Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorN
     ratio->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ratio->addListener (this);
 
+    addAndMakeVisible (lfoAmp = new Slider ("ampLfo"));
+    lfoAmp->setRange (0.001, 1, 0.001);
+    lfoAmp->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfoAmp->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfoAmp->addListener (this);
+
+    addAndMakeVisible (lfoAmpLabel = new Label ("lfoAmpLabel",
+                                                TRANS("Amp LFO")));
+    lfoAmpLabel->setFont (Font (15.00f, Font::plain));
+    lfoAmpLabel->setJustificationType (Justification::centred);
+    lfoAmpLabel->setEditable (false, false, false);
+    lfoAmpLabel->setColour (TextEditor::textColourId, Colours::black);
+    lfoAmpLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (552, 112);
+    setSize (654, 112);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -163,6 +177,7 @@ Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorN
     decay->setScrollWheelEnabled(false);
     sustain->setScrollWheelEnabled(false);
     release->setScrollWheelEnabled(false);
+    lfoAmp->setScrollWheelEnabled(false);
     groupComponent->setText("");
     processor.updateUi(true,true);
     timerCallback();
@@ -192,6 +207,8 @@ Wx100OperatorComponent::~Wx100OperatorComponent()
     phase = nullptr;
     phaseLabel = nullptr;
     ratio = nullptr;
+    lfoAmp = nullptr;
+    lfoAmpLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -215,7 +232,7 @@ void Wx100OperatorComponent::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    groupComponent->setBounds (0, 0, 552, 112);
+    groupComponent->setBounds (0, 0, 648, 112);
     amp->setBounds (24, 40, 39, 56);
     ampLabel->setBounds (16, 16, 56, 24);
     ratioLabel->setBounds (72, 16, 56, 24);
@@ -232,6 +249,8 @@ void Wx100OperatorComponent::resized()
     phase->setBounds (200, 40, 40, 56);
     phaseLabel->setBounds (192, 16, 56, 24);
     ratio->setBounds (80, 40, 40, 56);
+    lfoAmp->setBounds (584, 40, 40, 56);
+    lfoAmpLabel->setBounds (576, 16, 56, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -289,6 +308,12 @@ void Wx100OperatorComponent::sliderValueChanged (Slider* sliderThatWasMoved)
         processor.getFloatParam(RATIO_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
         //[/UserSliderCode_ratio]
     }
+    else if (sliderThatWasMoved == lfoAmp)
+    {
+        //[UserSliderCode_lfoAmp] -- add your slider handling code here..
+        processor.getFloatParam(LFO_AMP_0 + operatorNumber)->updateProcessorAndHostFromUi(sliderThatWasMoved->getValue());
+        //[/UserSliderCode_lfoAmp]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -331,6 +356,10 @@ void Wx100OperatorComponent::timerCallback()
     if (&ratio && param->updateUiRequested()){
         ratio->setValue (param->uiGet(), dontSendNotification);
     }
+    param = processor.getFloatParam(LFO_AMP_0 + operatorNumber);
+    if (&lfoAmp && param->updateUiRequested()){
+        lfoAmp->setValue (param->uiGet(), dontSendNotification);
+    }
 }
 //[/MiscUserCode]
 
@@ -349,10 +378,10 @@ BEGIN_JUCER_METADATA
                  constructorParams="String newName, int newOperatorNumber, Wx100AudioProcessor &amp;newProcessor"
                  variableInitialisers="operatorNumber(newOperatorNumber), processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="552" initialHeight="112">
+                 fixedSize="1" initialWidth="654" initialHeight="112">
   <BACKGROUND backgroundColour="ffffffff"/>
   <GROUPCOMPONENT name="operatorGroup1" id="557eadee78372da9" memberName="groupComponent"
-                  virtualName="" explicitFocusOrder="0" pos="0 0 552 112" title="Operator"/>
+                  virtualName="" explicitFocusOrder="0" pos="0 0 648 112" title="Operator"/>
   <SLIDER name="amp" id="b3a99d3a9fb93a88" memberName="amp" virtualName=""
           explicitFocusOrder="0" pos="24 40 39 56" min="0" max="1" int="0.010000000000000000208"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
@@ -428,6 +457,16 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="80 40 40 56" min="0.25" max="25.960000000000000853"
           int="0.010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="ampLfo" id="bb185b2b29399f58" memberName="lfoAmp" virtualName=""
+          explicitFocusOrder="0" pos="584 40 40 56" min="0.0010000000000000000208"
+          max="1" int="0.0010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="lfoAmpLabel" id="70ede97c75029075" memberName="lfoAmpLabel"
+         virtualName="" explicitFocusOrder="0" pos="576 16 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Amp LFO" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -80,6 +80,8 @@ private:
     ScopedPointer<Slider> phase;
     ScopedPointer<Label> phaseLabel;
     ScopedPointer<Wx100RatioSlider> ratio;
+    ScopedPointer<Slider> lfoAmp;
+    ScopedPointer<Label> lfoAmpLabel;
 
 
     //==============================================================================

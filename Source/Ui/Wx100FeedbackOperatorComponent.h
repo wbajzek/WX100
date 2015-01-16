@@ -82,6 +82,8 @@ private:
     ScopedPointer<Label> phaseLabel;
     ScopedPointer<Slider> feedback;
     ScopedPointer<Label> feedbackLabel;
+    ScopedPointer<Slider> lfoAmp;
+    ScopedPointer<Label> lfoAmpLabel;
 
 
     //==============================================================================

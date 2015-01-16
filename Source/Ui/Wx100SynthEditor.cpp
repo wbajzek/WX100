@@ -139,7 +139,7 @@ Wx100SynthEditor::Wx100SynthEditor (Wx100AudioProcessor& newProcessor)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (800, 510);
+    setSize (912, 510);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -199,23 +199,23 @@ void Wx100SynthEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    lfoGroupComponent->setBounds (696, 136, 88, 352);
-    lfoFreq->setBounds (720, 184, 39, 24);
-    lfoFreqLabel->setBounds (704, 160, 72, 24);
-    lfoAmpModLabel->setBounds (704, 216, 72, 24);
-    lfoAmpMod->setBounds (720, 240, 39, 24);
-    lfoPitchModLabel->setBounds (704, 272, 72, 24);
-    lfoPitchWheel->setBounds (720, 296, 39, 24);
-    lfoInitPhaseLabel->setBounds (704, 328, 72, 24);
-    lfoInitPhase->setBounds (720, 352, 39, 24);
-    lfoShapeLabel->setBounds (704, 384, 72, 24);
-    lfoSyncLabel->setBounds (704, 432, 72, 24);
-    lfoShape->setBounds (712, 408, 56, 16);
-    lfoSync->setBounds (712, 456, 56, 16);
-    component2->setBounds (128, 376, 552, 112);
-    component3->setBounds (128, 256, 552, 112);
-    component4->setBounds (128, 136, 552, 112);
-    component->setBounds (128, 16, 656, 112);
+    lfoGroupComponent->setBounds (792, 136, 88, 352);
+    lfoFreq->setBounds (816, 184, 39, 24);
+    lfoFreqLabel->setBounds (800, 160, 72, 24);
+    lfoAmpModLabel->setBounds (800, 216, 72, 24);
+    lfoAmpMod->setBounds (816, 240, 39, 24);
+    lfoPitchModLabel->setBounds (800, 272, 72, 24);
+    lfoPitchWheel->setBounds (816, 296, 39, 24);
+    lfoInitPhaseLabel->setBounds (800, 328, 72, 24);
+    lfoInitPhase->setBounds (816, 352, 39, 24);
+    lfoShapeLabel->setBounds (800, 384, 72, 24);
+    lfoSyncLabel->setBounds (800, 432, 72, 24);
+    lfoShape->setBounds (808, 408, 56, 16);
+    lfoSync->setBounds (808, 456, 56, 16);
+    component2->setBounds (128, 376, 648, 112);
+    component3->setBounds (128, 256, 648, 112);
+    component4->setBounds (128, 136, 648, 112);
+    component->setBounds (128, 16, 752, 112);
     component5->setBounds (8, 16, 112, 480);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -318,79 +318,79 @@ BEGIN_JUCER_METADATA
                  parentClasses="public AudioProcessorEditor, public Timer" constructorParams="Wx100AudioProcessor&amp; newProcessor"
                  variableInitialisers="AudioProcessorEditor(newProcessor), processor(newProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="800" initialHeight="510">
+                 fixedSize="1" initialWidth="912" initialHeight="510">
   <BACKGROUND backgroundColour="ffffffff"/>
   <GROUPCOMPONENT name="lfoGroup" id="aba28bb1757b0546" memberName="lfoGroupComponent"
-                  virtualName="" explicitFocusOrder="0" pos="696 136 88 352" title="LFO"
+                  virtualName="" explicitFocusOrder="0" pos="792 136 88 352" title="LFO"
                   textpos="36"/>
   <SLIDER name="lfoFreq" id="c7a83db99a034b3f" memberName="lfoFreq" virtualName=""
-          explicitFocusOrder="0" pos="720 184 39 24" min="0.010000000000000000208"
+          explicitFocusOrder="0" pos="816 184 39 24" min="0.010000000000000000208"
           max="20" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoFreqLabel" id="7da8785668a166a3" memberName="lfoFreqLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 160 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="800 160 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Frequency" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <LABEL name="lfoAmpModLabel" id="66021bf3a143f5a4" memberName="lfoAmpModLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 216 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="800 216 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amp Mod" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="lfoAmpMod" id="255e38bf2c50137f" memberName="lfoAmpMod"
-          virtualName="" explicitFocusOrder="0" pos="720 240 39 24" min="0"
+          virtualName="" explicitFocusOrder="0" pos="816 240 39 24" min="0"
           max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoPitchModLabel" id="bf2fd785f5374a9e" memberName="lfoPitchModLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 272 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="800 272 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Pitch Wheel" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="lfoPitchWheel" id="a3d7c10d9d07522a" memberName="lfoPitchWheel"
-          virtualName="" explicitFocusOrder="0" pos="720 296 39 24" min="0"
+          virtualName="" explicitFocusOrder="0" pos="816 296 39 24" min="0"
           max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoInitPhaseLabel" id="a932d7c20ebf90e3" memberName="lfoInitPhaseLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 328 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="800 328 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Init Phase" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="lfoInitPhase" id="381e7951cfb7933" memberName="lfoInitPhase"
-          virtualName="" explicitFocusOrder="0" pos="720 352 39 24" min="0"
+          virtualName="" explicitFocusOrder="0" pos="816 352 39 24" min="0"
           max="1" int="0.0010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoShapeLabel" id="8a24102051de127f" memberName="lfoShapeLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 384 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="800 384 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Shape" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <LABEL name="lfoSyncLabel" id="6f8b2d0dcc1c43c0" memberName="lfoSyncLabel"
-         virtualName="" explicitFocusOrder="0" pos="704 432 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="800 432 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Sync" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <COMBOBOX name="lfoShape" id="51612512185d500b" memberName="lfoShape" virtualName=""
-            explicitFocusOrder="0" pos="712 408 56 16" editable="0" layout="33"
+            explicitFocusOrder="0" pos="808 408 56 16" editable="0" layout="33"
             items="sine&#10;triangle&#10;saw&#10;ramp&#10;square&#10;noise"
             textWhenNonSelected="" textWhenNoItems=""/>
   <COMBOBOX name="lfoShape" id="e7048a05607d62e0" memberName="lfoSync" virtualName=""
-            explicitFocusOrder="0" pos="712 456 56 16" editable="0" layout="33"
+            explicitFocusOrder="0" pos="808 456 56 16" editable="0" layout="33"
             items="Off&#10;On" textWhenNonSelected="" textWhenNoItems=""/>
   <JUCERCOMP name="" id="fc9691fa991bdf63" memberName="component2" virtualName=""
-             explicitFocusOrder="0" pos="128 376 552 112" sourceFile="Wx100OperatorComponent.cpp"
+             explicitFocusOrder="0" pos="128 376 648 112" sourceFile="Wx100OperatorComponent.cpp"
              constructorParams="&quot;Operator 1&quot;, 0, processor"/>
   <JUCERCOMP name="" id="cb9132bba0bc64cf" memberName="component3" virtualName=""
-             explicitFocusOrder="0" pos="128 256 552 112" sourceFile="Wx100OperatorComponent.cpp"
+             explicitFocusOrder="0" pos="128 256 648 112" sourceFile="Wx100OperatorComponent.cpp"
              constructorParams="&quot;Operator 2&quot;, 1, processor"/>
   <JUCERCOMP name="" id="e5aca3bd16fb9e2" memberName="component4" virtualName=""
-             explicitFocusOrder="0" pos="128 136 552 112" sourceFile="Wx100OperatorComponent.cpp"
+             explicitFocusOrder="0" pos="128 136 648 112" sourceFile="Wx100OperatorComponent.cpp"
              constructorParams="&quot;Operator 3&quot;, 2, processor"/>
   <JUCERCOMP name="" id="88186d646a5d2007" memberName="component" virtualName=""
-             explicitFocusOrder="0" pos="128 16 656 112" sourceFile="Wx100FeedbackOperatorComponent.cpp"
+             explicitFocusOrder="0" pos="128 16 752 112" sourceFile="Wx100FeedbackOperatorComponent.cpp"
              constructorParams="&quot;Operator 4&quot;, 3, processor"/>
   <JUCERCOMP name="" id="1f2c10ddb5238693" memberName="component5" virtualName=""
              explicitFocusOrder="0" pos="8 16 112 480" sourceFile="Wx100AlgorithmSelector.cpp"
