@@ -11,7 +11,7 @@
 #ifndef WAVETABLES_H_INCLUDED
 #define WAVETABLES_H_INCLUDED
 
-const unsigned int waveTableLength = 32768;
+const unsigned int waveTableLength = 65536;
 const unsigned long i32waveTableLength = waveTableLength << 16;
 
 enum WaveTables {

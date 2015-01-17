@@ -1,4 +1,4 @@
-wavetable_length = 32.0 * 1024.0
+wavetable_length = 64.0 * 1024.0
 
 File.open('../Source/WaveTables/WaveTables.h','w') do |f|
   f.write <<HEADER
