@@ -25,7 +25,7 @@ public:
     
     void setPhase(float phase)
     {
-        index = (int)(waveTableLength * phase) << 16;
+        index = waveTableLength * phase;
     }
     
     void setFrequency(Frequency newFrequency)
@@ -33,7 +33,7 @@ public:
         if (frequency != newFrequency)
         {
             frequency = newFrequency;
-            increment = (long)(frqTI * frequency) << 16;
+            increment = freqTI * frequency;
         }
     }
     
@@ -44,10 +44,10 @@ public:
     void setSampleRate(float newSampleRate)
     {
         sampleRate = newSampleRate;
-        frqTI = waveTableLength/sampleRate;
-        increment = (long)(frqTI * frequency) << 16;
+        freqTI = waveTableLength / sampleRate;
+        increment = freqTI * frequency;
     }
-    
+
     void setWaveTable(int newWaveTableShape)
     {
         waveTableShape = newWaveTableShape;
@@ -80,9 +80,9 @@ public:
     
     Amplitude tick()
     {
-        int scaledIndex = (((index+0x8000) >> 16) + (int)(waveTableLength * fm)) & (waveTableLength - 1);
-        value = waveTable[scaledIndex];
-        index = index + increment & ((waveTableLength << 16) - 1);
+        value = waveTable[(int)(index + (waveTableLength * fm)) & (waveTableLength -1)];
+        if ((index += increment) >= waveTableLength)
+            index -= waveTableLength;
         return value;
     }
     
@@ -94,10 +94,10 @@ public:
 private:
     const double *waveTable = sineWaveTable;
     Frequency sampleRate = 0.0;
-    double frqTI = 0.0;
     Frequency frequency = 0.0;
-    long increment = 0.0;
-    unsigned long index = 0;
+    float freqTI = 0.0;
+    float increment = 0.0;
+    float index = 0.0;
     int waveTableShape = 0;
     Amplitude value = 0.0;
     Amplitude fm = 0.0;
