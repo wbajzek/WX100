@@ -45,7 +45,7 @@ public:
         lines.removeRange(0, 2);
         lines.insert(0, "1/1");
         // something about this is wrong, hence frequencyRef is 220.0 and not 440.0
-        Frequency root = frequencyRef * pow(2.0, (((lowestDegree + 3) / 12)) - 6 + ((lowestDegree + 3) % 12)/12.0);
+        Frequency root = frequencyRef * pow(2.0, (((lowestDegree + 3) / 12.0)) - 6 + ((lowestDegree + 3) % 12)/12.0);
         
         for (int i = lowestDegree, line = 0; i < 128; ++i)
         {
