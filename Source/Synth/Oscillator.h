@@ -51,6 +51,26 @@ public:
     void setWaveTable(int newWaveTableShape)
     {
         waveTableShape = newWaveTableShape;
+        switch (waveTableShape)
+        {
+            case SINE_WAVE_TABLE:
+                waveTable = sineWaveTable;
+                break;
+            case TRIANGLE_WAVE_TABLE:
+                waveTable = triangleWaveTable;
+                break;
+            case SAW_WAVE_TABLE:
+                waveTable = sawWaveTable;
+                break;
+            case RAMP_WAVE_TABLE:
+                waveTable = rampWaveTable;
+                break;
+            case WHITE_NOISE_WAVE_TABLE:
+                waveTable = whiteNoiseWaveTable;
+                break;
+            default:
+                break;
+        }
     }
 
     void setFm(Amplitude amount)
@@ -61,28 +81,7 @@ public:
     Amplitude tick()
     {
         int scaledIndex = (((index+0x8000) >> 16) + (int)(waveTableLength * fm)) & (waveTableLength - 1);
-
-        switch (waveTableShape)
-        {
-            case SINE_WAVE_TABLE:
-                value = sineWaveTable[scaledIndex];
-                break;
-            case TRIANGLE_WAVE_TABLE:
-                value = triangleWaveTable[scaledIndex];
-                break;
-            case SAW_WAVE_TABLE:
-                value = sawWaveTable[scaledIndex];
-                break;
-            case RAMP_WAVE_TABLE:
-                value = rampWaveTable[scaledIndex];
-                break;
-            case WHITE_NOISE_WAVE_TABLE:
-                value = whiteNoiseWaveTable[scaledIndex];
-                break;
-            default:
-                break;
-        }
-
+        value = waveTable[scaledIndex];
         index = index + increment & ((waveTableLength << 16) - 1);
         return value;
     }
@@ -93,6 +92,7 @@ public:
     }
     
 private:
+    const double *waveTable = sineWaveTable;
     Frequency sampleRate = 0.0;
     double frqTI = 0.0;
     Frequency frequency = 0.0;
