@@ -148,7 +148,7 @@ Wx100OperatorComponent::Wx100OperatorComponent (String newName, int newOperatorN
     ratio->addListener (this);
 
     addAndMakeVisible (lfoAmp = new Slider ("ampLfo"));
-    lfoAmp->setRange (0.001, 1, 0.001);
+    lfoAmp->setRange (0, 1, 0.001);
     lfoAmp->setSliderStyle (Slider::RotaryVerticalDrag);
     lfoAmp->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfoAmp->addListener (this);
@@ -458,10 +458,9 @@ BEGIN_JUCER_METADATA
           int="0.010000000000000000208" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="ampLfo" id="bb185b2b29399f58" memberName="lfoAmp" virtualName=""
-          explicitFocusOrder="0" pos="584 40 40 56" min="0.0010000000000000000208"
-          max="1" int="0.0010000000000000000208" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="584 40 40 56" min="0" max="1" int="0.0010000000000000000208"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lfoAmpLabel" id="70ede97c75029075" memberName="lfoAmpLabel"
          virtualName="" explicitFocusOrder="0" pos="576 16 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amp LFO" editableSingleClick="0" editableDoubleClick="0"
