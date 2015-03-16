@@ -156,9 +156,6 @@ void Wx100SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int star
 
         outputBuffer.addSample(0, startSample, sample);
 
-        for (int i = 0; i < numChannels; ++i)
-            outputBuffer.addSample(i, startSample, sample);
-
         lastOp4Samples[1] = lastOp4Samples[0];
         lastOp4Samples[0] = (lastOp4Samples[1] + operators[3].currentSample) * 0.5;
         for (int i = 0; i < numOperators; ++i)
