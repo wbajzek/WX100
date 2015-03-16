@@ -34,7 +34,7 @@ Wx100AudioProcessor::Wx100AudioProcessor()
     lfoShape = SINE_WAVE_TABLE;
     algorithm = 1;
     scale = "";
-    scaleRoot = 60;
+    scaleRoot = 57;
     voiceCount = 32;
     
     initAllParameters();
