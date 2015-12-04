@@ -16,3 +16,5 @@
 ## Bugs ##
 * make undo/redo work, possibly without buying a commercial license for
   PluginParameters
+* voices not engaged when modwheel has changed do not know its setting.
+* carriers over the nyquist should probably be omitted
