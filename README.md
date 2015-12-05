@@ -1,5 +1,8 @@
 # FM Synthesizer #
 
+This was my second c++ project and needs some drastic reworking. But
+here it is on Github, mainly for my own convenience.
+
 ## Wishlist ##
 * velocity sensitivity control
 * LFO tempo sync
